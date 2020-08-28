@@ -2,7 +2,7 @@
   "name": "rpi_box",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "out/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/sswayney/rpi_box/issues"
   },
-  "homepage": "https://github.com/sswayney/rpi_box#readme"
+  "homepage": "https://github.com/sswayney/rpi_box#readme",
+  "dependencies": {
+    "@types/rpi-gpio": "^2.1.1",
+    "rpi-gpio": "^2.1.7"
+  }
 }
