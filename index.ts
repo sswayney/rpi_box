@@ -1,28 +1,9 @@
 import * as gpio from 'rpi-gpio';
 
-const pin = 7;
-const delay = 500;
-let count = 0;
-const max = 6;
+const pin = 12;
 
-gpio.setup(7, gpio.DIR_OUT, on);
+gpio.on('change', (channel, value) => {
+console.log('Channel ' + channel + ' value is now ' + value);
+});
 
-function on(): void {
-    if (count >= max){
-        gpio.destroy(() => console.log('Closed writePins, now exit.'));
-        return;
-    }
-
-    setTimeout(() => {
-        console.log('Off');
-        gpio.write(pin, true, off);
-        count += 1;
-    }, delay);
-}
-
-function off() {
-    setTimeout(() => {
-        console.log('On');
-        gpio.write(pin, false, on);
-    }, delay);
-}
+gpio.setup(pin, gpio.DIR_IN, gpio.EDGE_BOTH);
