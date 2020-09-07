@@ -15,24 +15,37 @@ class LED {
     protected doBlink = false;
     protected delay = 500;
 
-    constructor(protected _gpio: typeof gpio, protected pin: number) {}
+    get pin(): number {
+        return this._pin;
+    }
+
+    constructor(protected _gpio: typeof gpio, protected _pin: number) {
+        _gpio.setup(_pin, gpio.DIR_OUT);
+    }
 
     public on(): void {
-        this._gpio.write(OutputPins.pin7_led1, true);
+        this._gpio.write(this._pin, true);
     }
 
     public off(): void {
-        this._gpio.write(OutputPins.pin7_led1, false);
+        this._gpio.write(this._pin, false);
     }
 
-    public blink(delay: number): void {
-        this.delay = delay;
+    public blink(doBlink: boolean, delay: number = 500): void {
+
+        if (doBlink && !this.doBlink){
+            this.delay = delay;
+            this.doBlink = true;
+            this.blinkOn();
+        } else {
+            this.doBlink = false;
+        }
     }
 
     protected blinkOn(): void {
         setTimeout(() => {
             console.log('Off');
-            this._gpio.write(this.pin, true, this.blinkOff);
+            this._gpio.write(this._pin, true, this.blinkOff);
         }, this.delay);
     }
 
@@ -43,14 +56,12 @@ class LED {
 
         setTimeout(() => {
             console.log('On');
-            this._gpio.write(this.pin, false, this.blinkOn);
+            this._gpio.write(this._pin, false, this.blinkOn);
         }, this.delay);
     }
-
 }
 
-gpio.setup(OutputPins.pin7_led1, gpio.DIR_OUT);
-
+const led1 = new LED(gpio, OutputPins.pin7_led1);
 /**
  * Input switches
  */
@@ -77,10 +88,11 @@ function channelValueListener(): (...args: any[]) => void {
 
             switch (channel) {
                 case InputPins.pin12_switch1:
-                    console.log(`Writting ${value} to ${OutputPins.pin7_led1}`);
-                    gpio.write(OutputPins.pin7_led1, value);
+                    console.log(`Writting ${value} to ${led1.pin}`);
+                    led1.on();
                     break;
                 case InputPins.pin16_switch2:
+                    led1.blink(value);
                     break;
             }
         }
