@@ -43,21 +43,23 @@ class LED {
     }
 
     protected blinkOn(): void {
+        const _this = this;
         setTimeout(() => {
             console.log('Off');
-            this._gpio.write(this._pin, true, this.blinkOff);
-        }, this.delay);
+            _this._gpio.write(_this._pin, true, _this.blinkOff);
+        }, _this.delay);
     }
 
     protected blinkOff(): void {
-        if (!this.doBlink){
+        const _this = this;
+        if (!_this.doBlink){
             return;
         }
 
         setTimeout(() => {
             console.log('On');
-            this._gpio.write(this._pin, false, this.blinkOn);
-        }, this.delay);
+            _this._gpio.write(_this._pin, false, _this.blinkOn);
+        }, _this.delay);
     }
 }
 
