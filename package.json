@@ -18,7 +18,6 @@
   "homepage": "https://github.com/sswayney/rpi_box#readme",
   "dependencies": {
     "@types/rpi-gpio": "^2.1.1",
-    "rpi-gpio": "^2.1.7",
-    "lcdi2c": "1.0.6"
+    "rpi-gpio": "^2.1.7"
   }
 }
