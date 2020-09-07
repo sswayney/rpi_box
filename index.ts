@@ -7,6 +7,48 @@ enum OutputPins {
     pin7_led1 = 7
 }
 
+/**
+ * Class to incapsilate an led
+ */
+class LED {
+
+    protected doBlink = false;
+    protected delay = 500;
+
+    constructor(protected _gpio: typeof gpio, protected pin: number) {}
+
+    public on(): void {
+        this._gpio.write(OutputPins.pin7_led1, true);
+    }
+
+    public off(): void {
+        this._gpio.write(OutputPins.pin7_led1, false);
+    }
+
+    public blink(delay: number): void {
+        this.delay = delay;
+    }
+
+    protected blinkOn(): void {
+        setTimeout(() => {
+            console.log('Off');
+            this._gpio.write(this.pin, true, this.blinkOff);
+        }, this.delay);
+    }
+
+    protected blinkOff(): void {
+        if (!this.doBlink) {}{
+            return;
+        }
+
+        setTimeout(() => {
+            console.log('On');
+            this._gpio.write(this.pin, false, this.blinkOn);
+        }, this.delay);
+    }
+
+}
+
 gpio.setup(OutputPins.pin7_led1, gpio.DIR_OUT);
 
 /**
@@ -45,3 +87,5 @@ function channelValueListener(): (...args: any[]) => void {
     }
 
 }
+
+
