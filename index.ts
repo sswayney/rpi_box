@@ -1,16 +1,18 @@
 import * as gpio from 'rpi-gpio';
 
-const pin = 12;
+const pin12 = 12;
+const pin16 = 16;
 
 gpio.on('change', channelValueListener());
 
-gpio.setup(pin, gpio.DIR_IN, gpio.EDGE_BOTH);
+gpio.setup(pin12, gpio.DIR_IN, gpio.EDGE_BOTH);
+gpio.setup(pin16, gpio.DIR_IN, gpio.EDGE_BOTH);
 
 function channelValueListener(): (...args: any[]) => void {
-    let lastValue: boolean | undefined = undefined;
+    const lastValues: Map<any,any> = new Map();
     return (channel, value) => {
-        if (lastValue !== value){
-            lastValue = value;
+        if (lastValues.get(channel) !== value){
+            lastValues.set(channel,value);
             console.log('Channel ' + channel + ' value is now ' + value);
         }
     }
