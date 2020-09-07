@@ -50,7 +50,7 @@ class LED {
     }
 
     protected blinkOff(): void {
-        if (!this.doBlink) {}{
+        if (!this.doBlink){
             return;
         }
 
