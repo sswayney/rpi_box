@@ -50,7 +50,7 @@ class LED {
             }
         } else {
             this.doBlink = false;
-            this.interval.unsubscribe();
+            this.interval ? this.interval.unsubscribe() : null;
         }
     }
     //
