@@ -1,4 +1,6 @@
 import * as gpio from 'rpi-gpio';
+import {interval, Observable} from 'rxjs';
+import {tap, startWith, map, takeWhile} from 'rxjs/operators';
 
 /**
  * Output led
@@ -14,6 +16,7 @@ class LED {
 
     protected doBlink = false;
     protected delay = 500;
+    protected interval: Observable<boolean>;
 
     get pin(): number {
         return this._pin;
@@ -36,31 +39,33 @@ class LED {
         if (doBlink && !this.doBlink){
             this.delay = delay;
             this.doBlink = true;
-            this.blinkOn();
+            if (!this.interval) {
+                this.interval = interval(this.delay).pipe(takeWhile(() => this.doBlink),
+                    map(val => val % 2 === 0),
+                    tap(val => this._gpio.write(this._pin, val)));
+            }
         } else {
             this.doBlink = false;
         }
     }
-
-    protected blinkOn(): void {
-        const _this = this;
-        setTimeout(() => {
-            console.log('Off');
-            _this._gpio.write(_this._pin, true, _this.blinkOff);
-        }, _this.delay);
-    }
-
-    protected blinkOff(): void {
-        const _this = this;
-        if (!_this.doBlink){
-            return;
-        }
-
-        setTimeout(() => {
-            console.log('On');
-            _this._gpio.write(_this._pin, false, _this.blinkOn);
-        }, _this.delay);
-    }
+    //
+    // protected blinkOn(): void {
+    //     setTimeout(() => {
+    //         console.log('Off');
+    //         this._gpio.write(this._pin, true, this.blinkOff);
+    //     }, this.delay);
+    // }
+    //
+    // protected blinkOff(): void {
+    //     if (!this.doBlink){
+    //         return;
+    //     }
+    //
+    //     setTimeout(() => {
+    //         console.log('On');
+    //         this._gpio.write(this._pin, false, this.blinkOn);
+    //     }, this.delay);
+    // }
 }
 
 const led1 = new LED(gpio, OutputPins.pin7_led1);
