@@ -51,6 +51,7 @@ class LED {
         } else {
             this.doBlink = false;
             this.interval ? this.interval.unsubscribe() : null;
+            this.off();
         }
     }
     //
