@@ -1,6 +1,6 @@
 import * as gpio from 'rpi-gpio';
-import {interval, Observable} from 'rxjs';
-import {tap, startWith, map, takeWhile} from 'rxjs/operators';
+import {interval, Subscription} from 'rxjs';
+import {map, takeWhile, tap} from 'rxjs/operators';
 
 /**
  * Output led
@@ -16,7 +16,7 @@ class LED {
 
     protected doBlink = false;
     protected delay = 500;
-    protected interval: Observable<boolean>;
+    protected interval: Subscription;
 
     get pin(): number {
         return this._pin;
@@ -45,7 +45,7 @@ class LED {
             if (!this.interval) {
                 this.interval = interval(this.delay).pipe(takeWhile(() => this.doBlink),
                     map(val => val % 2 === 0),
-                    tap(val => val ? this.on() : this.off()));
+                    tap(val => val ? this.on() : this.off())).subscribe();
             }
         } else {
             this.doBlink = false;
