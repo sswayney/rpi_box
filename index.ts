@@ -95,8 +95,7 @@ function channelValueListener(): (...args: any[]) => void {
 
             switch (channel) {
                 case InputPins.pin12_switch1:
-                    console.log(`Writting ${value} to ${led1.pin}`);
-                    led1.on();
+                    value ? led1.on() : led1.off();
                     break;
                 case InputPins.pin16_switch2:
                     led1.blink(value);
