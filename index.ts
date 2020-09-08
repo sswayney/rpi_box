@@ -27,14 +27,17 @@ class LED {
     }
 
     public on(): void {
+        console.log(`LED ${this._pin} on`);
         this._gpio.write(this._pin, true);
     }
 
     public off(): void {
+        console.log(`LED ${this._pin} off`);
         this._gpio.write(this._pin, false);
     }
 
     public blink(doBlink: boolean, delay: number = 500): void {
+        console.log('blink: doBlink :' + doBlink, delay)
 
         if (doBlink && !this.doBlink){
             this.delay = delay;
@@ -42,7 +45,7 @@ class LED {
             if (!this.interval) {
                 this.interval = interval(this.delay).pipe(takeWhile(() => this.doBlink),
                     map(val => val % 2 === 0),
-                    tap(val => this._gpio.write(this._pin, val)));
+                    tap(val => val ? this.on() : this.off()));
             }
         } else {
             this.doBlink = false;
