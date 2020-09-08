@@ -42,13 +42,15 @@ class LED {
         if (doBlink && !this.doBlink){
             this.delay = delay;
             this.doBlink = true;
-            if (!this.interval) {
+
+            if (!this.interval || this.interval.closed) {
                 this.interval = interval(this.delay).pipe(takeWhile(() => this.doBlink),
                     map(val => val % 2 === 0),
                     tap(val => val ? this.on() : this.off())).subscribe();
             }
         } else {
             this.doBlink = false;
+            this.interval.unsubscribe();
         }
     }
     //
