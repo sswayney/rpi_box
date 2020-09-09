@@ -46,7 +46,7 @@ function channelValueListener() {
                     break;
             }
             console.log('Saying Hello');
-            tm.text = "helo"; // Shows "helo"
+            tm.text = "0848"; // Shows "helo"
             // console.log('Showing 2130');
             // tm.text="2130";     // Shows "21:30"
             // tm.split=true;      //
