@@ -162,6 +162,7 @@ var TM1637 = /** @class */ (function () {
         this._alignLeft = false;
         _gpio.setup(this.pinClk, _gpio.DIR_OUT);
         _gpio.setup(this.pinDIO, _gpio.DIR_OUT);
+        sleep();
         _gpio.write(this.pinClk, true);
         _gpio.write(this.pinDIO, true);
     }
