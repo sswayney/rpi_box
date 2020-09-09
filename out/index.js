@@ -46,7 +46,12 @@ function channelValueListener() {
                     break;
             }
             console.log('Saying Hello');
-            tm.text = "0848"; // Shows "helo"
+            var dateStringRay = new Date().toLocaleTimeString().split(':');
+            var hours = dateStringRay[0];
+            hours = hours.length === 1 ? '0' + hours : hours;
+            var minutes = dateStringRay[1];
+            minutes = minutes.length === 1 ? '0' + minutes : minutes;
+            tm.text = hours + minutes;
             // console.log('Showing 2130');
             // tm.text="2130";     // Shows "21:30"
             // tm.split=true;      //

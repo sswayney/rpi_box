@@ -55,7 +55,13 @@ function channelValueListener(): (...args: any[]) => void {
             }
 
             console.log('Saying Hello');
-            tm.text = "0848";     // Shows "helo"
+            const dateStringRay = new Date().toLocaleTimeString().split(':');
+            let hours = dateStringRay[0];
+            hours = hours.length === 1 ? '0' + hours : hours;
+            let minutes = dateStringRay[1];
+            minutes = minutes.length === 1 ? '0' + minutes : minutes;
+
+            tm.text = hours + minutes;
 
             // console.log('Showing 2130');
             // tm.text="2130";     // Shows "21:30"
