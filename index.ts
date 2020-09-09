@@ -57,7 +57,7 @@ console.log('Created TM');
 // 4 characters max. Extra characters will be ignored
 
 console.log('Saying Hello');
-tm.text="helo";     // Shows "helo"
+tm.text = "helo";     // Shows "helo"
 
 console.log('Showing 2130');
 tm.text="2130";     // Shows "21:30"

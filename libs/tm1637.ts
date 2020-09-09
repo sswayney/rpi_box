@@ -165,28 +165,33 @@ export class TM1637 {
         this._text = '';
         this._split = false;
         this._alignLeft = false;
-        _gpio.setup(this.pinClk, _gpio.DIR_OUT);
-        _gpio.setup(this.pinDIO, _gpio.DIR_OUT);
-        sleep();
-        _gpio.write(this.pinClk, true);
-        _gpio.write(this.pinDIO, true);
+        _gpio.setup(pinClk, _gpio.DIR_OUT);
+        _gpio.setup(pinDIO, _gpio.DIR_OUT);
+        console.log('constructor set up finished');
+        console.log('constructor writing true to both pins');
+        _gpio.write(pinClk, true);
+        _gpio.write(pinDIO, true);
     }
 
     high(pin) {
+        console.log('Writing high to ' + pin);
         this._gpio.write(pin, true);
         sleep();
     }
 
     low(pin) {
+        console.log('Writing low to ' + pin);
         this._gpio.write(pin, false);
         sleep();
     }
 
     start() {
+        console.log('start');
         this.low(this.pinDIO);
     }
 
     writeBit(value) {
+        console.log('writeBit');
         this.low(this.pinClk);
         if (value)
             this.high(this.pinDIO);
@@ -196,6 +201,7 @@ export class TM1637 {
         this.high(this.pinClk);
     }
     readAck() {
+        console.log('readAck');
         this.low(this.pinClk);
         // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
         this.high(this.pinClk);
@@ -206,6 +212,7 @@ export class TM1637 {
     }
 
     writeByte(byte) {
+        console.log('writeBype');
         let b = byte;
         for (let i = 0; i < 8; i++) {
             this.writeBit(b & 0x01);
@@ -215,12 +222,14 @@ export class TM1637 {
     }
 
     stop() {
+        console.log('stop');
         this.low(this.pinDIO);
         this.high(this.pinClk);
         this.high(this.pinDIO);
     }
 
     set text(message){
+        console.log('text: message ' + message);
         this._text = (message+"").substring(0,4);
         this.sendData();
     }
@@ -248,6 +257,7 @@ export class TM1637 {
     }
 
     sendData() {
+        console.log('sendData');
         let m=[null,null,null,null];
         for (let i = this._text.length; i >= 0 ; i--) {
             let ind = allowedChars.indexOf(this._text[i]);

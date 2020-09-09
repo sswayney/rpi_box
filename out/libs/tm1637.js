@@ -160,24 +160,29 @@ var TM1637 = /** @class */ (function () {
         this._text = '';
         this._split = false;
         this._alignLeft = false;
-        _gpio.setup(this.pinClk, _gpio.DIR_OUT);
-        _gpio.setup(this.pinDIO, _gpio.DIR_OUT);
-        sleep();
-        _gpio.write(this.pinClk, true);
-        _gpio.write(this.pinDIO, true);
+        _gpio.setup(pinClk, _gpio.DIR_OUT);
+        _gpio.setup(pinDIO, _gpio.DIR_OUT);
+        console.log('constructor set up finished');
+        console.log('constructor writing true to both pins');
+        _gpio.write(pinClk, true);
+        _gpio.write(pinDIO, true);
     }
     TM1637.prototype.high = function (pin) {
+        console.log('Writing high to ' + pin);
         this._gpio.write(pin, true);
         sleep();
     };
     TM1637.prototype.low = function (pin) {
+        console.log('Writing low to ' + pin);
         this._gpio.write(pin, false);
         sleep();
     };
     TM1637.prototype.start = function () {
+        console.log('start');
         this.low(this.pinDIO);
     };
     TM1637.prototype.writeBit = function (value) {
+        console.log('writeBit');
         this.low(this.pinClk);
         if (value)
             this.high(this.pinDIO);
@@ -186,6 +191,7 @@ var TM1637 = /** @class */ (function () {
         this.high(this.pinClk);
     };
     TM1637.prototype.readAck = function () {
+        console.log('readAck');
         this.low(this.pinClk);
         // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
         this.high(this.pinClk);
@@ -195,6 +201,7 @@ var TM1637 = /** @class */ (function () {
         // return ack;
     };
     TM1637.prototype.writeByte = function (byte) {
+        console.log('writeBype');
         var b = byte;
         for (var i = 0; i < 8; i++) {
             this.writeBit(b & 0x01);
@@ -203,6 +210,7 @@ var TM1637 = /** @class */ (function () {
         return this.readAck();
     };
     TM1637.prototype.stop = function () {
+        console.log('stop');
         this.low(this.pinDIO);
         this.high(this.pinClk);
         this.high(this.pinDIO);
@@ -212,6 +220,7 @@ var TM1637 = /** @class */ (function () {
             return this._text;
         },
         set: function (message) {
+            console.log('text: message ' + message);
             this._text = (message + "").substring(0, 4);
             this.sendData();
         },
@@ -241,6 +250,7 @@ var TM1637 = /** @class */ (function () {
         configurable: true
     });
     TM1637.prototype.sendData = function () {
+        console.log('sendData');
         var m = [null, null, null, null];
         for (var i = this._text.length; i >= 0; i--) {
             var ind = allowedChars.indexOf(this._text[i]);
