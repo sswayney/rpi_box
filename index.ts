@@ -6,7 +6,7 @@ import {TM1637} from "./libs/tm1637";
 
 const CLKPIN = 15;
 const DIOPIN = 18;
-const tm = new TM1637(CLKPIN, DIOPIN);
+const tm = new TM1637(gpio, CLKPIN, DIOPIN);
 
 // 4 characters max. Extra characters will be ignored
 

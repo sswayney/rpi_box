@@ -160,24 +160,24 @@ export class TM1637 {
     _split: boolean;
     _alignLeft: boolean;
 
-    constructor(protected pinClk, protected pinDIO) {
+    constructor(protected _gpio: typeof gpio, protected pinClk, protected pinDIO) {
 
         this._text = '';
         this._split = false;
         this._alignLeft = false;
-        gpio.setup(this.pinClk, gpio.DIR_OUT);
-        gpio.setup(this.pinDIO, gpio.DIR_OUT);
-        gpio.write(this.pinClk, true);
-        gpio.write(this.pinDIO, true);
+        _gpio.setup(this.pinClk, _gpio.DIR_OUT);
+        _gpio.setup(this.pinDIO, _gpio.DIR_OUT);
+        _gpio.write(this.pinClk, true);
+        _gpio.write(this.pinDIO, true);
     }
 
     high(pin) {
-        gpio.write(pin, true);
+        this._gpio.write(pin, true);
         sleep();
     }
 
     low(pin) {
-        gpio.write(pin, false);
+        this._gpio.write(pin, false);
         sleep();
     }
 
@@ -196,10 +196,10 @@ export class TM1637 {
     }
     readAck() {
         this.low(this.pinClk);
-        // gpio.setup(this.pinDIO, gpio.DIR_IN);
+        // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
         this.high(this.pinClk);
-        // const ack = gpio.promise.read(this.pinDIO);
-        //gpio.setup(this.pinDIO, gpio.DIR_OUT);
+        // const ack = this._gpio.promise.read(this.pinDIO);
+        //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
         this.low(this.pinClk);
         // return ack;
     }

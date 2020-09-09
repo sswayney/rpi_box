@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var gpio = require("rpi-gpio");
 //
 //      A
 //     ---
@@ -154,23 +153,24 @@ var codigitToSegment = [
 ];
 var sleep = function () { return new Promise(function (r) { return setTimeout(r, 1); }); };
 var TM1637 = /** @class */ (function () {
-    function TM1637(pinClk, pinDIO) {
+    function TM1637(_gpio, pinClk, pinDIO) {
+        this._gpio = _gpio;
         this.pinClk = pinClk;
         this.pinDIO = pinDIO;
         this._text = '';
         this._split = false;
         this._alignLeft = false;
-        gpio.setup(this.pinClk, gpio.DIR_OUT);
-        gpio.setup(this.pinDIO, gpio.DIR_OUT);
-        gpio.write(this.pinClk, true);
-        gpio.write(this.pinDIO, true);
+        _gpio.setup(this.pinClk, _gpio.DIR_OUT);
+        _gpio.setup(this.pinDIO, _gpio.DIR_OUT);
+        _gpio.write(this.pinClk, true);
+        _gpio.write(this.pinDIO, true);
     }
     TM1637.prototype.high = function (pin) {
-        gpio.write(pin, true);
+        this._gpio.write(pin, true);
         sleep();
     };
     TM1637.prototype.low = function (pin) {
-        gpio.write(pin, false);
+        this._gpio.write(pin, false);
         sleep();
     };
     TM1637.prototype.start = function () {
@@ -186,10 +186,10 @@ var TM1637 = /** @class */ (function () {
     };
     TM1637.prototype.readAck = function () {
         this.low(this.pinClk);
-        // gpio.setup(this.pinDIO, gpio.DIR_IN);
+        // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
         this.high(this.pinClk);
-        // const ack = gpio.promise.read(this.pinDIO);
-        //gpio.setup(this.pinDIO, gpio.DIR_OUT);
+        // const ack = this._gpio.promise.read(this.pinDIO);
+        //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
         this.low(this.pinClk);
         // return ack;
     };
