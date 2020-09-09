@@ -4,14 +4,16 @@ import {Switch} from "./libs/switch";
 import {TM1637} from "./libs/tm1637";
 
 
-const CLKPIN = 15;
+const CLKPIN = 22;
 const DIOPIN = 18;
 const tm = new TM1637(gpio, CLKPIN, DIOPIN);
-
+console.log('Created TM');
 // 4 characters max. Extra characters will be ignored
 
+console.log('Saying Hello');
 tm.text="helo";     // Shows "helo"
 
+console.log('Showing 2130');
 tm.text="2130";     // Shows "21:30"
 tm.split=true;      //
 

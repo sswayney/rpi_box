@@ -160,7 +160,7 @@ export class TM1637 {
     _split: boolean;
     _alignLeft: boolean;
 
-    constructor(protected _gpio: typeof gpio, protected pinClk, protected pinDIO) {
+    constructor(protected _gpio: typeof gpio, protected pinClk: number, protected pinDIO: number) {
 
         this._text = '';
         this._split = false;
