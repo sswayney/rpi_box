@@ -4,19 +4,6 @@ var gpio = require("rpi-gpio");
 var led_1 = require("./libs/led");
 var switch_1 = require("./libs/switch");
 var tm1637_1 = require("./libs/tm1637");
-var CLKPIN = 22;
-var DIOPIN = 18;
-var tm = new tm1637_1.TM1637(gpio, CLKPIN, DIOPIN);
-console.log('Created TM');
-// 4 characters max. Extra characters will be ignored
-console.log('Saying Hello');
-tm.text = "helo"; // Shows "helo"
-console.log('Showing 2130');
-tm.text = "2130"; // Shows "21:30"
-tm.split = true; //
-tm.text = "foo"; //
-tm.alignLeft = false; // Shows " foo"
-tm.alignLeft = true; // Shows "foo "
 /**
  * Output led
  */
@@ -56,4 +43,18 @@ function channelValueListener() {
         }
     };
 }
+var CLKPIN = 22;
+var DIOPIN = 18;
+console.log('Creating TM');
+var tm = new tm1637_1.TM1637(gpio, CLKPIN, DIOPIN);
+console.log('Created TM');
+// 4 characters max. Extra characters will be ignored
+console.log('Saying Hello');
+tm.text = "helo"; // Shows "helo"
+console.log('Showing 2130');
+tm.text = "2130"; // Shows "21:30"
+tm.split = true; //
+tm.text = "foo"; //
+tm.alignLeft = false; // Shows " foo"
+tm.alignLeft = true; // Shows "foo "
 //# sourceMappingURL=index.js.map
