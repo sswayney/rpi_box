@@ -1,6 +1,23 @@
 import * as gpio from 'rpi-gpio';
 import {LED} from './libs/led';
 import {Switch} from "./libs/switch";
+import {TM1637} from "./libs/tm1637";
+
+
+const CLKPIN = 15;
+const DIOPIN = 18;
+const tm = new TM1637(CLKPIN, DIOPIN);
+
+// 4 characters max. Extra characters will be ignored
+
+tm.text="helo";     // Shows "helo"
+
+tm.text="2130";     // Shows "21:30"
+tm.split=true;      //
+
+tm.text="foo";      //
+tm.alignLeft=false; // Shows " foo"
+tm.alignLeft=true;  // Shows "foo "
 
 /**
  * Output led

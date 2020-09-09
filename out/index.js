@@ -3,6 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var led_1 = require("./libs/led");
 var switch_1 = require("./libs/switch");
+var tm1637_1 = require("./libs/tm1637");
+var CLKPIN = 15;
+var DIOPIN = 18;
+var tm = new tm1637_1.TM1637(CLKPIN, DIOPIN);
+// 4 characters max. Extra characters will be ignored
+tm.text = "helo"; // Shows "helo"
+tm.text = "2130"; // Shows "21:30"
+tm.split = true; //
+tm.text = "foo"; //
+tm.alignLeft = false; // Shows " foo"
+tm.alignLeft = true; // Shows "foo "
 /**
  * Output led
  */
