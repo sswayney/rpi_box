@@ -23,6 +23,15 @@ enum InputPins {
 const switch1 = new Switch(gpio, InputPins.pin12_switch1);
 const switch2 = new Switch(gpio, InputPins.pin16_switch2);
 
+
+const CLKPIN = 22;
+const DIOPIN = 18;
+console.log('Creating TM');
+const tm = new TM1637(gpio, CLKPIN, DIOPIN);
+console.log('Created TM');
+
+
+
 /**
  * Value change listener
  */
@@ -44,27 +53,23 @@ function channelValueListener(): (...args: any[]) => void {
                     led1.blink(value);
                     break;
             }
+
+            console.log('Saying Hello');
+            tm.text = "helo";     // Shows "helo"
+
+            // console.log('Showing 2130');
+            // tm.text="2130";     // Shows "21:30"
+            // tm.split=true;      //
+            //
+            // tm.text="foo";      //
+            // tm.alignLeft=false; // Shows " foo"
+            // tm.alignLeft=true;  // Shows "foo "
         }
     }
 
 }
 
-const CLKPIN = 22;
-const DIOPIN = 18;
-console.log('Creating TM');
-const tm = new TM1637(gpio, CLKPIN, DIOPIN);
-console.log('Created TM');
-// 4 characters max. Extra characters will be ignored
 
-console.log('Saying Hello');
-tm.text = "helo";     // Shows "helo"
 
-console.log('Showing 2130');
-tm.text="2130";     // Shows "21:30"
-tm.split=true;      //
-
-tm.text="foo";      //
-tm.alignLeft=false; // Shows " foo"
-tm.alignLeft=true;  // Shows "foo "
 
 

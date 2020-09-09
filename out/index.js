@@ -22,6 +22,11 @@ var InputPins;
 })(InputPins || (InputPins = {}));
 var switch1 = new switch_1.Switch(gpio, InputPins.pin12_switch1);
 var switch2 = new switch_1.Switch(gpio, InputPins.pin16_switch2);
+var CLKPIN = 22;
+var DIOPIN = 18;
+console.log('Creating TM');
+var tm = new tm1637_1.TM1637(gpio, CLKPIN, DIOPIN);
+console.log('Created TM');
 /**
  * Value change listener
  */
@@ -40,21 +45,16 @@ function channelValueListener() {
                     led1.blink(value);
                     break;
             }
+            console.log('Saying Hello');
+            tm.text = "helo"; // Shows "helo"
+            // console.log('Showing 2130');
+            // tm.text="2130";     // Shows "21:30"
+            // tm.split=true;      //
+            //
+            // tm.text="foo";      //
+            // tm.alignLeft=false; // Shows " foo"
+            // tm.alignLeft=true;  // Shows "foo "
         }
     };
 }
-var CLKPIN = 22;
-var DIOPIN = 18;
-console.log('Creating TM');
-var tm = new tm1637_1.TM1637(gpio, CLKPIN, DIOPIN);
-console.log('Created TM');
-// 4 characters max. Extra characters will be ignored
-console.log('Saying Hello');
-tm.text = "helo"; // Shows "helo"
-console.log('Showing 2130');
-tm.text = "2130"; // Shows "21:30"
-tm.split = true; //
-tm.text = "foo"; //
-tm.alignLeft = false; // Shows " foo"
-tm.alignLeft = true; // Shows "foo "
 //# sourceMappingURL=index.js.map
