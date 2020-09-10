@@ -10,8 +10,10 @@ var tm1637_1 = require("./libs/tm1637");
 var OutputPins;
 (function (OutputPins) {
     OutputPins[OutputPins["pin7_led1"] = 7] = "pin7_led1";
+    OutputPins[OutputPins["pin11_led2"] = 11] = "pin11_led2";
 })(OutputPins || (OutputPins = {}));
 var led1 = new led_1.LED(gpio, OutputPins.pin7_led1);
+var buttonLed1 = new led_1.LED(gpio, OutputPins.pin11_led2);
 /**
  * Input switches
  */
@@ -40,6 +42,7 @@ function channelValueListener() {
             switch (channel) {
                 case switch1.pin:
                     value ? led1.on() : led1.off();
+                    value ? buttonLed1.on() : buttonLed1.off();
                     break;
                 case switch2.pin:
                     led1.blink(value);
