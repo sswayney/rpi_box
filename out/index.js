@@ -10,8 +10,10 @@ var tm1637_1 = require("./libs/tm1637");
 var OutputPins;
 (function (OutputPins) {
     OutputPins[OutputPins["pin38_buttonGreen"] = 38] = "pin38_buttonGreen";
+    OutputPins[OutputPins["pin36_buttonYellow"] = 36] = "pin36_buttonYellow";
 })(OutputPins || (OutputPins = {}));
-var greenButtonLed = new led_1.LED(gpio, OutputPins.pin38_buttonGreen);
+var blueButtonLed = new led_1.LED(gpio, OutputPins.pin38_buttonGreen);
+var yellowButtonLed = new led_1.LED(gpio, OutputPins.pin36_buttonYellow);
 // const buttonLed1 = new LED(gpio, OutputPins.pin11_led2);
 /**
  * Input switches
@@ -20,11 +22,13 @@ var InputPins;
 (function (InputPins) {
     InputPins[InputPins["pin12_switch1"] = 12] = "pin12_switch1";
     InputPins[InputPins["pin16_switch2"] = 16] = "pin16_switch2";
-    InputPins[InputPins["pin40_buttonGreen"] = 40] = "pin40_buttonGreen";
+    InputPins[InputPins["pin37_buttonYellow"] = 37] = "pin37_buttonYellow";
+    InputPins[InputPins["pin40_buttonBlue"] = 40] = "pin40_buttonBlue";
 })(InputPins || (InputPins = {}));
 var switch1 = new switch_1.Switch(gpio, InputPins.pin12_switch1);
 var switch2 = new switch_1.Switch(gpio, InputPins.pin16_switch2);
-var greenButton = new switch_1.Switch(gpio, InputPins.pin40_buttonGreen);
+var blueButton = new switch_1.Switch(gpio, InputPins.pin40_buttonBlue);
+var yellowButton = new switch_1.Switch(gpio, InputPins.pin37_buttonYellow);
 var CLKPIN = 11;
 var DIOPIN = 7;
 console.log('Creating TM');
@@ -48,8 +52,11 @@ function channelValueListener() {
                 case switch2.pin:
                     // led1.blink(value);
                     break;
-                case greenButton.pin:
-                    value ? greenButtonLed.on() : greenButtonLed.off();
+                case blueButton.pin:
+                    value ? blueButtonLed.on() : blueButtonLed.off();
+                    break;
+                case yellowButton.pin:
+                    value ? yellowButtonLed.on() : yellowButtonLed.off();
                     break;
             }
             console.log('Saying Hello');
