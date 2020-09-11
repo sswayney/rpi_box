@@ -36,46 +36,45 @@ var Game = /** @class */ (function () {
         /**
          * Value change listener
          */
-        gpio.on('change', channelValueListener());
-        function channelValueListener() {
-            var _this_1 = this;
-            var lastValues = new Map();
-            return function (channel, value) {
-                var _this = _this_1;
-                if (lastValues.get(channel) !== value) {
-                    lastValues.set(channel, value);
-                    console.log('Channel ' + channel + ' value is now ' + value);
-                    switch (channel) {
-                        case _this.greenSwitch.pin:
-                            value ? _this.blueButton.led.on() : _this.blueButton.led.off();
-                            value ? _this.yellowButton.led.on() : _this.yellowButton.led.off();
-                            value ? _this.whiteButton.led.on() : _this.whiteButton.led.off();
-                            break;
-                        case _this.redSwitch.pin:
-                            _this.blueButton.led.blink(value);
-                            _this.yellowButton.led.blink(value);
-                            _this.whiteButton.led.blink(value);
-                            break;
-                        case _this.blueButton.button.pin:
-                            value ? _this.blueButton.led.on() : _this.blueButton.led.off();
-                            break;
-                        case _this.yellowButton.button.pin:
-                            value ? _this.yellowButton.led.on() : _this.yellowButton.led.off();
-                            break;
-                        case _this.whiteButton.button.pin:
-                            value ? _this.whiteButton.led.on() : _this.whiteButton.led.off();
-                            break;
-                    }
-                    console.log('Saying Hello');
-                    var dateStringRay = new Date().toLocaleTimeString().split(':');
-                    var hours = dateStringRay[0];
-                    hours = hours.length === 1 ? '0' + hours : hours;
-                    var minutes = dateStringRay[1];
-                    minutes = minutes.length === 1 ? '0' + minutes : minutes;
-                    _this.sevenSegment.text = hours + minutes;
+        gpio.on('change', this.channelValueListener());
+    };
+    Game.prototype.channelValueListener = function () {
+        var _this = this;
+        var lastValues = new Map();
+        return function (channel, value) {
+            if (lastValues.get(channel) !== value) {
+                lastValues.set(channel, value);
+                console.log('Channel ' + channel + ' value is now ' + value);
+                switch (channel) {
+                    case _this.greenSwitch.pin:
+                        value ? _this.blueButton.led.on() : _this.blueButton.led.off();
+                        value ? _this.yellowButton.led.on() : _this.yellowButton.led.off();
+                        value ? _this.whiteButton.led.on() : _this.whiteButton.led.off();
+                        break;
+                    case _this.redSwitch.pin:
+                        _this.blueButton.led.blink(value);
+                        _this.yellowButton.led.blink(value);
+                        _this.whiteButton.led.blink(value);
+                        break;
+                    case _this.blueButton.button.pin:
+                        value ? _this.blueButton.led.on() : _this.blueButton.led.off();
+                        break;
+                    case _this.yellowButton.button.pin:
+                        value ? _this.yellowButton.led.on() : _this.yellowButton.led.off();
+                        break;
+                    case _this.whiteButton.button.pin:
+                        value ? _this.whiteButton.led.on() : _this.whiteButton.led.off();
+                        break;
                 }
-            };
-        }
+                console.log('Saying Hello');
+                var dateStringRay = new Date().toLocaleTimeString().split(':');
+                var hours = dateStringRay[0];
+                hours = hours.length === 1 ? '0' + hours : hours;
+                var minutes = dateStringRay[1];
+                minutes = minutes.length === 1 ? '0' + minutes : minutes;
+                _this.sevenSegment.text = hours + minutes;
+            }
+        };
     };
     return Game;
 }());
