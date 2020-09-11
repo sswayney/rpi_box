@@ -8,21 +8,23 @@ import {TM1637} from "./libs/tm1637";
  * Output led
  */
 enum OutputPins {
-    //pin11_led2 = 11
+    pin38_buttonGreen = 38
 }
 
-// const led1 = new LED(gpio, OutputPins.pin7_led1);
+const greenButtonLed = new LED(gpio, OutputPins.pin38_buttonGreen);
 // const buttonLed1 = new LED(gpio, OutputPins.pin11_led2);
 /**
  * Input switches
  */
 enum InputPins {
     pin12_switch1 = 12,
-    pin16_switch2 = 16
+    pin16_switch2 = 16,
+    pin40_buttonGreen = 40
 }
 
 const switch1 = new Switch(gpio, InputPins.pin12_switch1);
 const switch2 = new Switch(gpio, InputPins.pin16_switch2);
+const greenButton = new Switch(gpio, InputPins.pin40_buttonGreen);
 
 
 const CLKPIN = 11;
@@ -53,6 +55,9 @@ function channelValueListener(): (...args: any[]) => void {
                     break;
                 case switch2.pin:
                     // led1.blink(value);
+                    break;
+                case greenButton.pin:
+                    value ? greenButtonLed.on() : greenButtonLed.off();
                     break;
             }
 
