@@ -38,8 +38,8 @@ var Game = /** @class */ (function () {
          */
         gpio.on('change', channelValueListener());
         function channelValueListener() {
-            var _this = this;
             var lastValues = new Map();
+            var _this = this;
             return function (channel, value) {
                 if (lastValues.get(channel) !== value) {
                     lastValues.set(channel, value);

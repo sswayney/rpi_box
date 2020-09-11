@@ -48,30 +48,32 @@ export class Game {
 
         function channelValueListener(): (...args: any[]) => void {
             const lastValues: Map<any, any> = new Map();
+            const _this = this;
             return (channel, value) => {
+
                 if (lastValues.get(channel) !== value) {
                     lastValues.set(channel, value);
                     console.log('Channel ' + channel + ' value is now ' + value);
 
                     switch (channel) {
-                        case this.greenSwitch.pin:
-                            value ? this.blueButton.led.on() : this.blueButton.led.off();
-                            value ? this.yellowButton.led.on() : this.yellowButton.led.off();
-                            value ? this.whiteButton.led.on() : this.whiteButton.led.off();
+                        case _this.greenSwitch.pin:
+                            value ? _this.blueButton.led.on() : _this.blueButton.led.off();
+                            value ? _this.yellowButton.led.on() : _this.yellowButton.led.off();
+                            value ? _this.whiteButton.led.on() : _this.whiteButton.led.off();
                             break;
-                        case this.redSwitch.pin:
-                            this.blueButton.led.blink(value);
-                            this.yellowButton.led.blink(value);
-                            this.whiteButton.led.blink(value);
+                        case _this.redSwitch.pin:
+                            _this.blueButton.led.blink(value);
+                            _this.yellowButton.led.blink(value);
+                            _this.whiteButton.led.blink(value);
                             break;
-                        case this.blueButton.button.pin:
-                            value ? this.blueButton.led.on() : this.blueButton.led.off();
+                        case _this.blueButton.button.pin:
+                            value ? _this.blueButton.led.on() : _this.blueButton.led.off();
                             break;
-                        case this.yellowButton.button.pin:
-                            value ? this.yellowButton.led.on() : this.yellowButton.led.off();
+                        case _this.yellowButton.button.pin:
+                            value ? _this.yellowButton.led.on() : _this.yellowButton.led.off();
                             break;
-                        case this.whiteButton.button.pin:
-                            value ? this.whiteButton.led.on() : this.whiteButton.led.off();
+                        case _this.whiteButton.button.pin:
+                            value ? _this.whiteButton.led.on() : _this.whiteButton.led.off();
                             break;
                     }
 
@@ -82,7 +84,7 @@ export class Game {
                     let minutes = dateStringRay[1];
                     minutes = minutes.length === 1 ? '0' + minutes : minutes;
 
-                    this.sevenSegment.text = hours + minutes;
+                    _this.sevenSegment.text = hours + minutes;
                 }
             }
 
