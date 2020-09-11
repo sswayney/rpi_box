@@ -1,26 +1,24 @@
 import * as gpio from 'rpi-gpio';
+import {ButtonLED} from "./libs/button-led";
 import {LED} from './libs/led';
 import {Switch} from "./libs/switch";
 import {TM1637} from "./libs/tm1637";
 
-
 /**
- * Output led
+ * Output pins
  */
 enum OutputPins {
-    pin38_buttonGreen = 38,
+    pin38_buttonBlue = 38,
     pin36_buttonYellow = 36,
     pin33_buttonWhite = 33
 }
 
-const blueButtonLed = new LED(gpio, OutputPins.pin38_buttonGreen);
-const yellowButtonLed = new LED(gpio, OutputPins.pin36_buttonYellow);
-const whiteButtonLed = new LED(gpio, OutputPins.pin33_buttonWhite);
-// const buttonLed1 = new LED(gpio, OutputPins.pin11_led2);
 /**
- * Input switches
+ * Input pins
  */
 enum InputPins {
+    pin7_dio = 7,
+    pin11_clk = 11,
     pin12_switch1 = 12,
     pin16_switch2 = 16,
     pin35_buttonWhite = 35,
@@ -28,20 +26,14 @@ enum InputPins {
     pin40_buttonBlue = 40
 }
 
-const switch1 = new Switch(gpio, InputPins.pin12_switch1);
-const switch2 = new Switch(gpio, InputPins.pin16_switch2);
-const blueButton = new Switch(gpio, InputPins.pin40_buttonBlue);
-const yellowButton = new Switch(gpio, InputPins.pin37_buttonYellow);
-const whiteButton = new Switch(gpio, InputPins.pin35_buttonWhite);
+const greenSwitch = new Switch(gpio, InputPins.pin12_switch1);
+const redSwitch = new Switch(gpio, InputPins.pin16_switch2);
 
+const blueButton = new ButtonLED(gpio, InputPins.pin40_buttonBlue, OutputPins.pin38_buttonBlue);
+const yellowButton = new ButtonLED(gpio, InputPins.pin37_buttonYellow, OutputPins.pin36_buttonYellow);
+const whiteButton = new ButtonLED(gpio, InputPins.pin35_buttonWhite, OutputPins.pin33_buttonWhite);
 
-const CLKPIN = 11;
-const DIOPIN = 7;
-console.log('Creating TM');
-const tm = new TM1637(gpio, CLKPIN, DIOPIN);
-console.log('Created TM');
-
-
+const tm = new TM1637(gpio, InputPins.pin11_clk, InputPins.pin7_dio);
 
 /**
  * Value change listener
@@ -57,24 +49,24 @@ function channelValueListener(): (...args: any[]) => void {
             console.log('Channel ' + channel + ' value is now ' + value);
 
             switch (channel) {
-                case switch1.pin:
-                    value ? blueButtonLed.on() : blueButtonLed.off();
-                    value ? yellowButtonLed.on() : yellowButtonLed.off();
-                    value ? whiteButtonLed.on() : whiteButtonLed.off();
+                case greenSwitch.pin:
+                    value ? blueButton.led.on() : blueButton.led.off();
+                    value ? yellowButton.led.on() : yellowButton.led.off();
+                    value ? whiteButton.led.on() : whiteButton.led.off();
                     break;
-                case switch2.pin:
-                    blueButtonLed.blink(value);
-                    yellowButtonLed.blink(value);
-                    whiteButtonLed.blink(value);
+                case redSwitch.pin:
+                    blueButton.led.blink(value);
+                    yellowButton.led.blink(value);
+                    whiteButton.led.blink(value);
                     break;
-                case blueButton.pin:
-                    value ? blueButtonLed.on() : blueButtonLed.off();
+                case blueButton.button.pin:
+                    value ? blueButton.led.on() : blueButton.led.off();
                     break;
-                case yellowButton.pin:
-                    value ? yellowButtonLed.on() : yellowButtonLed.off();
+                case yellowButton.button.pin:
+                    value ? yellowButton.led.on() : yellowButton.led.off();
                     break;
-                case whiteButton.pin:
-                    value ? whiteButtonLed.on() : whiteButtonLed.off();
+                case whiteButton.button.pin:
+                    value ? whiteButton.led.on() : whiteButton.led.off();
                     break;
             }
 

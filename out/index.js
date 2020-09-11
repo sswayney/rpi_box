@@ -1,43 +1,37 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
-var led_1 = require("./libs/led");
+var button_led_1 = require("./libs/button-led");
 var switch_1 = require("./libs/switch");
 var tm1637_1 = require("./libs/tm1637");
 /**
- * Output led
+ * Output pins
  */
 var OutputPins;
 (function (OutputPins) {
-    OutputPins[OutputPins["pin38_buttonGreen"] = 38] = "pin38_buttonGreen";
+    OutputPins[OutputPins["pin38_buttonBlue"] = 38] = "pin38_buttonBlue";
     OutputPins[OutputPins["pin36_buttonYellow"] = 36] = "pin36_buttonYellow";
     OutputPins[OutputPins["pin33_buttonWhite"] = 33] = "pin33_buttonWhite";
 })(OutputPins || (OutputPins = {}));
-var blueButtonLed = new led_1.LED(gpio, OutputPins.pin38_buttonGreen);
-var yellowButtonLed = new led_1.LED(gpio, OutputPins.pin36_buttonYellow);
-var whiteButtonLed = new led_1.LED(gpio, OutputPins.pin33_buttonWhite);
-// const buttonLed1 = new LED(gpio, OutputPins.pin11_led2);
 /**
- * Input switches
+ * Input pins
  */
 var InputPins;
 (function (InputPins) {
+    InputPins[InputPins["pin7_dio"] = 7] = "pin7_dio";
+    InputPins[InputPins["pin11_clk"] = 11] = "pin11_clk";
     InputPins[InputPins["pin12_switch1"] = 12] = "pin12_switch1";
     InputPins[InputPins["pin16_switch2"] = 16] = "pin16_switch2";
     InputPins[InputPins["pin35_buttonWhite"] = 35] = "pin35_buttonWhite";
     InputPins[InputPins["pin37_buttonYellow"] = 37] = "pin37_buttonYellow";
     InputPins[InputPins["pin40_buttonBlue"] = 40] = "pin40_buttonBlue";
 })(InputPins || (InputPins = {}));
-var switch1 = new switch_1.Switch(gpio, InputPins.pin12_switch1);
-var switch2 = new switch_1.Switch(gpio, InputPins.pin16_switch2);
-var blueButton = new switch_1.Switch(gpio, InputPins.pin40_buttonBlue);
-var yellowButton = new switch_1.Switch(gpio, InputPins.pin37_buttonYellow);
-var whiteButton = new switch_1.Switch(gpio, InputPins.pin35_buttonWhite);
-var CLKPIN = 11;
-var DIOPIN = 7;
-console.log('Creating TM');
-var tm = new tm1637_1.TM1637(gpio, CLKPIN, DIOPIN);
-console.log('Created TM');
+var greenSwitch = new switch_1.Switch(gpio, InputPins.pin12_switch1);
+var redSwitch = new switch_1.Switch(gpio, InputPins.pin16_switch2);
+var blueButton = new button_led_1.ButtonLED(gpio, InputPins.pin40_buttonBlue, OutputPins.pin38_buttonBlue);
+var yellowButton = new button_led_1.ButtonLED(gpio, InputPins.pin37_buttonYellow, OutputPins.pin36_buttonYellow);
+var whiteButton = new button_led_1.ButtonLED(gpio, InputPins.pin35_buttonWhite, OutputPins.pin33_buttonWhite);
+var tm = new tm1637_1.TM1637(gpio, InputPins.pin11_clk, InputPins.pin7_dio);
 /**
  * Value change listener
  */
@@ -49,24 +43,24 @@ function channelValueListener() {
             lastValues.set(channel, value);
             console.log('Channel ' + channel + ' value is now ' + value);
             switch (channel) {
-                case switch1.pin:
-                    value ? blueButtonLed.on() : blueButtonLed.off();
-                    value ? yellowButtonLed.on() : yellowButtonLed.off();
-                    value ? whiteButtonLed.on() : whiteButtonLed.off();
+                case greenSwitch.pin:
+                    value ? blueButton.led.on() : blueButton.led.off();
+                    value ? yellowButton.led.on() : yellowButton.led.off();
+                    value ? whiteButton.led.on() : whiteButton.led.off();
                     break;
-                case switch2.pin:
-                    blueButtonLed.blink(value);
-                    yellowButtonLed.blink(value);
-                    whiteButtonLed.blink(value);
+                case redSwitch.pin:
+                    blueButton.led.blink(value);
+                    yellowButton.led.blink(value);
+                    whiteButton.led.blink(value);
                     break;
-                case blueButton.pin:
-                    value ? blueButtonLed.on() : blueButtonLed.off();
+                case blueButton.button.pin:
+                    value ? blueButton.led.on() : blueButton.led.off();
                     break;
-                case yellowButton.pin:
-                    value ? yellowButtonLed.on() : yellowButtonLed.off();
+                case yellowButton.button.pin:
+                    value ? yellowButton.led.on() : yellowButton.led.off();
                     break;
-                case whiteButton.pin:
-                    value ? whiteButtonLed.on() : whiteButtonLed.off();
+                case whiteButton.button.pin:
+                    value ? whiteButton.led.on() : whiteButton.led.off();
                     break;
             }
             console.log('Saying Hello');
