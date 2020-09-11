@@ -8,12 +8,11 @@ import {TM1637} from "./libs/tm1637";
  * Output led
  */
 enum OutputPins {
-    pin7_led1 = 7,
-    pin11_led2 = 11
+    //pin11_led2 = 11
 }
 
-const led1 = new LED(gpio, OutputPins.pin7_led1);
-const buttonLed1 = new LED(gpio, OutputPins.pin11_led2);
+// const led1 = new LED(gpio, OutputPins.pin7_led1);
+// const buttonLed1 = new LED(gpio, OutputPins.pin11_led2);
 /**
  * Input switches
  */
@@ -26,8 +25,8 @@ const switch1 = new Switch(gpio, InputPins.pin12_switch1);
 const switch2 = new Switch(gpio, InputPins.pin16_switch2);
 
 
-const CLKPIN = 22;
-const DIOPIN = 18;
+const CLKPIN = 11;
+const DIOPIN = 7;
 console.log('Creating TM');
 const tm = new TM1637(gpio, CLKPIN, DIOPIN);
 console.log('Created TM');
@@ -49,11 +48,11 @@ function channelValueListener(): (...args: any[]) => void {
 
             switch (channel) {
                 case switch1.pin:
-                    value ? led1.on() : led1.off();
-                    value ? buttonLed1.on() : buttonLed1.off();
+                    // value ? led1.on() : led1.off();
+                    // value ? buttonLed1.on() : buttonLed1.off();
                     break;
                 case switch2.pin:
-                    led1.blink(value);
+                    // led1.blink(value);
                     break;
             }
 

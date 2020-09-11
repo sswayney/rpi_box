@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
-var led_1 = require("./libs/led");
 var switch_1 = require("./libs/switch");
 var tm1637_1 = require("./libs/tm1637");
 /**
@@ -9,11 +8,10 @@ var tm1637_1 = require("./libs/tm1637");
  */
 var OutputPins;
 (function (OutputPins) {
-    OutputPins[OutputPins["pin7_led1"] = 7] = "pin7_led1";
-    OutputPins[OutputPins["pin11_led2"] = 11] = "pin11_led2";
+    //pin11_led2 = 11
 })(OutputPins || (OutputPins = {}));
-var led1 = new led_1.LED(gpio, OutputPins.pin7_led1);
-var buttonLed1 = new led_1.LED(gpio, OutputPins.pin11_led2);
+// const led1 = new LED(gpio, OutputPins.pin7_led1);
+// const buttonLed1 = new LED(gpio, OutputPins.pin11_led2);
 /**
  * Input switches
  */
@@ -24,8 +22,8 @@ var InputPins;
 })(InputPins || (InputPins = {}));
 var switch1 = new switch_1.Switch(gpio, InputPins.pin12_switch1);
 var switch2 = new switch_1.Switch(gpio, InputPins.pin16_switch2);
-var CLKPIN = 22;
-var DIOPIN = 18;
+var CLKPIN = 11;
+var DIOPIN = 7;
 console.log('Creating TM');
 var tm = new tm1637_1.TM1637(gpio, CLKPIN, DIOPIN);
 console.log('Created TM');
@@ -41,11 +39,11 @@ function channelValueListener() {
             console.log('Channel ' + channel + ' value is now ' + value);
             switch (channel) {
                 case switch1.pin:
-                    value ? led1.on() : led1.off();
-                    value ? buttonLed1.on() : buttonLed1.off();
+                    // value ? led1.on() : led1.off();
+                    // value ? buttonLed1.on() : buttonLed1.off();
                     break;
                 case switch2.pin:
-                    led1.blink(value);
+                    // led1.blink(value);
                     break;
             }
             console.log('Saying Hello');
