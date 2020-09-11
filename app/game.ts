@@ -48,9 +48,8 @@ export class Game {
 
         function channelValueListener(): (...args: any[]) => void {
             const lastValues: Map<any, any> = new Map();
-            const _this = this;
             return (channel, value) => {
-
+                const _this = this;
                 if (lastValues.get(channel) !== value) {
                     lastValues.set(channel, value);
                     console.log('Channel ' + channel + ' value is now ' + value);
