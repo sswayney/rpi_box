@@ -72,6 +72,7 @@ var Game = /** @class */ (function () {
                 hours = hours.length === 1 ? '0' + hours : hours;
                 var minutes = dateStringRay[1];
                 minutes = minutes.length === 1 ? '0' + minutes : minutes;
+                _this.sevenSegment.split = true;
                 _this.sevenSegment.text = hours + minutes;
             }
         };
