@@ -11,9 +11,11 @@ var OutputPins;
 (function (OutputPins) {
     OutputPins[OutputPins["pin38_buttonGreen"] = 38] = "pin38_buttonGreen";
     OutputPins[OutputPins["pin36_buttonYellow"] = 36] = "pin36_buttonYellow";
+    OutputPins[OutputPins["pin33_buttonWhite"] = 33] = "pin33_buttonWhite";
 })(OutputPins || (OutputPins = {}));
 var blueButtonLed = new led_1.LED(gpio, OutputPins.pin38_buttonGreen);
 var yellowButtonLed = new led_1.LED(gpio, OutputPins.pin36_buttonYellow);
+var whiteButtonLed = new led_1.LED(gpio, OutputPins.pin33_buttonWhite);
 // const buttonLed1 = new LED(gpio, OutputPins.pin11_led2);
 /**
  * Input switches
@@ -22,6 +24,7 @@ var InputPins;
 (function (InputPins) {
     InputPins[InputPins["pin12_switch1"] = 12] = "pin12_switch1";
     InputPins[InputPins["pin16_switch2"] = 16] = "pin16_switch2";
+    InputPins[InputPins["pin35_buttonWhite"] = 35] = "pin35_buttonWhite";
     InputPins[InputPins["pin37_buttonYellow"] = 37] = "pin37_buttonYellow";
     InputPins[InputPins["pin40_buttonBlue"] = 40] = "pin40_buttonBlue";
 })(InputPins || (InputPins = {}));
@@ -29,6 +32,7 @@ var switch1 = new switch_1.Switch(gpio, InputPins.pin12_switch1);
 var switch2 = new switch_1.Switch(gpio, InputPins.pin16_switch2);
 var blueButton = new switch_1.Switch(gpio, InputPins.pin40_buttonBlue);
 var yellowButton = new switch_1.Switch(gpio, InputPins.pin37_buttonYellow);
+var whiteButton = new switch_1.Switch(gpio, InputPins.pin35_buttonWhite);
 var CLKPIN = 11;
 var DIOPIN = 7;
 console.log('Creating TM');
@@ -57,6 +61,9 @@ function channelValueListener() {
                     break;
                 case yellowButton.pin:
                     value ? yellowButtonLed.on() : yellowButtonLed.off();
+                    break;
+                case whiteButton.pin:
+                    value ? whiteButtonLed.on() : whiteButtonLed.off();
                     break;
             }
             console.log('Saying Hello');
