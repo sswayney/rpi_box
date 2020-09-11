@@ -50,11 +50,14 @@ function channelValueListener() {
             console.log('Channel ' + channel + ' value is now ' + value);
             switch (channel) {
                 case switch1.pin:
-                    // value ? led1.on() : led1.off();
-                    // value ? buttonLed1.on() : buttonLed1.off();
+                    value ? blueButtonLed.on() : blueButtonLed.off();
+                    value ? yellowButtonLed.on() : yellowButtonLed.off();
+                    value ? whiteButtonLed.on() : whiteButtonLed.off();
                     break;
                 case switch2.pin:
-                    // led1.blink(value);
+                    blueButtonLed.blink(value);
+                    yellowButtonLed.blink(value);
+                    whiteButtonLed.blink(value);
                     break;
                 case blueButton.pin:
                     value ? blueButtonLed.on() : blueButtonLed.off();
