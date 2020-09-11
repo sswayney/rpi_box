@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var button_led_1 = require("./libs/button-led");
+var lcdi2c_1 = require("./libs/lcdi2c");
 var switch_1 = require("./libs/switch");
 var tm1637_1 = require("./libs/tm1637");
 /**
@@ -26,12 +27,25 @@ var InputPins;
     InputPins[InputPins["pin37_buttonYellow"] = 37] = "pin37_buttonYellow";
     InputPins[InputPins["pin40_buttonBlue"] = 40] = "pin40_buttonBlue";
 })(InputPins || (InputPins = {}));
+/**
+ * Switches
+ */
 var greenSwitch = new switch_1.Switch(gpio, InputPins.pin12_switch1);
 var redSwitch = new switch_1.Switch(gpio, InputPins.pin16_switch2);
+/**
+ * Buttons with LEDS
+ */
 var blueButton = new button_led_1.ButtonLED(gpio, InputPins.pin40_buttonBlue, OutputPins.pin38_buttonBlue);
 var yellowButton = new button_led_1.ButtonLED(gpio, InputPins.pin37_buttonYellow, OutputPins.pin36_buttonYellow);
 var whiteButton = new button_led_1.ButtonLED(gpio, InputPins.pin35_buttonWhite, OutputPins.pin33_buttonWhite);
+/**
+ * 7 segment display
+ */
 var tm = new tm1637_1.TM1637(gpio, InputPins.pin11_clk, InputPins.pin7_dio);
+var lcd = new lcdi2c_1.LCD(1, 0x27, 16, 2);
+lcd.clear();
+lcd.println('Line one', 1);
+lcd.println('Line Two!!!', 2);
 /**
  * Value change listener
  */

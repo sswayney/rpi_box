@@ -8,6 +8,11 @@ import {Pin} from "./pin";
  */
 export class LED extends Pin {
 
+    get value(): boolean {
+        return this._value;
+    }
+
+    protected _value: boolean;
     protected doBlink = false;
     protected delay = 500;
     protected interval: Subscription;
@@ -20,11 +25,13 @@ export class LED extends Pin {
     public on(): void {
         console.log(`LED ${this._pin} on`);
         this._gpio.write(this._pin, true);
+        this._value = true;
     }
 
     public off(): void {
         console.log(`LED ${this._pin} off`);
         this._gpio.write(this._pin, false);
+        this._value = false;
     }
 
     public blink(doBlink: boolean, delay: number = 500): void {

@@ -3,6 +3,9 @@ import {LED} from "./led";
 import {Switch} from "./switch";
 
 
+/**
+ * A button(switch) with an led
+ */
 export class ButtonLED {
 
     public readonly led: LED;

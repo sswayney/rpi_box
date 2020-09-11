@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var led_1 = require("./led");
 var switch_1 = require("./switch");
+/**
+ * A button(switch) with an led
+ */
 var ButtonLED = /** @class */ (function () {
     function ButtonLED(_gpio, _buttonPin, _ledPin) {
         this._gpio = _gpio;

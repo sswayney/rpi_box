@@ -1,5 +1,6 @@
 import * as gpio from 'rpi-gpio';
 import {ButtonLED} from "./libs/button-led";
+import {LCD} from "./libs/lcdi2c";
 import {LED} from './libs/led';
 import {Switch} from "./libs/switch";
 import {TM1637} from "./libs/tm1637";
@@ -26,14 +27,29 @@ enum InputPins {
     pin40_buttonBlue = 40
 }
 
+/**
+ * Switches
+ */
 const greenSwitch = new Switch(gpio, InputPins.pin12_switch1);
 const redSwitch = new Switch(gpio, InputPins.pin16_switch2);
 
+/**
+ * Buttons with LEDS
+ */
 const blueButton = new ButtonLED(gpio, InputPins.pin40_buttonBlue, OutputPins.pin38_buttonBlue);
 const yellowButton = new ButtonLED(gpio, InputPins.pin37_buttonYellow, OutputPins.pin36_buttonYellow);
 const whiteButton = new ButtonLED(gpio, InputPins.pin35_buttonWhite, OutputPins.pin33_buttonWhite);
 
+/**
+ * 7 segment display
+ */
 const tm = new TM1637(gpio, InputPins.pin11_clk, InputPins.pin7_dio);
+
+var lcd = new LCD(1, 0x27, 16,2);
+
+lcd.clear();
+lcd.println('Line one',1);
+lcd.println('Line Two!!!',2);
 
 /**
  * Value change listener
