@@ -16,7 +16,7 @@ export class CountDown implements Updateable {
     }
 
     protected doCountDown = false;
-    protected delay = 500;
+    protected delay = 1000;
     protected interval: Subscription;
 
     protected sevenSegment = new TM1637(gpio, PINS.pin11_clk, PINS.pin7_dio);
@@ -26,12 +26,12 @@ export class CountDown implements Updateable {
     update(channel: number, value: any) {
         switch (channel) {
             case PINS.pin12_green_switch1:
-                this.countDown(value);
+                this.countDown(value, 120);
                 break;
         }
     }
 
-    protected countDown(doCountDown: boolean): void {
+    protected countDown(doCountDown: boolean, seconds: number): void {
         console.log('CountDown: doCountDown');
 
         if (doCountDown && !this.doCountDown) {
@@ -39,7 +39,7 @@ export class CountDown implements Updateable {
 
             if (!this.interval || this.interval.closed) {
                 this.interval = interval(this.delay).pipe(takeWhile(() => this.doCountDown),
-                    tap(val => this.text = val + '')).subscribe();
+                    tap(val => this.text = `${~(seconds / 60)}${('' + (seconds % 60)).padStart(2,0 + '')}`)).subscribe();
             }
         } else {
             this.doCountDown = false;
