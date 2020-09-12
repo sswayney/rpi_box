@@ -23,14 +23,17 @@ var Display = /** @class */ (function () {
     Display.prototype.update = function (channel, value) {
         switch (channel) {
             case pins_enum_1.PINS.pin35_buttonWhite:
+                this.lcd.clear();
                 this.lcd.println('COLOR', 1);
                 this.lcd.println('White', 2);
                 break;
             case pins_enum_1.PINS.pin37_buttonYellow:
+                this.lcd.clear();
                 this.lcd.println('COLOR', 1);
                 this.lcd.println('Yellow', 2);
                 break;
             case pins_enum_1.PINS.pin40_buttonBlue:
+                this.lcd.clear();
                 this.lcd.println('COLOR', 1);
                 this.lcd.println('Blue', 2);
                 break;
