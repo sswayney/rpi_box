@@ -163,9 +163,9 @@ var TM1637 = /** @class */ (function () {
         _gpio.setup(pinClk, _gpio.DIR_OUT);
         _gpio.setup(pinDIO, _gpio.DIR_OUT);
         console.log('constructor set up finished');
-        // console.log('constructor writing true to both pins');
-        // _gpio.write(pinClk, true);
-        // _gpio.write(pinDIO, true);
+        console.log('constructor writing true to both pins');
+        _gpio.write(pinClk, true);
+        _gpio.write(pinDIO, true);
     }
     TM1637.prototype.high = function (pin) {
         // console.log('Writing high to ' + pin);
