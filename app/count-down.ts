@@ -3,7 +3,7 @@ import {PINS} from "../libs/pins.enum";
 import {TM1637} from "../libs/tm1637";
 import {Updateable} from "./intefaces/updateable";
 import { Subscription, interval } from 'rxjs';
-import { takeWhile, tap } from 'rxjs/operators';
+import { takeWhile, tap, map } from 'rxjs/operators';
 
 /**
  * CountDown class that uses a Seven Segment display
@@ -39,6 +39,7 @@ export class CountDown implements Updateable {
 
             if (!this.interval || this.interval.closed) {
                 this.interval = interval(this.delay).pipe(takeWhile(() => this.doCountDown),
+                    map(val => seconds - val),
                     tap(val => this.text = `${~(seconds / 60)}${('' + (seconds % 60)).padStart(2,0 + '')}`)).subscribe();
             }
         } else {

@@ -35,7 +35,7 @@ var CountDown = /** @class */ (function () {
         if (doCountDown && !this.doCountDown) {
             this.doCountDown = true;
             if (!this.interval || this.interval.closed) {
-                this.interval = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.tap(function (val) { return _this.text = "" + ~(seconds / 60) + ('' + (seconds % 60)).padStart(2, 0 + ''); })).subscribe();
+                this.interval = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.map(function (val) { return seconds - val; }), operators_1.tap(function (val) { return _this.text = "" + ~(seconds / 60) + ('' + (seconds % 60)).padStart(2, 0 + ''); })).subscribe();
             }
         }
         else {
