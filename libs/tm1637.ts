@@ -165,8 +165,8 @@ export class TM1637 {
         this._text = '';
         this._split = false;
         this._alignLeft = false;
-        _gpio.setup(pinClk, _gpio.DIR_OUT);
-        _gpio.setup(pinDIO, _gpio.DIR_OUT);
+        _gpio.setup(pinClk, _gpio.DIR_OUT, () => _gpio.write(pinClk, true));
+        _gpio.setup(pinDIO, _gpio.DIR_OUT, () => _gpio.write(pinDIO, true));
         console.log('constructor set up finished');
     }
 

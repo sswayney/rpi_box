@@ -160,8 +160,8 @@ var TM1637 = /** @class */ (function () {
         this._text = '';
         this._split = false;
         this._alignLeft = false;
-        _gpio.setup(pinClk, _gpio.DIR_OUT);
-        _gpio.setup(pinDIO, _gpio.DIR_OUT);
+        _gpio.setup(pinClk, _gpio.DIR_OUT, function () { return _gpio.write(pinClk, true); });
+        _gpio.setup(pinDIO, _gpio.DIR_OUT, function () { return _gpio.write(pinDIO, true); });
         console.log('constructor set up finished');
     }
     TM1637.prototype.high = function (pin) {
