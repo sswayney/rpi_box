@@ -46,4 +46,14 @@ export class CountDown implements Updateable {
             this.interval ? this.interval.unsubscribe() : null;
         }
     }
+
+    protected showTime(): void {
+        console.log('Showing Time');
+        const dateStringRay = new Date().toLocaleTimeString().split(':');
+        let hours = dateStringRay[0];
+        hours = hours.length === 1 ? '0' + hours : hours;
+        let minutes = dateStringRay[1];
+        minutes = minutes.length === 1 ? '0' + minutes : minutes;
+        this.text = hours + minutes;
+    }
 }

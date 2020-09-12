@@ -43,6 +43,15 @@ var CountDown = /** @class */ (function () {
             this.interval ? this.interval.unsubscribe() : null;
         }
     };
+    CountDown.prototype.showTime = function () {
+        console.log('Showing Time');
+        var dateStringRay = new Date().toLocaleTimeString().split(':');
+        var hours = dateStringRay[0];
+        hours = hours.length === 1 ? '0' + hours : hours;
+        var minutes = dateStringRay[1];
+        minutes = minutes.length === 1 ? '0' + minutes : minutes;
+        this.text = hours + minutes;
+    };
     return CountDown;
 }());
 exports.CountDown = CountDown;

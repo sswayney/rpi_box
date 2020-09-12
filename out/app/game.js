@@ -50,13 +50,6 @@ var Game = /** @class */ (function () {
                  * Pass update values to all update able components
                  */
                 _this.updaters.forEach(function (u) { return u.update(channel, value); });
-                console.log('Saying Hello');
-                var dateStringRay = new Date().toLocaleTimeString().split(':');
-                var hours = dateStringRay[0];
-                hours = hours.length === 1 ? '0' + hours : hours;
-                var minutes = dateStringRay[1];
-                minutes = minutes.length === 1 ? '0' + minutes : minutes;
-                _this.countDown.text = hours + minutes;
             }
         };
     };
