@@ -9,12 +9,11 @@ import {TM1637} from "../libs/tm1637";
 export class CountDown {
 
     set text(value: string) {
+        this.sevenSegment.split = true;
         this.sevenSegment.text = value;
     }
 
     protected sevenSegment = new TM1637(gpio, PINS.pin11_clk, PINS.pin7_dio);
 
-    constructor() {
-        this.sevenSegment.split = true;
-    }
+    constructor() {}
 }

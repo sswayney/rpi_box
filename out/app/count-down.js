@@ -9,10 +9,10 @@ var tm1637_1 = require("../libs/tm1637");
 var CountDown = /** @class */ (function () {
     function CountDown() {
         this.sevenSegment = new tm1637_1.TM1637(gpio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin7_dio);
-        this.sevenSegment.split = true;
     }
     Object.defineProperty(CountDown.prototype, "text", {
         set: function (value) {
+            this.sevenSegment.split = true;
             this.sevenSegment.text = value;
         },
         enumerable: true,
