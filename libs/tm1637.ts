@@ -197,15 +197,15 @@ export class TM1637 {
 
         this.high(this.pinClk);
     }
-    async readAck() {
+
+    readAck() {
         // console.log('readAck');
         this.low(this.pinClk);
         // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
         this.high(this.pinClk);
-        const ack = await this._gpio.promise.read(this.pinDIO);
+        this._gpio.read(this.pinDIO, () => {});
         //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
         this.low(this.pinClk);
-        return ack;
     }
 
     writeByte(byte) {
