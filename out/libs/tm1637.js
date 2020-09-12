@@ -188,13 +188,15 @@ var TM1637 = /** @class */ (function () {
         this.high(this.pinClk);
     };
     TM1637.prototype.readAck = function () {
+        var _this = this;
         // console.log('readAck');
         this.low(this.pinClk);
         // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
         this.high(this.pinClk);
-        this._gpio.read(this.pinDIO, function () { });
+        this._gpio.read(this.pinDIO, function () {
+            _this.low(_this.pinClk);
+        });
         //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
-        this.low(this.pinClk);
     };
     TM1637.prototype.writeByte = function (byte) {
         // console.log('writeBype');

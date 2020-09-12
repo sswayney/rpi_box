@@ -203,9 +203,11 @@ export class TM1637 {
         this.low(this.pinClk);
         // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
         this.high(this.pinClk);
-        this._gpio.read(this.pinDIO, () => {});
+        this._gpio.read(this.pinDIO, () => {
+            this.low(this.pinClk);
+        });
         //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
-        this.low(this.pinClk);
+
     }
 
     writeByte(byte) {
