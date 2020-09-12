@@ -1,38 +1,38 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
-var button_led_1 = require("../libs/button-led");
-var lcdi2c_1 = require("../libs/lcdi2c");
-var pins_enum_1 = require("../libs/pins.enum");
-var switch_1 = require("../libs/switch");
-var seven_segment_1 = require("./seven-segment");
+var buttons_1 = require("./buttons");
+var count_down_1 = require("./count-down");
+var display_1 = require("./display");
+var switches_1 = require("./switches");
+/**
+ * Main Game
+ */
 var Game = /** @class */ (function () {
     function Game() {
         /**
          * Switches
          */
-        this.greenSwitch = new switch_1.Switch(gpio, pins_enum_1.PINS.pin12_switch1);
-        this.redSwitch = new switch_1.Switch(gpio, pins_enum_1.PINS.pin16_switch2);
+        this.switches = new switches_1.Switches();
         /**
-         * Buttons with LEDS
+         * Buttons
          */
-        this.blueButton = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin40_buttonBlue, pins_enum_1.PINS.pin38_buttonBlue);
-        this.yellowButton = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin37_buttonYellow, pins_enum_1.PINS.pin36_buttonYellow);
-        this.whiteButton = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin35_buttonWhite, pins_enum_1.PINS.pin33_buttonWhite);
+        this.buttons = new buttons_1.Buttons();
         /**
-         * 7 segment display
+         * Count down that uses the 7 segment display
          */
-        this.sevenSegment = new seven_segment_1.SevenSegment();
+        this.countDown = new count_down_1.CountDown();
         /**
          * LCD display
-         * Uses pins 3 and 5
          */
-        this.lcd = new lcdi2c_1.LCD(1, 0x27, 16, 2);
+        this.display = new display_1.Display();
+        this.updaters = [];
+        this.updaters.push(this.buttons);
     }
     Game.prototype.start = function () {
-        this.lcd.clear();
-        this.lcd.println('Line one', 1);
-        this.lcd.println('Line Two!!!', 2);
+        this.display.clear();
+        this.display.println('Line one', 1);
+        this.display.println('Line Two!!!', 2);
         /**
          * Value change listener
          */
@@ -45,35 +45,17 @@ var Game = /** @class */ (function () {
             if (lastValues.get(channel) !== value) {
                 lastValues.set(channel, value);
                 console.log('Channel ' + channel + ' value is now ' + value);
-                switch (channel) {
-                    case _this.greenSwitch.pin:
-                        value ? _this.blueButton.led.on() : _this.blueButton.led.off();
-                        value ? _this.yellowButton.led.on() : _this.yellowButton.led.off();
-                        value ? _this.whiteButton.led.on() : _this.whiteButton.led.off();
-                        break;
-                    case _this.redSwitch.pin:
-                        _this.blueButton.led.blink(value);
-                        _this.yellowButton.led.blink(value);
-                        _this.whiteButton.led.blink(value);
-                        break;
-                    case _this.blueButton.button.pin:
-                        value ? _this.blueButton.led.on() : _this.blueButton.led.off();
-                        break;
-                    case _this.yellowButton.button.pin:
-                        value ? _this.yellowButton.led.on() : _this.yellowButton.led.off();
-                        break;
-                    case _this.whiteButton.button.pin:
-                        value ? _this.whiteButton.led.on() : _this.whiteButton.led.off();
-                        break;
-                }
+                /**
+                 * Pass update values to all update able components
+                 */
+                _this.updaters.forEach(function (u) { return u.update(channel, value); });
                 console.log('Saying Hello');
                 var dateStringRay = new Date().toLocaleTimeString().split(':');
                 var hours = dateStringRay[0];
                 hours = hours.length === 1 ? '0' + hours : hours;
                 var minutes = dateStringRay[1];
                 minutes = minutes.length === 1 ? '0' + minutes : minutes;
-                _this.sevenSegment.split = true;
-                _this.sevenSegment.text = hours + minutes;
+                _this.countDown.text = hours + minutes;
             }
         };
     };

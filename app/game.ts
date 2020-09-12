@@ -4,42 +4,49 @@ import {LCD} from "../libs/lcdi2c";
 import {PINS} from "../libs/pins.enum";
 import {Switch} from "../libs/switch";
 import {TM1637} from "../libs/tm1637";
-import {SevenSegment} from "./seven-segment";
+import {Buttons} from "./buttons";
+import {CountDown} from "./count-down";
+import {Display} from "./display";
+import {Updateable} from "./intefaces/updateable";
+import {Switches} from "./switches";
 
 
+/**
+ * Main Game
+ */
 export class Game {
 
     /**
      * Switches
      */
-    protected greenSwitch = new Switch(gpio, PINS.pin12_switch1);
-    protected redSwitch = new Switch(gpio, PINS.pin16_switch2);
+    protected switches = new Switches();
 
     /**
-     * Buttons with LEDS
+     * Buttons
      */
-    protected blueButton = new ButtonLED(gpio, PINS.pin40_buttonBlue, PINS.pin38_buttonBlue);
-    protected yellowButton = new ButtonLED(gpio, PINS.pin37_buttonYellow, PINS.pin36_buttonYellow);
-    protected whiteButton = new ButtonLED(gpio, PINS.pin35_buttonWhite, PINS.pin33_buttonWhite);
+    protected buttons = new Buttons();
 
     /**
-     * 7 segment display
+     * Count down that uses the 7 segment display
      */
-    protected sevenSegment = new SevenSegment();
+    protected countDown = new CountDown();
 
     /**
      * LCD display
-     * Uses pins 3 and 5
      */
-    protected lcd = new LCD(1, 0x27, 16,2);
+    protected display = new  Display();
 
-    constructor() {}
+    protected updaters: Updateable[] = [];
+
+    constructor() {
+      this.updaters.push(this.buttons);
+    }
 
     public start(): void {
 
-        this.lcd.clear();
-        this.lcd.println('Line one',1);
-        this.lcd.println('Line Two!!!',2);
+        this.display.clear();
+        this.display.println('Line one',1);
+        this.display.println('Line Two!!!',2);
 
         /**
          * Value change listener
@@ -56,27 +63,10 @@ export class Game {
                 lastValues.set(channel, value);
                 console.log('Channel ' + channel + ' value is now ' + value);
 
-                switch (channel) {
-                    case this.greenSwitch.pin:
-                        value ? this.blueButton.led.on() : this.blueButton.led.off();
-                        value ? this.yellowButton.led.on() : this.yellowButton.led.off();
-                        value ? this.whiteButton.led.on() : this.whiteButton.led.off();
-                        break;
-                    case this.redSwitch.pin:
-                        this.blueButton.led.blink(value);
-                        this.yellowButton.led.blink(value);
-                        this.whiteButton.led.blink(value);
-                        break;
-                    case this.blueButton.button.pin:
-                        value ? this.blueButton.led.on() : this.blueButton.led.off();
-                        break;
-                    case this.yellowButton.button.pin:
-                        value ? this.yellowButton.led.on() : this.yellowButton.led.off();
-                        break;
-                    case this.whiteButton.button.pin:
-                        value ? this.whiteButton.led.on() : this.whiteButton.led.off();
-                        break;
-                }
+                /**
+                 * Pass update values to all update able components
+                 */
+                this.updaters.forEach((u: Updateable) => u.update(channel,value))
 
                 console.log('Saying Hello');
                 const dateStringRay = new Date().toLocaleTimeString().split(':');
@@ -84,8 +74,7 @@ export class Game {
                 hours = hours.length === 1 ? '0' + hours : hours;
                 let minutes = dateStringRay[1];
                 minutes = minutes.length === 1 ? '0' + minutes : minutes;
-                this.sevenSegment.split = true;
-                this.sevenSegment.text = hours + minutes;
+                this.countDown.text = hours + minutes;
             }
         }
 
