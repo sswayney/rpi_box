@@ -5,7 +5,7 @@ var button_led_1 = require("../libs/button-led");
 var lcdi2c_1 = require("../libs/lcdi2c");
 var pins_enum_1 = require("../libs/pins.enum");
 var switch_1 = require("../libs/switch");
-var tm1637_1 = require("../libs/tm1637");
+var seven_segment_1 = require("./seven-segment");
 var Game = /** @class */ (function () {
     function Game() {
         /**
@@ -22,7 +22,7 @@ var Game = /** @class */ (function () {
         /**
          * 7 segment display
          */
-        this.sevenSegment = new tm1637_1.TM1637(gpio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin7_dio);
+        this.sevenSegment = new seven_segment_1.SevenSegment();
         /**
          * LCD display
          * Uses pins 3 and 5
