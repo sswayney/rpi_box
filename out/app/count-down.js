@@ -12,6 +12,7 @@ var CountDown = /** @class */ (function () {
     function CountDown() {
         this.doCountDown = false;
         this.delay = 1000;
+        this.seconds = 120;
         this.sevenSegment = new tm1637_1.TM1637(gpio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin7_dio);
     }
     Object.defineProperty(CountDown.prototype, "text", {
@@ -25,17 +26,17 @@ var CountDown = /** @class */ (function () {
     CountDown.prototype.update = function (channel, value) {
         switch (channel) {
             case pins_enum_1.PINS.pin12_green_switch1:
-                this.countDown(value, 120);
+                this.countDown(value);
                 break;
         }
     };
-    CountDown.prototype.countDown = function (doCountDown, seconds) {
+    CountDown.prototype.countDown = function (doCountDown) {
         var _this = this;
         console.log('CountDown: doCountDown');
         if (doCountDown && !this.doCountDown) {
             this.doCountDown = true;
             if (!this.interval || this.interval.closed) {
-                this.interval = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.map(function (val) { return seconds - val; }), operators_1.tap(function (val) { return _this.text = "" + ~(seconds / 60) + ('' + (seconds % 60)).padStart(2, 0 + ''); })).subscribe();
+                this.interval = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.map(function (val) { return _this.seconds - val; }), operators_1.tap(function (val) { return _this.text = "" + ~(_this.seconds / 60) + ('' + (_this.seconds % 60)).padStart(2, 0 + ''); })).subscribe();
             }
         }
         else {
