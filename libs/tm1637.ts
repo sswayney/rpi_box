@@ -173,64 +173,64 @@ export class TM1637 {
         // _gpio.write(pinDIO, true);
     }
 
-    high(pin) {
+    async high(pin) {
         // console.log('Writing high to ' + pin);
         this._gpio.write(pin, true);
-        sleep();
+        await sleep();
     }
 
-    low(pin) {
+    async low(pin) {
         // console.log('Writing low to ' + pin);
         this._gpio.write(pin, false);
-        sleep();
+        await sleep();
     }
 
-    start() {
+    async start() {
         // console.log('start');
-        this.low(this.pinDIO);
+        await this.low(this.pinDIO);
     }
 
-    writeBit(value) {
+    async writeBit(value) {
         // console.log('writeBit');
-        this.low(this.pinClk);
+        await this.low(this.pinClk);
         if (value)
-            this.high(this.pinDIO);
+            await this.high(this.pinDIO);
         else
-            this.low(this.pinDIO);
+            await this.low(this.pinDIO);
 
-        this.high(this.pinClk);
+        await this.high(this.pinClk);
     }
-    readAck() {
+    async readAck() {
         // console.log('readAck');
-        this.low(this.pinClk);
+        await this.low(this.pinClk);
         // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
-        this.high(this.pinClk);
+        await this.high(this.pinClk);
         // const ack = this._gpio.promise.read(this.pinDIO);
         //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
-        this.low(this.pinClk);
+        return await this.low(this.pinClk);
         // return ack;
     }
 
-    writeByte(byte) {
+    async writeByte(byte) {
         // console.log('writeBype');
         let b = byte;
         for (let i = 0; i < 8; i++) {
-            this.writeBit(b & 0x01);
+            await this.writeBit(b & 0x01);
             b >>= 1;
         }
         return this.readAck();
     }
 
-    stop() {
+    async stop() {
         // console.log('stop');
-        this.low(this.pinDIO);
-        this.high(this.pinClk);
-        this.high(this.pinDIO);
+        await this.low(this.pinDIO);
+        await this.high(this.pinClk);
+        await this.high(this.pinDIO);
     }
 
-    set text(message){
+    set text(message) {
         console.log('text: message ' + message);
-        this._text = (message+"").substring(0,4);
+        this._text = (message + "").substring(0, 4);
         this.sendData();
     }
 
@@ -256,34 +256,34 @@ export class TM1637 {
         return this._alignLeft;
     }
 
-    sendData() {
+    async sendData() {
         // console.log('sendData');
-        let m=[null,null,null,null];
-        for (let i = this._text.length; i >= 0 ; i--) {
+        let m = [null, null, null, null];
+        for (let i = this._text.length; i >= 0; i--) {
             let ind = allowedChars.indexOf(this._text[i]);
-            if(ind>-1)
+            if (ind > -1)
                 if (!this._alignLeft) {
-                    m[(4-this._text.length)+i]=ind;
+                    m[(4 - this._text.length) + i] = ind;
                 } else {
-                    m[i]=ind;
+                    m[i] = ind;
                 }
         }
         let numsEncoded = [0, 0, 0, 0].map((u, i) => codigitToSegment[m[i]] || 0);
         if (this._split) numsEncoded[1] = numsEncoded[1] | 0b10000000;
 
-        this.start();
-        this.writeByte(0b01000000);
-        this.stop();
+        await this.start();
+        await this.writeByte(0b01000000);
+        await this.stop();
 
-        this.start();
-        this.writeByte(0b11000000);
+        await this.start();
+        await this.writeByte(0b11000000);
         for (let i = 0; i < numsEncoded.length; i++) {
-            this.writeByte(numsEncoded[i]);
+            await this.writeByte(numsEncoded[i]);
         }
-        this.stop();
+        await this.stop();
 
-        this.start();
-        this.writeByte(0b10001111);
-        this.stop();
+        await this.start();
+        await this.writeByte(0b10001111);
+        await this.stop();
     }
 }

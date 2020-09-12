@@ -9,6 +9,7 @@ export class Display {
 
     constructor() {
         this.lcd.clear();
+        this.lcd.home();
         this.lcd.println('ENTER SEQUENCE',1);
         this.lcd.println('####',2);
     }

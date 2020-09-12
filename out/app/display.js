@@ -9,6 +9,7 @@ var Display = /** @class */ (function () {
          */
         this.lcd = new lcdi2c_1.LCD(1, 0x27, 16, 2);
         this.lcd.clear();
+        this.lcd.home();
         this.lcd.println('ENTER SEQUENCE', 1);
         this.lcd.println('####', 2);
     }
