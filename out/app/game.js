@@ -28,6 +28,7 @@ var Game = /** @class */ (function () {
         this.display = new display_1.Display();
         this.updaters = [];
         this.updaters.push(this.buttons);
+        this.updaters.push(this.countDown);
     }
     Game.prototype.start = function () {
         this.display.clear();

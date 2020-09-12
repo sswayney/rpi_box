@@ -40,6 +40,7 @@ export class Game {
 
     constructor() {
       this.updaters.push(this.buttons);
+      this.updaters.push(this.countDown);
     }
 
     public start(): void {
