@@ -42,7 +42,7 @@ export class CountDown implements Updateable {
                 this.interval = interval(this.delay).pipe(takeWhile(() => this.doCountDown),
                     map(val => this.seconds - val),
                     tap( val => console.log('seconds ' + val)),
-                    map( val => `${~(val / 60)}${('' + (val % 60)).padStart(2,0 + '')}`),
+                    map( val => `${~~(val / 60)}${('' + (val % 60)).padStart(2,0 + '')}`),
                     tap( val => console.log('value ' + val)),
                     tap(val => this.text = val)).subscribe();
             }
