@@ -7,7 +7,11 @@ export class Display {
      */
     protected lcd = new LCD(1, 0x27, 16,2);
 
-    constructor() {}
+    constructor() {
+        this.lcd.clear();
+        this.lcd.println('ENTER SEQUENCE',1);
+        this.lcd.println('####',2);
+    }
 
     public clear(): void {
         this.lcd.clear();

@@ -45,10 +45,6 @@ export class Game {
 
     public start(): void {
 
-        this.display.clear();
-        this.display.println('Line one',1);
-        this.display.println('Line Two!!!',2);
-
         /**
          * Value change listener
          */

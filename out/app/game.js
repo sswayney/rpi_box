@@ -31,9 +31,6 @@ var Game = /** @class */ (function () {
         this.updaters.push(this.countDown);
     }
     Game.prototype.start = function () {
-        this.display.clear();
-        this.display.println('Line one', 1);
-        this.display.println('Line Two!!!', 2);
         /**
          * Value change listener
          */
