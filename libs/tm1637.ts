@@ -168,9 +168,6 @@ export class TM1637 {
         _gpio.setup(pinClk, _gpio.DIR_OUT);
         _gpio.setup(pinDIO, _gpio.DIR_OUT);
         console.log('constructor set up finished');
-        console.log('constructor writing true to both pins');
-        _gpio.write(pinClk, true);
-        _gpio.write(pinDIO, true);
     }
 
     high(pin) {
