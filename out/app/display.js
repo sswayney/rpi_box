@@ -22,15 +22,15 @@ var Display = /** @class */ (function () {
     };
     Display.prototype.update = function (channel, value) {
         switch (channel) {
-            case pins_enum_1.PINS.pin33_buttonWhite:
+            case pins_enum_1.PINS.pin35_buttonWhite:
                 this.lcd.println('COLOR', 1);
                 this.lcd.println('White', 2);
                 break;
-            case pins_enum_1.PINS.pin36_buttonYellow:
+            case pins_enum_1.PINS.pin37_buttonYellow:
                 this.lcd.println('COLOR', 1);
                 this.lcd.println('Yellow', 2);
                 break;
-            case pins_enum_1.PINS.pin38_buttonBlue:
+            case pins_enum_1.PINS.pin40_buttonBlue:
                 this.lcd.println('COLOR', 1);
                 this.lcd.println('Blue', 2);
                 break;

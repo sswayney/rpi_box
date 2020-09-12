@@ -29,6 +29,7 @@ var Game = /** @class */ (function () {
         this.updaters = [];
         this.updaters.push(this.buttons);
         this.updaters.push(this.countDown);
+        this.updaters.push(this.display);
     }
     Game.prototype.start = function () {
         /**

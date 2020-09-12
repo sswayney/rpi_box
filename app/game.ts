@@ -41,6 +41,7 @@ export class Game {
     constructor() {
       this.updaters.push(this.buttons);
       this.updaters.push(this.countDown);
+      this.updaters.push(this.display);
     }
 
     public start(): void {

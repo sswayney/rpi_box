@@ -26,15 +26,15 @@ export class Display implements Updateable {
 
     update(channel: number, value: any) {
         switch (channel) {
-            case PINS.pin33_buttonWhite:
+            case PINS.pin35_buttonWhite:
                 this.lcd.println('COLOR', 1);
                 this.lcd.println('White', 2);
                 break;
-            case PINS.pin36_buttonYellow:
+            case PINS.pin37_buttonYellow:
                 this.lcd.println('COLOR', 1);
                 this.lcd.println('Yellow', 2);
                 break;
-            case PINS.pin38_buttonBlue:
+            case PINS.pin40_buttonBlue:
                 this.lcd.println('COLOR', 1);
                 this.lcd.println('Blue', 2);
                 break;
