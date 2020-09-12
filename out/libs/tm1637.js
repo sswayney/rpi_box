@@ -188,14 +188,14 @@ var TM1637 = /** @class */ (function () {
         this.high(this.pinClk);
     };
     TM1637.prototype.readAck = function () {
-        // // console.log('readAck');
-        // this.low(this.pinClk);
-        // // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
-        // this.high(this.pinClk);
-        // // const ack = this._gpio.promise.read(this.pinDIO);
-        // //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
-        // this.low(this.pinClk);
-        // // return ack;
+        // console.log('readAck');
+        this.low(this.pinClk);
+        // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
+        this.high(this.pinClk);
+        var ack = this._gpio.promise.read(this.pinDIO);
+        //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
+        this.low(this.pinClk);
+        return ack;
     };
     TM1637.prototype.writeByte = function (byte) {
         // console.log('writeBype');
