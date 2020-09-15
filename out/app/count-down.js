@@ -17,8 +17,7 @@ var CountDown = /** @class */ (function () {
     }
     Object.defineProperty(CountDown.prototype, "text", {
         set: function (value) {
-            this.sevenSegment.split = true;
-            this.sevenSegment.text = value;
+            this.sevenSegment.sendData([1, 2, 3, 4]);
         },
         enumerable: true,
         configurable: true
