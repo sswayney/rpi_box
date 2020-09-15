@@ -41,7 +41,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var TM1637 = /** @class */ (function () {
     /**
-     *
+     * Constructor
      * @param _gpio ref to GPIO
      * @param pinClk click channel
      * @param pinDIO DIO channel
@@ -69,6 +69,28 @@ var TM1637 = /** @class */ (function () {
         _gpio.setup(pinDIO, _gpio.DIR_OUT, _gpio.EDGE_BOTH, function () { return _gpio.write(pinDIO, true); });
         console.log('TM1637: Constructor finished');
     }
+    Object.defineProperty(TM1637.prototype, "split", {
+        /**
+         * Set the split value
+         * @param split
+         */
+        set: function (split) {
+            this._split = split;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(TM1637.prototype, "alignLeft", {
+        /**
+         * Set the alignLeft value
+         * @param alignLeft
+         */
+        set: function (alignLeft) {
+            this._alignLeft = alignLeft;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Set the text to be displayed
      * @param text

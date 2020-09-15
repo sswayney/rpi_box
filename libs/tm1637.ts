@@ -21,7 +21,7 @@ export class TM1637 {
     protected _alignLeft = false;
 
     /**
-     *
+     * Constructor
      * @param _gpio ref to GPIO
      * @param pinClk click channel
      * @param pinDIO DIO channel
@@ -34,6 +34,22 @@ export class TM1637 {
         _gpio.setup(pinClk, _gpio.DIR_OUT,_gpio.EDGE_BOTH, () => _gpio.write(pinClk, true));
         _gpio.setup(pinDIO, _gpio.DIR_OUT,_gpio.EDGE_BOTH, () => _gpio.write(pinDIO, true));
         console.log('TM1637: Constructor finished');
+    }
+
+    /**
+     * Set the split value
+     * @param split
+     */
+    set split(split: boolean) {
+        this._split = split;
+    }
+
+    /**
+     * Set the alignLeft value
+     * @param alignLeft
+     */
+    set alignLeft(alignLeft: boolean) {
+        this._alignLeft = alignLeft;
     }
 
     /**
@@ -65,7 +81,7 @@ export class TM1637 {
     /**
      * Set the Start condition by setting DIO to low
      */
-    async start() {
+    async start(): Promise<void> {
         await this.low(this.pinDIO);
     }
 
@@ -74,7 +90,7 @@ export class TM1637 {
      * Write a byte
      * @param byte
      */
-    async writeByte(byte) { // 0b00000000
+    async writeByte(byte): Promise<void> { // 0b00000000
         let b = byte;
         for (let i = 0; i < 8; i++) {
             await this.writeBit(b & 0x01);
@@ -87,7 +103,7 @@ export class TM1637 {
      * Write a bit.
      * @param value
      */
-    async writeBit(value) {
+    async writeBit(value): Promise<void> {
         // Rising edge
         await this.low(this.pinClk);
         // change the bit value while clock is low
@@ -102,7 +118,7 @@ export class TM1637 {
     /**
      * ACK
      */
-    async Ack() {
+    async Ack(): Promise<void> {
         // Falling Edge 8
         await this.low(this.pinClk);
         // 9th rising edge
