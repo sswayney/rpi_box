@@ -10,10 +10,10 @@ import { takeWhile, tap, map } from 'rxjs/operators';
  */
 export class CountDown implements Updateable {
 
-    set text(value: string) {
+     async text(value: string) {
 
-        this.sevenSegment.sendData([1,2,3,4]);
-    }
+         await this.sevenSegment.text(value);
+     }
 
     protected doCountDown = false;
     protected delay = 1000;
@@ -44,7 +44,7 @@ export class CountDown implements Updateable {
                     tap( val => console.log('seconds ' + val)),
                     map( val => `${~~(val / 60)}${('' + (val % 60)).padStart(2,0 + '')}`),
                     tap( val => console.log('value ' + val)),
-                    tap(val => this.text = val)).subscribe();
+                    tap(val => this.text(val))).subscribe();
             }
         } else {
             this.doCountDown = false;
@@ -52,13 +52,13 @@ export class CountDown implements Updateable {
         }
     }
 
-    protected showTime(): void {
+    protected async showTime() {
         console.log('Showing Time');
         const dateStringRay = new Date().toLocaleTimeString().split(':');
         let hours = dateStringRay[0];
         hours = hours.length === 1 ? '0' + hours : hours;
         let minutes = dateStringRay[1];
         minutes = minutes.length === 1 ? '0' + minutes : minutes;
-        this.text = hours + minutes;
+        await this.text(hours + minutes);
     }
 }

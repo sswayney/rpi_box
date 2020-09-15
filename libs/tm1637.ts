@@ -159,7 +159,21 @@ const sleep = () => new Promise((r) => setTimeout(r, 1));
 
 export class TM1637 {
 
+     async text(message) {
+         // console.log('text: message ' + message);
+         this._text = (message + "").substring(0, 4);
+         await this.sendData();
+     }
+
+    protected _text: string;
+    protected _split: boolean;
+    protected _alignLeft: boolean;
+
     constructor(protected _gpio: typeof gpio, protected pinClk, protected pinDIO, protected trueValue = 1) {
+
+        this._text = '';
+        this._split = false;
+        this._alignLeft = false;
 
         // Default high
         _gpio.setup(pinClk, _gpio.DIR_OUT,_gpio.EDGE_BOTH, () => _gpio.write(pinClk, true));
@@ -237,9 +251,20 @@ export class TM1637 {
         await this.high(this.pinDIO);
     }
 
-    async sendData(nums, split = false) {
-        let numsEncoded = [0, 0, 0, 0].map((u, i) => codigitToSegment[nums[i]] || 0);
-        if (split) numsEncoded[1] = numsEncoded[1] | 0b10000000; // the x of 2nd pos
+    async sendData() {
+
+        let m =[null,null,null,null];
+        for (let i = this._text.length; i >= 0 ; i--) {
+            let ind = allowedChars.indexOf(this._text[i]);
+            if(ind>-1)
+                if (!this._alignLeft) {
+                    m[(4-this._text.length)+i]=ind;
+                } else {
+                    m[i]=ind;
+                }
+        }
+        let numsEncoded = [0, 0, 0, 0].map((u, i) => codigitToSegment[m[i]] || 0);
+        if (this._split) numsEncoded[1] = numsEncoded[1] | 0b10000000; // the x of 2nd pos
 
         await this.start(); // Data command settings
         await this.writeByte(0b01000000); // Normal mode, automatic address increase, write data to display register

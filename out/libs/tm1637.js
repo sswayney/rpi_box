@@ -195,6 +195,9 @@ var TM1637 = /** @class */ (function () {
         this.pinClk = pinClk;
         this.pinDIO = pinDIO;
         this.trueValue = trueValue;
+        this._text = '';
+        this._split = false;
+        this._alignLeft = false;
         // Default high
         _gpio.setup(pinClk, _gpio.DIR_OUT, _gpio.EDGE_BOTH, function () { return _gpio.write(pinClk, true); });
         _gpio.setup(pinDIO, _gpio.DIR_OUT, _gpio.EDGE_BOTH, function () { return _gpio.write(pinDIO, true); });
@@ -202,6 +205,21 @@ var TM1637 = /** @class */ (function () {
         // this.high(this.pinClk);
         // this.high(this.pinDIO);
     }
+    TM1637.prototype.text = function (message) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        // console.log('text: message ' + message);
+                        this._text = (message + "").substring(0, 4);
+                        return [4 /*yield*/, this.sendData()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     TM1637.prototype.high = function (pin) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -348,15 +366,25 @@ var TM1637 = /** @class */ (function () {
             });
         });
     };
-    TM1637.prototype.sendData = function (nums, split) {
-        if (split === void 0) { split = false; }
+    TM1637.prototype.sendData = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var numsEncoded, i;
+            var m, i, ind, numsEncoded, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        numsEncoded = [0, 0, 0, 0].map(function (u, i) { return codigitToSegment[nums[i]] || 0; });
-                        if (split)
+                        m = [null, null, null, null];
+                        for (i = this._text.length; i >= 0; i--) {
+                            ind = allowedChars.indexOf(this._text[i]);
+                            if (ind > -1)
+                                if (!this._alignLeft) {
+                                    m[(4 - this._text.length) + i] = ind;
+                                }
+                                else {
+                                    m[i] = ind;
+                                }
+                        }
+                        numsEncoded = [0, 0, 0, 0].map(function (u, i) { return codigitToSegment[m[i]] || 0; });
+                        if (this._split)
                             numsEncoded[1] = numsEncoded[1] | 128; // the x of 2nd pos
                         return [4 /*yield*/, this.start()];
                     case 1:
