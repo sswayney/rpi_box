@@ -65,11 +65,11 @@ var TM1637 = /** @class */ (function () {
         /**
          * Default to high for CLK & DIO
          */
-        this.ready = Promise.all([_gpio.setup(pinClk, _gpio.DIR_OUT, _gpio.EDGE_BOTH), _gpio.setup(pinDIO, _gpio.DIR_OUT, _gpio.EDGE_BOTH)]);
-        this.ready.then(function (value) {
+        this.ready = Promise.all([_gpio.setup(pinClk, _gpio.DIR_OUT, _gpio.EDGE_BOTH), _gpio.setup(pinDIO, _gpio.DIR_OUT, _gpio.EDGE_BOTH)]).then((function (value) {
             _gpio.write(pinClk, true);
             _gpio.write(pinDIO, true);
-        });
+            return value;
+        }));
         console.log('TM1637: Constructor finished');
     }
     Object.defineProperty(TM1637.prototype, "split", {

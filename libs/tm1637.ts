@@ -33,12 +33,13 @@ export class TM1637 {
         /**
          * Default to high for CLK & DIO
          */
-        this.ready = Promise.all([_gpio.setup(pinClk, _gpio.DIR_OUT,_gpio.EDGE_BOTH), _gpio.setup(pinDIO, _gpio.DIR_OUT,_gpio.EDGE_BOTH)]);
-        this.ready.then(value => {
-            _gpio.write(pinClk, true);
-            _gpio.write(pinDIO, true);
-        });
+        this.ready = Promise.all([_gpio.setup(pinClk, _gpio.DIR_OUT,_gpio.EDGE_BOTH), _gpio.setup(pinDIO, _gpio.DIR_OUT,_gpio.EDGE_BOTH)]).then((value => {
 
+                _gpio.write(pinClk, true);
+                _gpio.write(pinDIO, true);
+                return value;
+
+        }));
         console.log('TM1637: Constructor finished');
     }
 
