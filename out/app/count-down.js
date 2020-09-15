@@ -46,10 +46,12 @@ var operators_1 = require("rxjs/operators");
  */
 var CountDown = /** @class */ (function () {
     function CountDown() {
+        var _this = this;
         this.doCountDown = false;
         this.delay = 1000;
         this.seconds = 120;
         this.sevenSegment = new tm1637_1.TM1637(gpio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin7_dio);
+        this.sevenSegment.ready.then((function (value) { return _this.sevenSegment.setText('    '); }));
     }
     CountDown.prototype.text = function (value) {
         return __awaiter(this, void 0, void 0, function () {

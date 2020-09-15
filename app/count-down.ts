@@ -22,7 +22,9 @@ export class CountDown implements Updateable {
 
     protected sevenSegment = new TM1637(gpio, PINS.pin11_clk, PINS.pin7_dio);
 
-    constructor() {}
+    constructor() {
+        this.sevenSegment.ready.then((value => this.sevenSegment.setText('    ')));
+    }
 
     update(channel: number, value: any) {
         switch (channel) {
