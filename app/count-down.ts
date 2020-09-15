@@ -12,7 +12,7 @@ export class CountDown implements Updateable {
 
      async text(value: string) {
 
-         await this.sevenSegment.text(value);
+         await this.sevenSegment.setText(value);
      }
 
     protected doCountDown = false;
