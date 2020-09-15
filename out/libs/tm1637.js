@@ -314,6 +314,9 @@ var TM1637 = /** @class */ (function () {
     return TM1637;
 }());
 exports.TM1637 = TM1637;
+/**
+ * Maps a char to its hexadecimal value representation per seven segment display
+ */
 var charMap = new Map([
     ['0', 63],
     ['1', 6],

@@ -155,7 +155,10 @@ export class TM1637 {
     }
 }
 
-const charMap = new Map([
+/**
+ * Maps a char to its hexadecimal value representation per seven segment display
+ */
+const charMap = new Map<string, number>([
     ['0',0b00111111],
     ['1',0b00000110],
     ['2',0b01011011],
