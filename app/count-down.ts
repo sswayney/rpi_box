@@ -11,8 +11,8 @@ import { takeWhile, tap, map } from 'rxjs/operators';
 export class CountDown implements Updateable {
 
     set text(value: string) {
-        this.sevenSegment.split = true;
-        this.sevenSegment.text = value;
+
+        this.sevenSegment.sendData([1,2,3,4]);
     }
 
     protected doCountDown = false;

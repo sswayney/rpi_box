@@ -154,244 +154,244 @@ const codigitToSegment = [
 ];
 
 
-//
-// const sleep = () => new Promise((r) => setTimeout(r, 1));
-//
-// module.exports = class TM1637Display {
-//
-//     constructor(pinClk, pinDIO, trueValue = 1) {
-//         this.pinClk = pinClk;
-//         this.pinDIO = pinDIO;
-//         this.trueValue = trueValue;
-//
-//         // 默认高电位
-//         wpi.pinMode(this.pinClk, wpi.OUTPUT);
-//         wpi.pinMode(this.pinDIO, wpi.OUTPUT);
-//         wpi.digitalWrite(this.pinClk, this.trueValue);
-//         wpi.digitalWrite(this.pinDIO, this.trueValue);
-//         // this.high(this.pinClk);
-//         // this.high(this.pinDIO);
-//
-//     }
-//
-//     async high(pin) {
-//         wpi.digitalWrite(pin, this.trueValue);
-//         await sleep();
-//     }
-//
-//     async low(pin) {
-//         wpi.digitalWrite(pin, 1 - this.trueValue);
-//         await sleep();
-//     }
-//
-//     // clock high in, high out
-//     async start() {
-//         // pinDIO  high -> low when clock is high
-//         // this.high(this.pinDIO);
-//         // this.high(this.pinClk);
-//         await this.low(this.pinDIO);
-//     }
-//
-//     // clock high in, high out
-//     async writeBit(value) {
-//         // 一个上升沿
-//         await this.low(this.pinClk);
-//         // change the value when clock is low
-//         if (value)
-//             await this.high(this.pinDIO);
-//         else
-//             await this.low(this.pinDIO);
-//
-//         await this.high(this.pinClk);
-//     }
-//     async readAck() {
-//         // 8号下降沿
-//         await this.low(this.pinClk);
-//         wpi.pinMode(this.pinDIO, wpi.INPUT);
-//         // 9号上升沿
-//         await this.high(this.pinClk);
-//         const ack = wpi.digitalRead(this.pinDIO);
-//         // if(ack === 0)  scucces, low
-//         wpi.pinMode(this.pinDIO, wpi.OUTPUT);
-//         // 9号下降沿
-//         await this.low(this.pinClk);
-//         // console.log(ack);
-//         return ack;
-//     }
-//
-//     // clock high in, low out
-//     async writeByte(byte) { // 0b00000000
-//         let b = byte;
-//         for (let i = 0; i < 8; i++) {
-//             await this.writeBit(b & 0x01);
-//             b >>= 1;
-//         }
-//         return await this.readAck();
-//     }
-//
-//     // clock low in, high out
-//     async stop() {
-//         // pinDIO  low -> high  when clock is high
-//         await this.low(this.pinDIO);
-//         await this.high(this.pinClk);
-//         await this.high(this.pinDIO);
-//     }
-//
-//     async sendData(nums, split = false) {
-//         let numsEncoded = [0, 0, 0, 0].map((u, i) => codigitToSegment[nums[i]] || 0);
-//         if (split) numsEncoded[1] = numsEncoded[1] | 0b10000000; // the x of 2nd pos
-//
-//         await this.start(); // 数据命令设置
-//         await this.writeByte(0b01000000); // 普通模式, 自动地址增加, 写数据到显示寄存器
-//         await this.stop();
-//
-//         await this.start(); // 地址命令设置
-//         await this.writeByte(0b11000000); // 地址起始位 从0开始
-//         for (let i = 0; i < numsEncoded.length; i++) {
-//             await this.writeByte(numsEncoded[i]);
-//         }
-//         await this.stop();
-//
-//         await this.start(); // 地址命令设置
-//         await this.writeByte(0b10001111); // 显示控制命令设置, 开, 亮度为 111
-//         await this.stop();
-//     }
-// }
-
-
-
-
-
-
 
 const sleep = () => new Promise((r) => setTimeout(r, 1));
 
 export class TM1637 {
-    _text: string;
-    _split: boolean;
-    _alignLeft: boolean;
 
-    constructor(protected _gpio: typeof gpio, protected pinClk: number, protected pinDIO: number) {
+    constructor(protected _gpio: typeof gpio, protected pinClk, protected pinDIO, protected trueValue = 1) {
 
-        this._text = '';
-        this._split = false;
-        this._alignLeft = false;
+        // Default high
         _gpio.setup(pinClk, _gpio.DIR_OUT,_gpio.EDGE_BOTH, () => _gpio.write(pinClk, true));
         _gpio.setup(pinDIO, _gpio.DIR_OUT,_gpio.EDGE_BOTH, () => _gpio.write(pinDIO, true));
         console.log('constructor set up finished');
+        // this.high(this.pinClk);
+        // this.high(this.pinDIO);
+
     }
 
-    high(pin) {
-        // console.log('Writing high to ' + pin);
-        this._gpio.write(pin, true);
-        sleep();
+    async high(pin) {
+        await this._gpio.promise.write(pin, true);
     }
 
-    low(pin) {
-        // console.log('Writing low to ' + pin);
-        this._gpio.write(pin, false);
-        sleep();
+    async low(pin) {
+        await this._gpio.promise.write(pin, false);
     }
 
-    start() {
-        // console.log('start');
-        this.low(this.pinDIO);
+    // clock high in, high out
+    async start() {
+        // pinDIO  high -> low when clock is high
+        // this.high(this.pinDIO);
+        // this.high(this.pinClk);
+        await this.low(this.pinDIO);
     }
 
-    writeBit(value) {
-        // console.log('writeBit');
-        this.low(this.pinClk);
+    // clock high in, high out
+    async writeBit(value) {
+        // A rising edge
+        await this.low(this.pinClk);
+        // change the value when clock is low
         if (value)
-            this.high(this.pinDIO);
+            await this.high(this.pinDIO);
         else
-            this.low(this.pinDIO);
+            await this.low(this.pinDIO);
 
-        this.high(this.pinClk);
+        await this.high(this.pinClk);
+    }
+    async readAck() {
+        // Falling Edge 8
+        await this.low(this.pinClk);
+
+        // wpi.pinMode(this.pinDIO, wpi.INPUT);
+
+        // 9th rising edge
+        await this.high(this.pinClk);
+
+        // const ack = wpi.digitalRead(this.pinDIO);
+
+        // if(ack === 0)  success, low
+
+       // wpi.pinMode(this.pinDIO, wpi.OUTPUT);
+
+        // 9th falling edge
+        return this.low(this.pinClk);
+        // console.log(ack);
+        // return ack;
     }
 
-    readAck() {
-        // console.log('readAck');
-        this.low(this.pinClk);
-        // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
-        this.high(this.pinClk);
-        // this._gpio.read(this.pinDIO, () => {});
-        //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
-        this.low(this.pinClk);
-    }
-
-    writeByte(byte) {
-        // console.log('writeBype');
+    // clock high in, low out
+    async writeByte(byte) { // 0b00000000
         let b = byte;
         for (let i = 0; i < 8; i++) {
-            this.writeBit(b & 0x01);
+            await this.writeBit(b & 0x01);
             b >>= 1;
         }
-        return this.readAck();
+        return await this.readAck();
     }
 
-    stop() {
-        // console.log('stop');
-        this.low(this.pinDIO);
-        this.high(this.pinClk);
-        this.high(this.pinDIO);
+    // clock low in, high out
+    async stop() {
+        // pinDIO  low -> high  when clock is high
+        await this.low(this.pinDIO);
+        await this.high(this.pinClk);
+        await this.high(this.pinDIO);
     }
 
-    set text(message){
-        // console.log('text: message ' + message);
-        this._text = (message+"").substring(0,4);
-        this.sendData();
-    }
+    async sendData(nums, split = false) {
+        let numsEncoded = [0, 0, 0, 0].map((u, i) => codigitToSegment[nums[i]] || 0);
+        if (split) numsEncoded[1] = numsEncoded[1] | 0b10000000; // the x of 2nd pos
 
-    get text(){
-        return this._text;
-    }
+        await this.start(); // Data command settings
+        await this.writeByte(0b01000000); // Normal mode, automatic address increase, write data to display register
+        await this.stop();
 
-    set split(value){
-        this._split = value === true;
-        this.sendData();
-    }
-
-    get split(){
-        return this._split;
-    }
-
-    set alignLeft(value){
-        this._alignLeft = value === true;
-        this.sendData();
-    }
-
-    get alignLeft(){
-        return this._alignLeft;
-    }
-
-    sendData() {
-        // console.log('sendData');
-        let m=[null,null,null,null];
-        for (let i = this._text.length; i >= 0 ; i--) {
-            let ind = allowedChars.indexOf(this._text[i]);
-            if(ind>-1)
-                if (!this._alignLeft) {
-                    m[(4-this._text.length)+i]=ind;
-                } else {
-                    m[i]=ind;
-                }
-        }
-        let numsEncoded = [0, 0, 0, 0].map((u, i) => codigitToSegment[m[i]] || 0);
-        if (this._split) numsEncoded[1] = numsEncoded[1] | 0b10000000;
-
-        this.start();
-        this.writeByte(0b01000000);
-        this.stop();
-
-        this.start();
-        this.writeByte(0b11000000);
+        await this.start(); // Address Command Settings
+        await this.writeByte(0b11000000); // Address start bit starts from 0
         for (let i = 0; i < numsEncoded.length; i++) {
-            this.writeByte(numsEncoded[i]);
+            await this.writeByte(numsEncoded[i]);
         }
-        this.stop();
+        await this.stop();
 
-        this.start();
-        this.writeByte(0b10001111);
-        this.stop();
+        await this.start(); // Address command settings
+        await this.writeByte(0b10001111); // Display control command settings, open, brightness is 111
+        await this.stop();
     }
 }
+
+
+
+
+
+
+//
+// const sleep = () => new Promise((r) => setTimeout(r, 1));
+//
+// export class TM1637 {
+//     _text: string;
+//     _split: boolean;
+//     _alignLeft: boolean;
+//
+//     constructor(protected _gpio: typeof gpio, protected pinClk: number, protected pinDIO: number) {
+//
+//         this._text = '';
+//         this._split = false;
+//         this._alignLeft = false;
+//         _gpio.setup(pinClk, _gpio.DIR_OUT,_gpio.EDGE_BOTH, () => _gpio.write(pinClk, true));
+//         _gpio.setup(pinDIO, _gpio.DIR_OUT,_gpio.EDGE_BOTH, () => _gpio.write(pinDIO, true));
+//         console.log('constructor set up finished');
+//     }
+//
+//     high(pin) {
+//         // console.log('Writing high to ' + pin);
+//         this._gpio.write(pin, true);
+//         sleep();
+//     }
+//
+//     low(pin) {
+//         // console.log('Writing low to ' + pin);
+//         this._gpio.write(pin, false);
+//         sleep();
+//     }
+//
+//     start() {
+//         // console.log('start');
+//         this.low(this.pinDIO);
+//     }
+//
+//     writeBit(value) {
+//         // console.log('writeBit');
+//         this.low(this.pinClk);
+//         if (value)
+//             this.high(this.pinDIO);
+//         else
+//             this.low(this.pinDIO);
+//
+//         this.high(this.pinClk);
+//     }
+//
+//     readAck() {
+//         // console.log('readAck');
+//         this.low(this.pinClk);
+//         // this._gpio.setup(this.pinDIO, this._gpio.DIR_IN);
+//         this.high(this.pinClk);
+//         // this._gpio.read(this.pinDIO, () => {});
+//         //this._gpio.setup(this.pinDIO, this._gpio.DIR_OUT);
+//         this.low(this.pinClk);
+//     }
+//
+//     writeByte(byte) {
+//         // console.log('writeBype');
+//         let b = byte;
+//         for (let i = 0; i < 8; i++) {
+//             this.writeBit(b & 0x01);
+//             b >>= 1;
+//         }
+//         return this.readAck();
+//     }
+//
+//     stop() {
+//         // console.log('stop');
+//         this.low(this.pinDIO);
+//         this.high(this.pinClk);
+//         this.high(this.pinDIO);
+//     }
+//
+//     set text(message){
+//         // console.log('text: message ' + message);
+//         this._text = (message+"").substring(0,4);
+//         this.sendData();
+//     }
+//
+//     get text(){
+//         return this._text;
+//     }
+//
+//     set split(value){
+//         this._split = value === true;
+//         this.sendData();
+//     }
+//
+//     get split(){
+//         return this._split;
+//     }
+//
+//     set alignLeft(value){
+//         this._alignLeft = value === true;
+//         this.sendData();
+//     }
+//
+//     get alignLeft(){
+//         return this._alignLeft;
+//     }
+//
+//     sendData() {
+//         // console.log('sendData');
+//         let m=[null,null,null,null];
+//         for (let i = this._text.length; i >= 0 ; i--) {
+//             let ind = allowedChars.indexOf(this._text[i]);
+//             if(ind>-1)
+//                 if (!this._alignLeft) {
+//                     m[(4-this._text.length)+i]=ind;
+//                 } else {
+//                     m[i]=ind;
+//                 }
+//         }
+//         let numsEncoded = [0, 0, 0, 0].map((u, i) => codigitToSegment[m[i]] || 0);
+//         if (this._split) numsEncoded[1] = numsEncoded[1] | 0b10000000;
+//
+//         this.start();
+//         this.writeByte(0b01000000);
+//         this.stop();
+//
+//         this.start();
+//         this.writeByte(0b11000000);
+//         for (let i = 0; i < numsEncoded.length; i++) {
+//             this.writeByte(numsEncoded[i]);
+//         }
+//         this.stop();
+//
+//         this.start();
+//         this.writeByte(0b10001111);
+//         this.stop();
+//     }
+// }
