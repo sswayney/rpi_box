@@ -1,6 +1,6 @@
-import {LCD} from "../libs/lcdi2c";
-import {PINS} from "../libs/pins.enum";
-import {Updateable} from "./intefaces/updateable";
+import {LCD} from "../../libs/lcdi2c";
+import {PINS} from "../../libs/pins.enum";
+import {Updateable} from "../intefaces/updateable";
 
 export class Display implements Updateable {
     /**

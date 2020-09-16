@@ -1,7 +1,7 @@
 import * as gpio from 'rpi-gpio';
-import {PINS} from "../libs/pins.enum";
-import {TM1637} from "../libs/tm1637";
-import {Updateable} from "./intefaces/updateable";
+import {PINS} from "../../libs/pins.enum";
+import {TM1637} from "../../libs/tm1637";
+import {Updateable} from "../intefaces/updateable";
 import { Subscription, interval } from 'rxjs';
 import { takeWhile, tap, map } from 'rxjs/operators';
 

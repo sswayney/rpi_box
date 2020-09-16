@@ -31,7 +31,7 @@ export class TM1637 {
     constructor(protected _gpio: typeof gpio, protected pinClk, protected pinDIO) {
 
         /**
-         * Default to high for CLK & DIO
+         * Set ready promise to clients know when they can set text.
          */
         this.ready = Promise.all(
             [
@@ -39,12 +39,15 @@ export class TM1637 {
                 _gpio.promise.setup(pinDIO, _gpio.DIR_OUT,_gpio.EDGE_BOTH)
             ]).then( (val) => {
 
+                /**
+                 * Default to high for CLK & DIO
+                 */
                 _gpio.write(pinClk, true);
                 _gpio.write(pinDIO, true);
                 return val;
 
         });
-        console.log('TM1637: Constructor finished');
+        // console.log('TM1637: Constructor finished');
     }
 
     /**

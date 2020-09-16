@@ -63,17 +63,20 @@ var TM1637 = /** @class */ (function () {
          */
         this._alignLeft = false;
         /**
-         * Default to high for CLK & DIO
+         * Set ready promise to clients know when they can set text.
          */
         this.ready = Promise.all([
             _gpio.promise.setup(pinClk, _gpio.DIR_OUT, _gpio.EDGE_BOTH),
             _gpio.promise.setup(pinDIO, _gpio.DIR_OUT, _gpio.EDGE_BOTH)
         ]).then(function (val) {
+            /**
+             * Default to high for CLK & DIO
+             */
             _gpio.write(pinClk, true);
             _gpio.write(pinDIO, true);
             return val;
         });
-        console.log('TM1637: Constructor finished');
+        // console.log('TM1637: Constructor finished');
     }
     Object.defineProperty(TM1637.prototype, "split", {
         /**

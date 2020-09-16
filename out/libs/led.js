@@ -26,7 +26,7 @@ var LED = /** @class */ (function (_super) {
         var _this = _super.call(this, _gpio, _pin) || this;
         _this.doBlink = false;
         _this.delay = 500;
-        _gpio.setup(_pin, gpio.DIR_OUT);
+        _this.ready = _gpio.promise.setup(_pin, gpio.DIR_OUT);
         return _this;
     }
     Object.defineProperty(LED.prototype, "value", {

@@ -1,7 +1,7 @@
 import * as gpio from 'rpi-gpio';
-import {ButtonLED} from "../libs/button-led";
-import {PINS} from "../libs/pins.enum";
-import {Updateable} from "./intefaces/updateable";
+import {ButtonLED} from "../../libs/button-led";
+import {PINS} from "../../libs/pins.enum";
+import {Updateable} from "../intefaces/updateable";
 
 
 export class Buttons implements Updateable {

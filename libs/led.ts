@@ -8,6 +8,8 @@ import {Pin} from "./pin";
  */
 export class LED extends Pin {
 
+    public readonly ready: Promise<boolean>;
+
     get value(): boolean {
         return this._value;
     }
@@ -19,7 +21,7 @@ export class LED extends Pin {
 
     constructor(_gpio: typeof gpio, _pin: number) {
         super(_gpio, _pin);
-        _gpio.setup(_pin, gpio.DIR_OUT);
+        this.ready = _gpio.promise.setup(_pin, gpio.DIR_OUT);
     }
 
     public on(): void {
