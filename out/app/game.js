@@ -42,6 +42,7 @@ var buttons_1 = require("./components/buttons");
 var count_down_1 = require("./components/count-down");
 var display_1 = require("./components/display");
 var switches_1 = require("./components/switches");
+var engine_1 = require("./engine");
 var events_1 = require("./events/events");
 var game_states_enum_1 = require("./game-states.enum");
 /**
@@ -49,6 +50,10 @@ var game_states_enum_1 = require("./game-states.enum");
  */
 var Game = /** @class */ (function () {
     function Game() {
+        /**
+         * Engine
+         */
+        this.engine = new engine_1.Engine(this.gameEvents$, this.emitGameEvent);
         /**
          * Switches
          */

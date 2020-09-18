@@ -4,6 +4,7 @@ import {Buttons} from "./components/buttons";
 import {CountDown} from "./components/count-down";
 import {Display} from "./components/display";
 import {Switches} from "./components/switches";
+import {Engine} from "./engine";
 import {GameEventType, GameEventTypes} from "./events/events";
 import {GameStates} from "./game-states.enum";
 
@@ -17,6 +18,11 @@ export class Game {
     get gameEvents$() {
         return Game._gameEvents.asObservable();
     }
+
+    /**
+     * Engine
+     */
+    private engine = new Engine(this.gameEvents$, this.emitGameEvent);
 
     /**
      * Switches

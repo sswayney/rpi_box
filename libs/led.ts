@@ -25,19 +25,19 @@ export class LED extends Pin {
     }
 
     public on(): void {
-        console.log(`LED ${this._pin} on`);
+        // console.log(`LED ${this._pin} on`);
         this._gpio.write(this._pin, true);
         this._value = true;
     }
 
     public off(): void {
-        console.log(`LED ${this._pin} off`);
+        // console.log(`LED ${this._pin} off`);
         this._gpio.write(this._pin, false);
         this._value = false;
     }
 
     public blink(doBlink: boolean, delay: number = 500): void {
-        console.log('blink: doBlink :' + doBlink, delay)
+        // console.log('blink: doBlink :' + doBlink, delay)
 
         if (doBlink && !this.doBlink) {
             this.delay = delay;
