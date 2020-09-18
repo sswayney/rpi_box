@@ -1,9 +1,11 @@
 import * as gpio from 'rpi-gpio';
-import {Observable} from 'rxjs';
+import {Observable, Subscription, interval} from 'rxjs';
 import {ButtonLED} from "../../libs/button-led";
 import {PINS} from "../../libs/pins.enum";
 import {EventResponder} from "../events/event-responder";
-import {GameEventTypes} from "../events/events";
+import {GameEventType, GameEventTypes} from "../events/events";
+import {GameStates} from "../game-states.enum";
+import { takeWhile, tap } from 'rxjs/operators';
 
 export class Buttons extends EventResponder {
 
@@ -16,6 +18,26 @@ export class Buttons extends EventResponder {
 
     constructor(private gameState$: Observable<GameEventTypes>){
         super(gameState$);
+    }
+
+    protected handleStateChange(): void {
+
+        this.blue.led.blink(false);
+        this.yellow.led.blink(false);
+        this.white.led.blink(false);
+
+        switch (this.state) {
+            case GameStates.Explode:
+                this.blue.led.blink(true, 250);
+                this.yellow.led.blink(true, 300);
+                this.white.led.blink(true, 500);
+                break;
+        }
+    }
+
+    protected blink(doBlink: boolean): void {
+        console.log('Buttons: doBlink', doBlink);
+
     }
 
     handleValueChange(channel: number, value: any) {

@@ -88,7 +88,7 @@ var CountDown = /** @class */ (function (_super) {
         switch (this.state) {
             case game_states_enum_1.GameStates.EnterSequence:
                 this.countDown(false);
-                this.sevenSegment.setText('8888');
+                this.sevenSegment.setText('0000');
                 break;
             case game_states_enum_1.GameStates.FixSwitches:
                 this.countDown(false);

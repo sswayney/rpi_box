@@ -32,7 +32,7 @@ export class CountDown extends EventEmitter {
         switch (this.state) {
             case GameStates.EnterSequence:
                 this.countDown(false);
-                this.sevenSegment.setText('8888');
+                this.sevenSegment.setText('0000');
                 break;
             case GameStates.FixSwitches:
                 this.countDown(false);

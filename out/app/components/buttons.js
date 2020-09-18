@@ -17,6 +17,7 @@ var gpio = require("rpi-gpio");
 var button_led_1 = require("../../libs/button-led");
 var pins_enum_1 = require("../../libs/pins.enum");
 var event_responder_1 = require("../events/event-responder");
+var game_states_enum_1 = require("../game-states.enum");
 var Buttons = /** @class */ (function (_super) {
     __extends(Buttons, _super);
     function Buttons(gameState$) {
@@ -30,6 +31,21 @@ var Buttons = /** @class */ (function (_super) {
         _this.white = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin35_buttonWhite, pins_enum_1.PINS.pin33_buttonWhite);
         return _this;
     }
+    Buttons.prototype.handleStateChange = function () {
+        this.blue.led.blink(false);
+        this.yellow.led.blink(false);
+        this.white.led.blink(false);
+        switch (this.state) {
+            case game_states_enum_1.GameStates.Explode:
+                this.blue.led.blink(true, 250);
+                this.yellow.led.blink(true, 300);
+                this.white.led.blink(true, 500);
+                break;
+        }
+    };
+    Buttons.prototype.blink = function (doBlink) {
+        console.log('Buttons: doBlink', doBlink);
+    };
     Buttons.prototype.handleValueChange = function (channel, value) {
         switch (channel) {
             case this.blue.button.pin:
