@@ -63,7 +63,7 @@ var Buttons = /** @class */ (function (_super) {
     Buttons.prototype.handleValueChange = function (channel, value) {
         switch (this.state) {
             case game_states_enum_1.GameStates.MainMenu:
-                if (channel === this.blue.button.pin && value) {
+                if (channel === this.blue.button.pin && !value) { // on button up
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
                 }
                 break;

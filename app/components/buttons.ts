@@ -56,7 +56,7 @@ export class Buttons extends EventEmitter {
 
         switch (this.state) {
             case GameStates.MainMenu:
-                if (channel === this.blue.button.pin && value){
+                if (channel === this.blue.button.pin && !value){ // on button up
                     this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
                 }
                 break;
