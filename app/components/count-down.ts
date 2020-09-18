@@ -20,7 +20,7 @@ export class CountDown extends EventEmitter {
     protected doCountDown = false;
     protected delay = 1000;
     protected subscription: Subscription;
-    protected seconds: number = 10;
+    protected seconds: number = 120;
 
     protected sevenSegment = new TM1637(gpio, PINS.pin11_clk, PINS.pin7_dio);
 
@@ -65,10 +65,10 @@ export class CountDown extends EventEmitter {
             if (!this.subscription || this.subscription.closed) {
                 this.subscription = interval(this.delay).pipe(takeWhile(() => this.doCountDown),
                     map(val => this.seconds - val),
-                    tap( val => console.log('seconds ' + val)),
+                   // tap( val => console.log('seconds ' + val)),
                     tap( val => val < 1 ? this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Explode}) : undefined),
                     map( val => `${~~(val / 60)}${('' + (val % 60)).padStart(2,0 + '')}`),
-                    tap( val => console.log('value ' + val)),
+                  //  tap( val => console.log('value ' + val)),
                     tap(val => this.text(val))).subscribe();
             }
         } else {

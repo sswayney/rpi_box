@@ -68,7 +68,7 @@ var CountDown = /** @class */ (function (_super) {
         _this.doShowClock = false;
         _this.doCountDown = false;
         _this.delay = 1000;
-        _this.seconds = 10;
+        _this.seconds = 120;
         _this.sevenSegment = new tm1637_1.TM1637(gpio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin7_dio);
         _this.sevenSegment.ready.then((function (value) { return _this.sevenSegment.setText('    '); }));
         return _this;
@@ -115,7 +115,11 @@ var CountDown = /** @class */ (function (_super) {
             this.sevenSegment.split = true;
             this.doCountDown = true;
             if (!this.subscription || this.subscription.closed) {
-                this.subscription = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.map(function (val) { return _this.seconds - val; }), operators_1.tap(function (val) { return console.log('seconds ' + val); }), operators_1.tap(function (val) { return val < 1 ? _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Explode }) : undefined; }), operators_1.map(function (val) { return "" + ~~(val / 60) + ('' + (val % 60)).padStart(2, 0 + ''); }), operators_1.tap(function (val) { return console.log('value ' + val); }), operators_1.tap(function (val) { return _this.text(val); })).subscribe();
+                this.subscription = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.map(function (val) { return _this.seconds - val; }), 
+                // tap( val => console.log('seconds ' + val)),
+                operators_1.tap(function (val) { return val < 1 ? _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Explode }) : undefined; }), operators_1.map(function (val) { return "" + ~~(val / 60) + ('' + (val % 60)).padStart(2, 0 + ''); }), 
+                //  tap( val => console.log('value ' + val)),
+                operators_1.tap(function (val) { return _this.text(val); })).subscribe();
             }
         }
         else {
