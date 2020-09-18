@@ -38,6 +38,7 @@ var Engine = /** @class */ (function (_super) {
         return _this;
     }
     Engine.prototype.handleStateChange = function () {
+        var _this = this;
         switch (this.state) {
             case game_states_enum_1.GameStates.EnterSequence:
                 this.sequence = [];
@@ -49,6 +50,7 @@ var Engine = /** @class */ (function (_super) {
                 this.tempSequence = __spreadArrays(this.sequence);
                 break;
             case game_states_enum_1.GameStates.Explode:
+                setTimeout(function () { return _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence }); }, 5000);
                 break;
         }
     };

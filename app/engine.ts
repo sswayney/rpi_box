@@ -39,6 +39,8 @@ export class Engine extends EventEmitter {
                 break;
             case GameStates.Explode:
 
+                setTimeout(()=> this.emitGameEvent({eventType: GameEventType.StateChange, state: GameStates.EnterSequence}) ,5000);
+
                 break;
         }
     }
