@@ -81,8 +81,8 @@ export class Engine extends EventEmitter {
                         console.log('WRONG');
                         this.tempSequence = [...this.sequence];
                     }
-                    console.log(`TEMP SEQUENCE LENGTH: ${this.sequence.length}`);
-                    console.log(`TEMP SEQUENCE: `, this.sequence);
+                    console.log(`TEMP SEQUENCE LENGTH: ${this.tempSequence.length}`);
+                    console.log(`TEMP SEQUENCE: `, this.tempSequence);
                 }
 
                 if (this.flipperSwitchChannels.includes(channel)){
@@ -94,8 +94,8 @@ export class Engine extends EventEmitter {
                         console.log('WRONG');
                         this.tempSequence = [...this.sequence];
                     }
-                    console.log(`TEMP SEQUENCE LENGTH: ${this.sequence.length}`);
-                    console.log(`TEMP SEQUENCE: `, this.sequence);
+                    console.log(`TEMP SEQUENCE LENGTH: ${this.tempSequence.length}`);
+                    console.log(`TEMP SEQUENCE: `, this.tempSequence);
                 }
 
 
