@@ -33,9 +33,9 @@ export class Buttons extends EventResponder {
                 this.white.led.blink(true, 60);
                 break;
             case GameStates.FixSwitches:
-                setTimeout(() => this.blue.led.blink(true, 100),1);
-                setTimeout(() => this.yellow.led.blink(true, 100),33);
-                setTimeout(() => this.white.led.blink(true, 100),66);
+                setTimeout(() => this.blue.led.blink(true, 200),1);
+                setTimeout(() => this.yellow.led.blink(true, 200),100);
+                setTimeout(() => this.white.led.blink(true, 200),250);
                 break;
         }
     }
