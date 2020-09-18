@@ -8,6 +8,7 @@ export enum PINS {
     pin11_clk = 11,
     pin12_green_switch1 = 12,
     pin16_red_switch2 = 16,
+    pin18_buzzer = 18,
     pin33_buttonWhite = 33,
     pin35_buttonWhite = 35,
     pin36_buttonYellow = 36,

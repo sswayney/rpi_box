@@ -11,6 +11,7 @@ var PINS;
     PINS[PINS["pin11_clk"] = 11] = "pin11_clk";
     PINS[PINS["pin12_green_switch1"] = 12] = "pin12_green_switch1";
     PINS[PINS["pin16_red_switch2"] = 16] = "pin16_red_switch2";
+    PINS[PINS["pin18_buzzer"] = 18] = "pin18_buzzer";
     PINS[PINS["pin33_buttonWhite"] = 33] = "pin33_buttonWhite";
     PINS[PINS["pin35_buttonWhite"] = 35] = "pin35_buttonWhite";
     PINS[PINS["pin36_buttonYellow"] = 36] = "pin36_buttonYellow";

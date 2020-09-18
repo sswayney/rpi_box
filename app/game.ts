@@ -1,6 +1,7 @@
 import * as gpio from 'rpi-gpio';
 import {Subject} from 'rxjs';
 import {Buttons} from "./components/buttons";
+import {Buzzer} from "./components/buzzer";
 import {CountDown} from "./components/count-down";
 import {Display} from "./components/display";
 import {Switches} from "./components/switches";
@@ -43,6 +44,11 @@ export class Game {
      * LCD display
      */
     private display = new  Display(this.gameEvents$);
+
+    /**
+     * Buzzer sound
+     */
+    private buzzer = new Buzzer(this.gameEvents$)
 
 
     constructor() {
