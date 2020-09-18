@@ -31,6 +31,8 @@ export class Buttons extends EventEmitter {
         switch (this.state) {
             case GameStates.MainMenu:
                 this.blue.led.blink(true);
+                this.blue.led.blink(true,5000);
+                this.blue.led.blink(true, 10000);
                 break;
             case GameStates.Explode:
                 this.blue.led.blink(true, 50);

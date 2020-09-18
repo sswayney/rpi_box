@@ -16,9 +16,10 @@ export class CountDown extends EventEmitter {
          await this.sevenSegment.setText(value);
      }
 
+    protected doShowClock = false;
     protected doCountDown = false;
     protected delay = 1000;
-    protected interval: Subscription;
+    protected subscription: Subscription;
     protected seconds: number = 10;
 
     protected sevenSegment = new TM1637(gpio, PINS.pin11_clk, PINS.pin7_dio);
@@ -30,12 +31,16 @@ export class CountDown extends EventEmitter {
 
     protected handleStateChange(): void {
         switch (this.state) {
+            case GameStates.MainMenu:
+                this.countDown(false);
+                this.showClock(true);
+                break;
             case GameStates.EnterSequence:
                 this.countDown(false);
+                this.showClock(false);
                 this.sevenSegment.setText('0000');
                 break;
             case GameStates.FixSwitches:
-                this.countDown(false);
                 this.sevenSegment.setText('----');
                 break;
             case GameStates.Defuse:
@@ -43,7 +48,7 @@ export class CountDown extends EventEmitter {
                 break;
             case GameStates.Explode:
                 this.countDown(false);
-                this.sevenSegment.setText('BYE');
+                this.sevenSegment.setText('8888');
                 break;
         }
     }
@@ -54,10 +59,11 @@ export class CountDown extends EventEmitter {
         console.log('CountDown: doCountDown', doCountDown);
 
         if (doCountDown && !this.doCountDown) {
+            this.sevenSegment.split = true;
             this.doCountDown = true;
 
-            if (!this.interval || this.interval.closed) {
-                this.interval = interval(this.delay).pipe(takeWhile(() => this.doCountDown),
+            if (!this.subscription || this.subscription.closed) {
+                this.subscription = interval(this.delay).pipe(takeWhile(() => this.doCountDown),
                     map(val => this.seconds - val),
                     tap( val => console.log('seconds ' + val)),
                     tap( val => val < 1 ? this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Explode}) : undefined),
@@ -67,12 +73,31 @@ export class CountDown extends EventEmitter {
             }
         } else {
             this.doCountDown = false;
-            this.interval ? this.interval.unsubscribe() : null;
+            this.subscription ? !this.subscription.closed ? this.subscription.unsubscribe() : null : null;
+        }
+    }
+
+    protected showClock(doShowClock: boolean): void {
+        console.log('showClock: doShowClock', doShowClock);
+
+        if (doShowClock && !this.doShowClock) {
+            this.sevenSegment.split = true;
+            this.doShowClock = true;
+
+            if (!this.subscription || this.subscription.closed) {
+                this.subscription = interval(this.delay).pipe(
+                    takeWhile(() => this.doShowClock),
+                    tap(() => this.showTime())).subscribe();
+            }
+        } else {
+            this.doShowClock = false;
+            this.subscription ? !this.subscription.closed ? this.subscription.unsubscribe() : null : null;
         }
     }
 
     protected async showTime() {
-        console.log('Showing Time');
+        console.log('Show Time');
+        this.sevenSegment.split = true;
         const dateStringRay = new Date().toLocaleTimeString().split(':');
         let hours = dateStringRay[0];
         hours = hours.length === 1 ? '0' + hours : hours;

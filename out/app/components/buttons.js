@@ -42,6 +42,8 @@ var Buttons = /** @class */ (function (_super) {
         switch (this.state) {
             case game_states_enum_1.GameStates.MainMenu:
                 this.blue.led.blink(true);
+                this.blue.led.blink(true, 5000);
+                this.blue.led.blink(true, 10000);
                 break;
             case game_states_enum_1.GameStates.Explode:
                 this.blue.led.blink(true, 50);

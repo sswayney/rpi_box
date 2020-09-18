@@ -65,6 +65,7 @@ var CountDown = /** @class */ (function (_super) {
     function CountDown(gameEvents$, emitGameEvent) {
         var _this = _super.call(this, gameEvents$, emitGameEvent) || this;
         _this.emitGameEvent = emitGameEvent;
+        _this.doShowClock = false;
         _this.doCountDown = false;
         _this.delay = 1000;
         _this.seconds = 10;
@@ -86,12 +87,16 @@ var CountDown = /** @class */ (function (_super) {
     };
     CountDown.prototype.handleStateChange = function () {
         switch (this.state) {
+            case game_states_enum_1.GameStates.MainMenu:
+                this.countDown(false);
+                this.showClock(true);
+                break;
             case game_states_enum_1.GameStates.EnterSequence:
                 this.countDown(false);
+                this.showClock(false);
                 this.sevenSegment.setText('0000');
                 break;
             case game_states_enum_1.GameStates.FixSwitches:
-                this.countDown(false);
                 this.sevenSegment.setText('----');
                 break;
             case game_states_enum_1.GameStates.Defuse:
@@ -99,7 +104,7 @@ var CountDown = /** @class */ (function (_super) {
                 break;
             case game_states_enum_1.GameStates.Explode:
                 this.countDown(false);
-                this.sevenSegment.setText('BYE');
+                this.sevenSegment.setText('8888');
                 break;
         }
     };
@@ -107,14 +112,30 @@ var CountDown = /** @class */ (function (_super) {
         var _this = this;
         console.log('CountDown: doCountDown', doCountDown);
         if (doCountDown && !this.doCountDown) {
+            this.sevenSegment.split = true;
             this.doCountDown = true;
-            if (!this.interval || this.interval.closed) {
-                this.interval = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.map(function (val) { return _this.seconds - val; }), operators_1.tap(function (val) { return console.log('seconds ' + val); }), operators_1.tap(function (val) { return val < 1 ? _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Explode }) : undefined; }), operators_1.map(function (val) { return "" + ~~(val / 60) + ('' + (val % 60)).padStart(2, 0 + ''); }), operators_1.tap(function (val) { return console.log('value ' + val); }), operators_1.tap(function (val) { return _this.text(val); })).subscribe();
+            if (!this.subscription || this.subscription.closed) {
+                this.subscription = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.map(function (val) { return _this.seconds - val; }), operators_1.tap(function (val) { return console.log('seconds ' + val); }), operators_1.tap(function (val) { return val < 1 ? _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Explode }) : undefined; }), operators_1.map(function (val) { return "" + ~~(val / 60) + ('' + (val % 60)).padStart(2, 0 + ''); }), operators_1.tap(function (val) { return console.log('value ' + val); }), operators_1.tap(function (val) { return _this.text(val); })).subscribe();
             }
         }
         else {
             this.doCountDown = false;
-            this.interval ? this.interval.unsubscribe() : null;
+            this.subscription ? !this.subscription.closed ? this.subscription.unsubscribe() : null : null;
+        }
+    };
+    CountDown.prototype.showClock = function (doShowClock) {
+        var _this = this;
+        console.log('showClock: doShowClock', doShowClock);
+        if (doShowClock && !this.doShowClock) {
+            this.sevenSegment.split = true;
+            this.doShowClock = true;
+            if (!this.subscription || this.subscription.closed) {
+                this.subscription = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doShowClock; }), operators_1.tap(function () { return _this.showTime(); })).subscribe();
+            }
+        }
+        else {
+            this.doShowClock = false;
+            this.subscription ? !this.subscription.closed ? this.subscription.unsubscribe() : null : null;
         }
     };
     CountDown.prototype.showTime = function () {
@@ -123,7 +144,8 @@ var CountDown = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log('Showing Time');
+                        console.log('Show Time');
+                        this.sevenSegment.split = true;
                         dateStringRay = new Date().toLocaleTimeString().split(':');
                         hours = dateStringRay[0];
                         hours = hours.length === 1 ? '0' + hours : hours;
