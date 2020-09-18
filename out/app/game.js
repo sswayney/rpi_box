@@ -49,7 +49,7 @@ var game_states_enum_1 = require("./game-states.enum");
  */
 var Game = /** @class */ (function () {
     function Game() {
-        this._gameEvents = new rxjs_1.BehaviorSubject({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
+        this._gameEvents = new rxjs_1.Subject();
         /**
          * Switches
          */
@@ -77,14 +77,23 @@ var Game = /** @class */ (function () {
     Game.prototype.start = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                console.log('Start');
-                // console.log('Red switch Val', await this.switches.red.getValue());
-                // console.log('Green switch Val', await this.switches.green.getValue());
-                /**
-                 * Value change listener
-                 */
-                gpio.on('change', this.channelValueListener());
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        console.log('Start');
+                        // console.log('Red switch Val', await this.switches.red.getValue());
+                        // console.log('Green switch Val', await this.switches.green.getValue());
+                        return [4 /*yield*/, this.switches.red.ready];
+                    case 1:
+                        // console.log('Red switch Val', await this.switches.red.getValue());
+                        // console.log('Green switch Val', await this.switches.green.getValue());
+                        _a.sent();
+                        this._gameEvents.next({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
+                        /**
+                         * Value change listener
+                         */
+                        gpio.on('change', this.channelValueListener());
+                        return [2 /*return*/];
+                }
             });
         });
     };

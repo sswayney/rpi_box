@@ -1,5 +1,5 @@
 import * as gpio from 'rpi-gpio';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {Buttons} from "./components/buttons";
 import {CountDown} from "./components/count-down";
 import {Display} from "./components/display";
@@ -12,7 +12,7 @@ import {GameStates} from "./game-states.enum";
  */
 export class Game {
 
-    private _gameEvents = new BehaviorSubject<GameEventTypes>({eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
+    private _gameEvents = new Subject<GameEventTypes>();
 
     get gameEvents$() {
         return this._gameEvents.asObservable();
@@ -47,6 +47,9 @@ export class Game {
 
         // console.log('Red switch Val', await this.switches.red.getValue());
         // console.log('Green switch Val', await this.switches.green.getValue());
+
+       await this.switches.red.ready;
+       this._gameEvents.next({eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
 
         /**
          * Value change listener
