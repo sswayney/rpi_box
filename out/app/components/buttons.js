@@ -32,6 +32,7 @@ var Buttons = /** @class */ (function (_super) {
         return _this;
     }
     Buttons.prototype.handleStateChange = function () {
+        var _this = this;
         this.blue.led.blink(false);
         this.yellow.led.blink(false);
         this.white.led.blink(false);
@@ -40,6 +41,11 @@ var Buttons = /** @class */ (function (_super) {
                 this.blue.led.blink(true, 50);
                 this.yellow.led.blink(true, 55);
                 this.white.led.blink(true, 60);
+                break;
+            case game_states_enum_1.GameStates.FixSwitches:
+                setTimeout(function () { return _this.blue.led.blink(true, 100); }, 1);
+                setTimeout(function () { return _this.yellow.led.blink(true, 100); }, 33);
+                setTimeout(function () { return _this.white.led.blink(true, 100); }, 66);
                 break;
         }
     };

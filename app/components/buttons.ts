@@ -32,6 +32,11 @@ export class Buttons extends EventResponder {
                 this.yellow.led.blink(true, 55);
                 this.white.led.blink(true, 60);
                 break;
+            case GameStates.FixSwitches:
+                setTimeout(() => this.blue.led.blink(true, 100),1);
+                setTimeout(() => this.yellow.led.blink(true, 100),33);
+                setTimeout(() => this.white.led.blink(true, 100),66);
+                break;
         }
     }
 
@@ -40,7 +45,7 @@ export class Buttons extends EventResponder {
 
     }
 
-    handleValueChange(channel: number, value: any) {
+    protected handleValueChange(channel: number, value: any) {
 
         switch (channel) {
             case this.blue.button.pin:

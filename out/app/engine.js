@@ -103,15 +103,6 @@ var Engine = /** @class */ (function (_super) {
                 if (this.tempSequence.length < 1) {
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
                 }
-                // this.currentSequence += event.key;
-                // if (this.codeWord.startsWith(this.currentSequence)) {
-                //     if (this.codeWord === this.currentSequence) {
-                //         this.displayValue = this.displayValue === 'block' ? 'none' : 'block';
-                //         this.currentSequence = '';
-                //     }
-                //     return;
-                // }
-                // this.currentSequence = '';
                 break;
         }
     };
