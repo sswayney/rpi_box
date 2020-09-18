@@ -28,9 +28,9 @@ export class Buttons extends EventResponder {
 
         switch (this.state) {
             case GameStates.Explode:
-                this.blue.led.blink(true, 250);
-                this.yellow.led.blink(true, 300);
-                this.white.led.blink(true, 500);
+                this.blue.led.blink(true, 50);
+                this.yellow.led.blink(true, 55);
+                this.white.led.blink(true, 60);
                 break;
         }
     }
