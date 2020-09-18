@@ -54,22 +54,21 @@ export class Engine extends EventEmitter {
             if (this.momentarySwitchChannels.includes(channel) && value){
                 console.log(`BUTT CH: ${channel}, VAL: ${value}`);
                 this.sequence.unshift({ channel: channel, value: value});
+                console.log(`SEQUENCE LENGTH: ${this.sequence.length}`);
+                console.log(`SEQUENCE: `, this.sequence);
             }
 
             if (this.flipperSwitchChannels.includes(channel)){
                 console.log(`FLIP CH: ${channel}, VAL: ${value}`);
                 this.sequence.unshift({ channel: channel, value: value});
+                console.log(`SEQUENCE LENGTH: ${this.sequence.length}`);
+                console.log(`SEQUENCE: `, this.sequence);
             }
 
-            console.log(`SEQUENCE LENGTH: ${this.sequence.length}`);
-            console.log(`SEQUENCE: `, this.sequence);
 
             if (this.sequence.length >= this.sequenceMaxLength){
                 this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Defuse});
             }
-
-
-
                 break;
             case GameStates.Defuse:
 
@@ -98,7 +97,6 @@ export class Engine extends EventEmitter {
                     console.log(`TEMP SEQUENCE LENGTH: ${this.sequence.length}`);
                     console.log(`TEMP SEQUENCE: `, this.sequence);
                 }
-
 
 
                 if (this.tempSequence.length < 1){

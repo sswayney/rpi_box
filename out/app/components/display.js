@@ -14,7 +14,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var lcdi2c_1 = require("../../libs/lcdi2c");
-var pins_enum_1 = require("../../libs/pins.enum");
 var event_responder_1 = require("../events/event-responder");
 var game_states_enum_1 = require("../game-states.enum");
 var Display = /** @class */ (function (_super) {
@@ -63,23 +62,23 @@ var Display = /** @class */ (function (_super) {
         }
     };
     Display.prototype.handleValueChange = function (channel, value) {
-        switch (channel) {
-            case pins_enum_1.PINS.pin35_buttonWhite:
-                this.lcd.clear();
-                this.lcd.println('COLOR', 1);
-                this.lcd.println('White', 2);
-                break;
-            case pins_enum_1.PINS.pin37_buttonYellow:
-                this.lcd.clear();
-                this.lcd.println('COLOR', 1);
-                this.lcd.println('Yellow', 2);
-                break;
-            case pins_enum_1.PINS.pin40_buttonBlue:
-                this.lcd.clear();
-                this.lcd.println('COLOR', 1);
-                this.lcd.println('Blue', 2);
-                break;
-        }
+        // switch (channel) {
+        //     case PINS.pin35_buttonWhite:
+        //         this.lcd.clear();
+        //         this.lcd.println('COLOR', 1);
+        //         this.lcd.println('White', 2);
+        //         break;
+        //     case PINS.pin37_buttonYellow:
+        //         this.lcd.clear();
+        //         this.lcd.println('COLOR', 1);
+        //         this.lcd.println('Yellow', 2);
+        //         break;
+        //     case PINS.pin40_buttonBlue:
+        //         this.lcd.clear();
+        //         this.lcd.println('COLOR', 1);
+        //         this.lcd.println('Blue', 2);
+        //         break;
+        // }
     };
     return Display;
 }(event_responder_1.EventResponder));

@@ -60,13 +60,15 @@ var Engine = /** @class */ (function (_super) {
                 if (this.momentarySwitchChannels.includes(channel) && value) {
                     console.log("BUTT CH: " + channel + ", VAL: " + value);
                     this.sequence.unshift({ channel: channel, value: value });
+                    console.log("SEQUENCE LENGTH: " + this.sequence.length);
+                    console.log("SEQUENCE: ", this.sequence);
                 }
                 if (this.flipperSwitchChannels.includes(channel)) {
                     console.log("FLIP CH: " + channel + ", VAL: " + value);
                     this.sequence.unshift({ channel: channel, value: value });
+                    console.log("SEQUENCE LENGTH: " + this.sequence.length);
+                    console.log("SEQUENCE: ", this.sequence);
                 }
-                console.log("SEQUENCE LENGTH: " + this.sequence.length);
-                console.log("SEQUENCE: ", this.sequence);
                 if (this.sequence.length >= this.sequenceMaxLength) {
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Defuse });
                 }
