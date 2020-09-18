@@ -6,6 +6,8 @@ export abstract class EventResponder {
 
     protected subscriptions = new Subscription();
 
+    protected state: GameStates;
+
     protected constructor(protected gameEvents$: Observable<GameEventTypes>) {
         this.subscriptions.add(gameEvents$.subscribe((gameEvent: GameEventTypes) => {
             switch (gameEvent.eventType) {
@@ -13,7 +15,8 @@ export abstract class EventResponder {
                     this.handleValueChange(gameEvent.channel, gameEvent.value);
                     break;
                 case GameEventType.StateChange:
-                    this.handleStateChange(gameEvent.state);
+                    this.state = gameEvent.state;
+                    this.handleStateChange();
                     break;
                 default:
                     break;
@@ -24,6 +27,6 @@ export abstract class EventResponder {
     protected handleValueChange(channel: number, value: any): void {
     }
 
-    protected handleStateChange(state: GameStates): void {
+    protected handleStateChange(): void {
     }
 }

@@ -13,7 +13,8 @@ var EventResponder = /** @class */ (function () {
                     _this.handleValueChange(gameEvent.channel, gameEvent.value);
                     break;
                 case events_1.GameEventType.StateChange:
-                    _this.handleStateChange(gameEvent.state);
+                    _this.state = gameEvent.state;
+                    _this.handleStateChange();
                     break;
                 default:
                     break;
@@ -22,7 +23,7 @@ var EventResponder = /** @class */ (function () {
     }
     EventResponder.prototype.handleValueChange = function (channel, value) {
     };
-    EventResponder.prototype.handleStateChange = function (state) {
+    EventResponder.prototype.handleStateChange = function () {
     };
     return EventResponder;
 }());

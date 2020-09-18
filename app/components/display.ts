@@ -3,6 +3,7 @@ import {LCD} from "../../libs/lcdi2c";
 import {PINS} from "../../libs/pins.enum";
 import {EventResponder} from "../events/event-responder";
 import {GameEventTypes} from "../events/events";
+import {GameStates} from "../game-states.enum";
 
 export class Display extends EventResponder {
     /**
@@ -25,6 +26,30 @@ export class Display extends EventResponder {
 
     public println(value: string, line: number): void {
         this.lcd.println(value, line);
+    }
+
+    protected handleStateChange(): void {
+        switch (this.state) {
+            case GameStates.EnterSequence:
+                this.lcd.clear();
+                this.lcd.println('Enter Sequence', 1);
+                this.lcd.println('###', 2);
+                break;
+            case GameStates.FixSwitches:
+                this.lcd.clear();
+                this.lcd.println('Flip Switches', 1);
+                this.lcd.println('Down', 2);
+                break;
+            case GameStates.Defuse:
+                this.lcd.clear();
+                this.lcd.println('BOMB ACTIVATED', 1);
+                break;
+            case GameStates.Explode:
+                this.lcd.clear();
+                this.lcd.println('&%@$&()*%$#!@#%&', 1);
+                this.lcd.println('&%@$&^&*%$#!@#%&', 2);
+                break;
+        }
     }
 
     handleValueChange(channel: number, value: any) {

@@ -53,7 +53,7 @@ var Game = /** @class */ (function () {
         /**
          * Switches
          */
-        this.switches = new switches_1.Switches();
+        this.switches = new switches_1.Switches(this.gameEvents$, this.emitGameEvent);
         /**
          * Buttons
          */
@@ -76,27 +76,15 @@ var Game = /** @class */ (function () {
     });
     Game.prototype.start = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, _b, _c, _d, _e, _f;
-            return __generator(this, function (_g) {
-                switch (_g.label) {
-                    case 0:
-                        console.log('Start');
-                        _b = (_a = console).log;
-                        _c = ['Red switch Val'];
-                        return [4 /*yield*/, this.switches.red.getValue()];
-                    case 1:
-                        _b.apply(_a, _c.concat([_g.sent()]));
-                        _e = (_d = console).log;
-                        _f = ['Green switch Val'];
-                        return [4 /*yield*/, this.switches.green.getValue()];
-                    case 2:
-                        _e.apply(_d, _f.concat([_g.sent()]));
-                        /**
-                         * Value change listener
-                         */
-                        gpio.on('change', this.channelValueListener());
-                        return [2 /*return*/];
-                }
+            return __generator(this, function (_a) {
+                console.log('Start');
+                // console.log('Red switch Val', await this.switches.red.getValue());
+                // console.log('Green switch Val', await this.switches.green.getValue());
+                /**
+                 * Value change listener
+                 */
+                gpio.on('change', this.channelValueListener());
+                return [2 /*return*/];
             });
         });
     };
@@ -107,11 +95,11 @@ var Game = /** @class */ (function () {
             if (lastValues.get(channel) !== value) {
                 lastValues.set(channel, value);
                 // console.log('Channel ' + channel + ' value is now ' + value);
-                _this.setGameState({ eventType: events_1.GameEventType.ValueChange, channel: channel, value: value });
+                _this.emitGameEvent({ eventType: events_1.GameEventType.ValueChange, channel: channel, value: value });
             }
         };
     };
-    Game.prototype.setGameState = function (gameState) {
+    Game.prototype.emitGameEvent = function (gameState) {
         this._gameEvents.next(gameState);
     };
     return Game;

@@ -16,6 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var lcdi2c_1 = require("../../libs/lcdi2c");
 var pins_enum_1 = require("../../libs/pins.enum");
 var event_responder_1 = require("../events/event-responder");
+var game_states_enum_1 = require("../game-states.enum");
 var Display = /** @class */ (function (_super) {
     __extends(Display, _super);
     function Display(gameState$) {
@@ -37,6 +38,29 @@ var Display = /** @class */ (function (_super) {
     };
     Display.prototype.println = function (value, line) {
         this.lcd.println(value, line);
+    };
+    Display.prototype.handleStateChange = function () {
+        switch (this.state) {
+            case game_states_enum_1.GameStates.EnterSequence:
+                this.lcd.clear();
+                this.lcd.println('Enter Sequence', 1);
+                this.lcd.println('###', 2);
+                break;
+            case game_states_enum_1.GameStates.FixSwitches:
+                this.lcd.clear();
+                this.lcd.println('Flip Switches', 1);
+                this.lcd.println('Down', 2);
+                break;
+            case game_states_enum_1.GameStates.Defuse:
+                this.lcd.clear();
+                this.lcd.println('BOMB ACTIVATED', 1);
+                break;
+            case game_states_enum_1.GameStates.Explode:
+                this.lcd.clear();
+                this.lcd.println('&%@$&()*%$#!@#%&', 1);
+                this.lcd.println('&%@$&^&*%$#!@#%&', 2);
+                break;
+        }
     };
     Display.prototype.handleValueChange = function (channel, value) {
         switch (channel) {

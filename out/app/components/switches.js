@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,13 +52,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var pins_enum_1 = require("../../libs/pins.enum");
 var switch_1 = require("../../libs/switch");
-var Switches = /** @class */ (function () {
-    function Switches() {
-        this.green = new switch_1.Switch(gpio, pins_enum_1.PINS.pin12_green_switch1);
-        this.red = new switch_1.Switch(gpio, pins_enum_1.PINS.pin16_red_switch2);
-        this.ready = Promise.all([this.green.ready, this.red.ready]);
+var event_emitter_1 = require("../events/event-emitter");
+var events_1 = require("../events/events");
+var game_states_enum_1 = require("../game-states.enum");
+var Switches = /** @class */ (function (_super) {
+    __extends(Switches, _super);
+    function Switches(gameEvents$, emitGameEvent) {
+        var _this = _super.call(this, gameEvents$, emitGameEvent) || this;
+        _this.gameEvents$ = gameEvents$;
+        _this.emitGameEvent = emitGameEvent;
+        _this.green = new switch_1.Switch(gpio, pins_enum_1.PINS.pin12_green_switch1);
+        _this.red = new switch_1.Switch(gpio, pins_enum_1.PINS.pin16_red_switch2);
+        _this.ready = Promise.all([_this.green.ready, _this.red.ready]);
+        return _this;
     }
-    Switches.prototype.getReadyForSequenceStart = function () {
+    Switches.prototype.handleStateChange = function () {
+        var _this = this;
+        if (this.state === game_states_enum_1.GameStates.EnterSequence) {
+            this.readyForSequenceStart().then(function (ready) {
+                if (!ready) {
+                    _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.FixSwitches });
+                }
+            });
+        }
+    };
+    Switches.prototype.handleValueChange = function (channel, value) {
+        var _this = this;
+        if ([pins_enum_1.PINS.pin12_green_switch1, pins_enum_1.PINS.pin16_red_switch2].includes(channel)) {
+            if (this.state === game_states_enum_1.GameStates.FixSwitches) {
+                this.readyForSequenceStart().then(function (ready) {
+                    if (ready) {
+                        _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.FixSwitches });
+                    }
+                });
+            }
+        }
+    };
+    Switches.prototype.readyForSequenceStart = function () {
         return __awaiter(this, void 0, void 0, function () {
             var greenVal, redVal;
             return __generator(this, function (_a) {
@@ -62,6 +105,6 @@ var Switches = /** @class */ (function () {
         });
     };
     return Switches;
-}());
+}(event_emitter_1.EventEmitter));
 exports.Switches = Switches;
 //# sourceMappingURL=switches.js.map

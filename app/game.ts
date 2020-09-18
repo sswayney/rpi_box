@@ -21,7 +21,7 @@ export class Game {
     /**
      * Switches
      */
-    private switches = new Switches();
+    private switches = new Switches(this.gameEvents$, this.emitGameEvent);
 
     /**
      * Buttons
@@ -45,8 +45,8 @@ export class Game {
     public async start(): Promise<void> {
         console.log('Start');
 
-        console.log('Red switch Val', await this.switches.red.getValue());
-        console.log('Green switch Val', await this.switches.green.getValue());
+        // console.log('Red switch Val', await this.switches.red.getValue());
+        // console.log('Green switch Val', await this.switches.green.getValue());
 
         /**
          * Value change listener
@@ -63,14 +63,14 @@ export class Game {
                 lastValues.set(channel, value);
                 // console.log('Channel ' + channel + ' value is now ' + value);
 
-                this.setGameState({eventType: GameEventType.ValueChange, channel: channel, value: value});
+                this.emitGameEvent({eventType: GameEventType.ValueChange, channel: channel, value: value});
 
             }
         }
 
     }
 
-    private setGameState(gameState: GameEventTypes): void {
+    public emitGameEvent(gameState: GameEventTypes): void {
         this._gameEvents.next(gameState);
     }
 }
