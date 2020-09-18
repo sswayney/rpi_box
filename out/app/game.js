@@ -49,7 +49,6 @@ var game_states_enum_1 = require("./game-states.enum");
  */
 var Game = /** @class */ (function () {
     function Game() {
-        this._gameEvents = new rxjs_1.Subject();
         /**
          * Switches
          */
@@ -69,7 +68,7 @@ var Game = /** @class */ (function () {
     }
     Object.defineProperty(Game.prototype, "gameEvents$", {
         get: function () {
-            return this._gameEvents.asObservable();
+            return Game._gameEvents.asObservable();
         },
         enumerable: true,
         configurable: true
@@ -87,7 +86,7 @@ var Game = /** @class */ (function () {
                         // console.log('Red switch Val', await this.switches.red.getValue());
                         // console.log('Green switch Val', await this.switches.green.getValue());
                         _a.sent();
-                        this._gameEvents.next({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
+                        this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
                         /**
                          * Value change listener
                          */
@@ -109,8 +108,9 @@ var Game = /** @class */ (function () {
         };
     };
     Game.prototype.emitGameEvent = function (gameState) {
-        this._gameEvents.next(gameState);
+        Game._gameEvents.next(gameState);
     };
+    Game._gameEvents = new rxjs_1.Subject();
     return Game;
 }());
 exports.Game = Game;

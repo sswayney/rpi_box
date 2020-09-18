@@ -12,10 +12,10 @@ import {GameStates} from "./game-states.enum";
  */
 export class Game {
 
-    private _gameEvents = new Subject<GameEventTypes>();
+    private static _gameEvents = new Subject<GameEventTypes>();
 
     get gameEvents$() {
-        return this._gameEvents.asObservable();
+        return Game._gameEvents.asObservable();
     }
 
     /**
@@ -49,7 +49,7 @@ export class Game {
         // console.log('Green switch Val', await this.switches.green.getValue());
 
        await this.switches.red.ready;
-       this._gameEvents.next({eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
+       this.emitGameEvent({eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
 
         /**
          * Value change listener
@@ -74,6 +74,6 @@ export class Game {
     }
 
     public emitGameEvent(gameState: GameEventTypes): void {
-        this._gameEvents.next(gameState);
+        Game._gameEvents.next(gameState);
     }
 }
