@@ -144,7 +144,7 @@ var CountDown = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log('Show Time');
+                        // console.log('Show Time');
                         this.sevenSegment.split = true;
                         dateStringRay = new Date().toLocaleTimeString().split(':');
                         hours = dateStringRay[0];

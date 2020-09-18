@@ -96,7 +96,7 @@ export class CountDown extends EventEmitter {
     }
 
     protected async showTime() {
-        console.log('Show Time');
+        // console.log('Show Time');
         this.sevenSegment.split = true;
         const dateStringRay = new Date().toLocaleTimeString().split(':');
         let hours = dateStringRay[0];
