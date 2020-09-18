@@ -80,6 +80,8 @@ var Engine = /** @class */ (function (_super) {
                         console.log('WRONG');
                         this.tempSequence = __spreadArrays(this.sequence);
                     }
+                    console.log("TEMP SEQUENCE LENGTH: " + this.sequence.length);
+                    console.log("TEMP SEQUENCE: ", this.sequence);
                 }
                 if (this.flipperSwitchChannels.includes(channel)) {
                     console.log("FLIP CH: " + channel + ", VAL: " + value);
@@ -91,9 +93,9 @@ var Engine = /** @class */ (function (_super) {
                         console.log('WRONG');
                         this.tempSequence = __spreadArrays(this.sequence);
                     }
+                    console.log("TEMP SEQUENCE LENGTH: " + this.sequence.length);
+                    console.log("TEMP SEQUENCE: ", this.sequence);
                 }
-                console.log("TEMP SEQUENCE LENGTH: " + this.sequence.length);
-                console.log("TEMP SEQUENCE: ", this.sequence);
                 if (this.tempSequence.length < 1) {
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
                 }

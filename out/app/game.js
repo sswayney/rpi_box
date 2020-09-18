@@ -65,7 +65,7 @@ var Game = /** @class */ (function () {
         /**
          * Count down that uses the 7 segment display
          */
-        this.countDown = new count_down_1.CountDown(this.gameEvents$);
+        this.countDown = new count_down_1.CountDown(this.gameEvents$, this.emitGameEvent);
         /**
          * LCD display
          */

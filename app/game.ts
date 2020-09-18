@@ -37,7 +37,7 @@ export class Game {
     /**
      * Count down that uses the 7 segment display
      */
-    private countDown = new CountDown(this.gameEvents$);
+    private countDown = new CountDown(this.gameEvents$, this.emitGameEvent);
 
     /**
      * LCD display

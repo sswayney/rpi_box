@@ -80,6 +80,8 @@ export class Engine extends EventEmitter {
                         console.log('WRONG');
                         this.tempSequence = [...this.sequence];
                     }
+                    console.log(`TEMP SEQUENCE LENGTH: ${this.sequence.length}`);
+                    console.log(`TEMP SEQUENCE: `, this.sequence);
                 }
 
                 if (this.flipperSwitchChannels.includes(channel)){
@@ -91,10 +93,11 @@ export class Engine extends EventEmitter {
                         console.log('WRONG');
                         this.tempSequence = [...this.sequence];
                     }
+                    console.log(`TEMP SEQUENCE LENGTH: ${this.sequence.length}`);
+                    console.log(`TEMP SEQUENCE: `, this.sequence);
                 }
 
-                console.log(`TEMP SEQUENCE LENGTH: ${this.sequence.length}`);
-                console.log(`TEMP SEQUENCE: `, this.sequence);
+
 
                 if (this.tempSequence.length < 1){
                     this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
