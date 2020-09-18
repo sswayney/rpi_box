@@ -50,7 +50,7 @@ var Engine = /** @class */ (function (_super) {
                 this.tempSequence = __spreadArrays(this.sequence);
                 break;
             case game_states_enum_1.GameStates.Explode:
-                setTimeout(function () { return _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence }); }, 5000);
+                setTimeout(function () { return _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.MainMenu }); }, 5000);
                 break;
         }
     };

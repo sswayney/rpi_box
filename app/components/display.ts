@@ -32,8 +32,8 @@ export class Display extends EventResponder {
         switch (this.state) {
             case GameStates.MainMenu:
                 this.lcd.clear();
-                this.lcd.println('    Bomb Potato     ', 1);
-                this.lcd.println('Press Blue 2 Start  ', 2);
+                this.lcd.println('  BOMB  POTATO  ', 1);
+                this.lcd.println('Hit Blue 2 Start', 2);
                 break;
             case GameStates.EnterSequence:
                 this.lcd.clear();

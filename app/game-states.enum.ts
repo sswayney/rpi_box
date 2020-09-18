@@ -3,5 +3,6 @@ export enum GameStates {
     EnterSequence,
     Defuse,
     Explode,
-    FixSwitches
+    FixSwitches,
+    exit
 }

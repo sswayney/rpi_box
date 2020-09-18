@@ -7,5 +7,6 @@ var GameStates;
     GameStates[GameStates["Defuse"] = 2] = "Defuse";
     GameStates[GameStates["Explode"] = 3] = "Explode";
     GameStates[GameStates["FixSwitches"] = 4] = "FixSwitches";
+    GameStates[GameStates["exit"] = 5] = "exit";
 })(GameStates = exports.GameStates || (exports.GameStates = {}));
 //# sourceMappingURL=game-states.enum.js.map
