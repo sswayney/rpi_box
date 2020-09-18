@@ -55,6 +55,7 @@ var operators_1 = require("rxjs/operators");
 var pins_enum_1 = require("../../libs/pins.enum");
 var tm1637_1 = require("../../libs/tm1637");
 var event_responder_1 = require("../events/event-responder");
+var game_states_enum_1 = require("../game-states.enum");
 /**
  * CountDown class that uses a Seven Segment display
  */
@@ -81,12 +82,24 @@ var CountDown = /** @class */ (function (_super) {
             });
         });
     };
-    CountDown.prototype.handleValueChange = function (channel, value) {
-        // switch (channel) {
-        //     case PINS.pin12_green_switch1:
-        //         this.countDown(value);
-        //         break;
-        // }
+    CountDown.prototype.handleStateChange = function () {
+        switch (this.state) {
+            case game_states_enum_1.GameStates.EnterSequence:
+                this.countDown(false);
+                this.sevenSegment.setText('8888');
+                break;
+            case game_states_enum_1.GameStates.FixSwitches:
+                this.countDown(false);
+                this.sevenSegment.setText('----');
+                break;
+            case game_states_enum_1.GameStates.Defuse:
+                this.countDown(true);
+                break;
+            case game_states_enum_1.GameStates.Explode:
+                this.countDown(false);
+                this.sevenSegment.setText('BYE');
+                break;
+        }
     };
     CountDown.prototype.countDown = function (doCountDown) {
         var _this = this;

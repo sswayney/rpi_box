@@ -5,6 +5,7 @@ import {PINS} from "../../libs/pins.enum";
 import {TM1637} from "../../libs/tm1637";
 import {GameEventTypes} from "../events/events";
 import {EventResponder} from "../events/event-responder";
+import {GameStates} from "../game-states.enum";
 
 /**
  * CountDown class that uses a Seven Segment display
@@ -27,13 +28,27 @@ export class CountDown extends EventResponder {
         this.sevenSegment.ready.then((value => this.sevenSegment.setText('    ')));
     }
 
-    protected handleValueChange(channel: number, value: any) {
-        // switch (channel) {
-        //     case PINS.pin12_green_switch1:
-        //         this.countDown(value);
-        //         break;
-        // }
+    protected handleStateChange(): void {
+        switch (this.state) {
+            case GameStates.EnterSequence:
+                this.countDown(false);
+                this.sevenSegment.setText('8888');
+                break;
+            case GameStates.FixSwitches:
+                this.countDown(false);
+                this.sevenSegment.setText('----');
+                break;
+            case GameStates.Defuse:
+                this.countDown(true);
+                break;
+            case GameStates.Explode:
+                this.countDown(false);
+                this.sevenSegment.setText('BYE');
+                break;
+        }
     }
+
+
 
     protected countDown(doCountDown: boolean): void {
         console.log('CountDown: doCountDown', doCountDown);
