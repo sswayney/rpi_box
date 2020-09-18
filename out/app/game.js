@@ -61,7 +61,7 @@ var Game = /** @class */ (function () {
         /**
          * Buttons
          */
-        this.buttons = new buttons_1.Buttons(this.gameEvents$);
+        this.buttons = new buttons_1.Buttons(this.gameEvents$, this.emitGameEvent);
         /**
          * Count down that uses the 7 segment display
          */
@@ -86,12 +86,15 @@ var Game = /** @class */ (function () {
                         console.log('Start');
                         // console.log('Red switch Val', await this.switches.red.getValue());
                         // console.log('Green switch Val', await this.switches.green.getValue());
-                        return [4 /*yield*/, this.switches.red.ready];
+                        return [4 /*yield*/, this.switches.ready];
                     case 1:
                         // console.log('Red switch Val', await this.switches.red.getValue());
                         // console.log('Green switch Val', await this.switches.green.getValue());
                         _a.sent();
-                        this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
+                        return [4 /*yield*/, this.buttons.ready];
+                    case 2:
+                        _a.sent();
+                        this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.MainMenu });
                         /**
                          * Value change listener
                          */

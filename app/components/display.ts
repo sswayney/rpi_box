@@ -30,10 +30,15 @@ export class Display extends EventResponder {
 
     protected handleStateChange(): void {
         switch (this.state) {
+            case GameStates.MainMenu:
+                this.lcd.clear();
+                this.lcd.println('    Bomb Potato     ', 1);
+                this.lcd.println('Press Blue 2 Start  ', 2);
+                break;
             case GameStates.EnterSequence:
                 this.lcd.clear();
                 this.lcd.println('Enter Sequence', 1);
-                this.lcd.println('###', 2);
+                // this.lcd.println('###', 2);
                 break;
             case GameStates.FixSwitches:
                 this.lcd.clear();
@@ -46,7 +51,7 @@ export class Display extends EventResponder {
                 break;
             case GameStates.Explode:
                 this.lcd.clear();
-                this.lcd.println('&%@$&()*%$#!@#%&', 1);
+                this.lcd.println('^&@#$++_)(*&^%@#', 1);
                 this.lcd.println('&%@$&^&*%$#!@#%&', 2);
                 break;
         }

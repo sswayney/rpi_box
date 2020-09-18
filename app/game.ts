@@ -1,5 +1,5 @@
 import * as gpio from 'rpi-gpio';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {Buttons} from "./components/buttons";
 import {CountDown} from "./components/count-down";
 import {Display} from "./components/display";
@@ -32,7 +32,7 @@ export class Game {
     /**
      * Buttons
      */
-    private buttons = new Buttons(this.gameEvents$);
+    private buttons = new Buttons(this.gameEvents$, this.emitGameEvent);
 
     /**
      * Count down that uses the 7 segment display
@@ -54,8 +54,10 @@ export class Game {
         // console.log('Red switch Val', await this.switches.red.getValue());
         // console.log('Green switch Val', await this.switches.green.getValue());
 
-       await this.switches.red.ready;
-       this.emitGameEvent({eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
+        await this.switches.ready;
+        await this.buttons.ready;
+
+       this.emitGameEvent({eventType: GameEventType.StateChange, state: GameStates.MainMenu});
 
         /**
          * Value change listener

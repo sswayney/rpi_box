@@ -1,13 +1,12 @@
 import * as gpio from 'rpi-gpio';
-import {Observable, Subscription, interval} from 'rxjs';
+import {Observable} from 'rxjs';
 import {ButtonLED} from "../../libs/button-led";
 import {PINS} from "../../libs/pins.enum";
-import {EventResponder} from "../events/event-responder";
+import {EventEmitter} from "../events/event-emitter";
 import {GameEventType, GameEventTypes} from "../events/events";
 import {GameStates} from "../game-states.enum";
-import { takeWhile, tap } from 'rxjs/operators';
 
-export class Buttons extends EventResponder {
+export class Buttons extends EventEmitter {
 
     /**
      * Buttons with LEDS
@@ -16,8 +15,11 @@ export class Buttons extends EventResponder {
     public yellow = new ButtonLED(gpio, PINS.pin37_buttonYellow, PINS.pin36_buttonYellow);
     public white = new ButtonLED(gpio, PINS.pin35_buttonWhite, PINS.pin33_buttonWhite);
 
-    constructor(private gameState$: Observable<GameEventTypes>){
-        super(gameState$);
+    public readonly ready: Promise<[boolean, boolean, boolean]>;
+
+    constructor(private gameState$: Observable<GameEventTypes>, protected emitGameEvent: (gameState: GameEventTypes) => void){
+        super(gameState$, emitGameEvent);
+        this.ready = Promise.all([this.blue.button.ready, this.yellow.button.ready, this.white.button.ready]);
     }
 
     protected handleStateChange(): void {
@@ -27,6 +29,9 @@ export class Buttons extends EventResponder {
         this.white.led.blink(false);
 
         switch (this.state) {
+            case GameStates.MainMenu:
+                this.blue.led.blink(true);
+                break;
             case GameStates.Explode:
                 this.blue.led.blink(true, 50);
                 this.yellow.led.blink(true, 55);
@@ -47,6 +52,17 @@ export class Buttons extends EventResponder {
 
     protected handleValueChange(channel: number, value: any) {
 
+        switch (this.state) {
+            case GameStates.MainMenu:
+                if (channel === this.blue.button.pin && value){
+                    this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
+                }
+                break;
+        }
+
+        /**
+         * Default behavior is to light up when touched
+         */
         switch (channel) {
             case this.blue.button.pin:
                 value ? this.blue.led.on() : this.blue.led.off();

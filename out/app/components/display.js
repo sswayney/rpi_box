@@ -40,10 +40,15 @@ var Display = /** @class */ (function (_super) {
     };
     Display.prototype.handleStateChange = function () {
         switch (this.state) {
+            case game_states_enum_1.GameStates.MainMenu:
+                this.lcd.clear();
+                this.lcd.println('    Bomb Potato     ', 1);
+                this.lcd.println('Press Blue 2 Start  ', 2);
+                break;
             case game_states_enum_1.GameStates.EnterSequence:
                 this.lcd.clear();
                 this.lcd.println('Enter Sequence', 1);
-                this.lcd.println('###', 2);
+                // this.lcd.println('###', 2);
                 break;
             case game_states_enum_1.GameStates.FixSwitches:
                 this.lcd.clear();
@@ -56,7 +61,7 @@ var Display = /** @class */ (function (_super) {
                 break;
             case game_states_enum_1.GameStates.Explode:
                 this.lcd.clear();
-                this.lcd.println('&%@$&()*%$#!@#%&', 1);
+                this.lcd.println('^&@#$++_)(*&^%@#', 1);
                 this.lcd.println('&%@$&^&*%$#!@#%&', 2);
                 break;
         }

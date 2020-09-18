@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameStates;
 (function (GameStates) {
-    GameStates[GameStates["EnterSequence"] = 0] = "EnterSequence";
-    GameStates[GameStates["Defuse"] = 1] = "Defuse";
-    GameStates[GameStates["Explode"] = 2] = "Explode";
-    GameStates[GameStates["FixSwitches"] = 3] = "FixSwitches";
+    GameStates[GameStates["MainMenu"] = 0] = "MainMenu";
+    GameStates[GameStates["EnterSequence"] = 1] = "EnterSequence";
+    GameStates[GameStates["Defuse"] = 2] = "Defuse";
+    GameStates[GameStates["Explode"] = 3] = "Explode";
+    GameStates[GameStates["FixSwitches"] = 4] = "FixSwitches";
 })(GameStates = exports.GameStates || (exports.GameStates = {}));
 //# sourceMappingURL=game-states.enum.js.map

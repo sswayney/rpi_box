@@ -8,7 +8,7 @@ import {GameStates} from "../game-states.enum";
 
 export class Switches extends EventEmitter{
 
-    private readonly ready: Promise<[boolean, boolean]>;
+    public readonly ready: Promise<[boolean, boolean]>;
     public readonly green = new Switch(gpio, PINS.pin12_green_switch1);
     public readonly red = new Switch(gpio, PINS.pin16_red_switch2);
 
