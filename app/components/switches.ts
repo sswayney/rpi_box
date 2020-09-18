@@ -32,7 +32,7 @@ export class Switches extends EventEmitter{
             if (this.state === GameStates.FixSwitches) {
                 this.readyForSequenceStart().then((ready: boolean) => {
                     if (ready) {
-                        this.emitGameEvent({eventType: GameEventType.StateChange, state: GameStates.FixSwitches});
+                        this.emitGameEvent({eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
                     }
                 });
             }

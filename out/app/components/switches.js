@@ -82,7 +82,7 @@ var Switches = /** @class */ (function (_super) {
             if (this.state === game_states_enum_1.GameStates.FixSwitches) {
                 this.readyForSequenceStart().then(function (ready) {
                     if (ready) {
-                        _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.FixSwitches });
+                        _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
                     }
                 });
             }
