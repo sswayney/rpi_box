@@ -49,7 +49,7 @@ var Buzzer = /** @class */ (function (_super) {
             case pins_enum_1.PINS.pin40_buttonBlue:
                 this.buzzer.on();
                 break;
-            case pins_enum_1.PINS.pin33_buttonWhite:
+            case pins_enum_1.PINS.pin35_buttonWhite:
                 this.buzzer.blink(true);
                 break;
         }
