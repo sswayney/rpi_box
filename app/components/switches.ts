@@ -11,4 +11,10 @@ export class Switches {
     constructor(){
         this.ready = Promise.all([this.green.ready, this.red.ready]);
     }
+
+    public async getReadyForSequenceStart(): Promise<boolean> {
+        const greenVal = await this.green.getValue();
+        const redVal = await this.red.getValue();
+        return !greenVal && !redVal;
+    }
 }

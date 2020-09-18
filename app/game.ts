@@ -1,55 +1,49 @@
 import * as gpio from 'rpi-gpio';
-import {ButtonLED} from "../libs/button-led";
-import {LCD} from "../libs/lcdi2c";
-import {PINS} from "../libs/pins.enum";
-import {Switch} from "../libs/switch";
-import {TM1637} from "../libs/tm1637";
+import {BehaviorSubject} from 'rxjs';
 import {Buttons} from "./components/buttons";
 import {CountDown} from "./components/count-down";
 import {Display} from "./components/display";
-import {Updateable} from "./intefaces/updateable";
 import {Switches} from "./components/switches";
-
+import {GameEventType, GameEventTypes} from "./events/events";
+import {GameStates} from "./game-states.enum";
 
 /**
  * Main Game
  */
 export class Game {
 
-    /**
-     * Various States the game can be in.
-     */
-    public static State: 'EnterSequence' | 'Defuse' | 'Explode' | 'FixSwitches' = 'EnterSequence';
+    private _gameEvents = new BehaviorSubject<GameEventTypes>({eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
+
+    get gameEvents$() {
+        return this._gameEvents.asObservable();
+    }
 
     /**
      * Switches
      */
-    protected switches = new Switches();
+    private switches = new Switches();
 
     /**
      * Buttons
      */
-    protected buttons = new Buttons();
+    private buttons = new Buttons(this.gameEvents$);
 
     /**
      * Count down that uses the 7 segment display
      */
-    protected countDown = new CountDown();
+    private countDown = new CountDown(this.gameEvents$);
 
     /**
      * LCD display
      */
-    protected display = new  Display();
+    private display = new  Display(this.gameEvents$);
 
-    protected updaters: Updateable[] = [];
 
     constructor() {
-      this.updaters.push(this.buttons);
-      this.updaters.push(this.countDown);
-      this.updaters.push(this.display);
     }
 
     public async start(): Promise<void> {
+        console.log('Start');
 
         console.log('Red switch Val', await this.switches.red.getValue());
         console.log('Green switch Val', await this.switches.green.getValue());
@@ -61,7 +55,7 @@ export class Game {
 
     }
 
-    protected channelValueListener(): (...args: any[]) => void {
+    private channelValueListener(): (...args: any[]) => void {
         const lastValues: Map<any, any> = new Map();
         return (channel, value) => {
 
@@ -69,13 +63,14 @@ export class Game {
                 lastValues.set(channel, value);
                 // console.log('Channel ' + channel + ' value is now ' + value);
 
-                /**
-                 * Pass update values to all update able components
-                 */
-                this.updaters.forEach((u: Updateable) => u.update(channel,value))
+                this.setGameState({eventType: GameEventType.ValueChange, channel: channel, value: value});
 
             }
         }
 
+    }
+
+    private setGameState(gameState: GameEventTypes): void {
+        this._gameEvents.next(gameState);
     }
 }

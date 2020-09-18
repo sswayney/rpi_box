@@ -1,17 +1,17 @@
 import * as gpio from 'rpi-gpio';
+import {interval, Observable, Subscription} from 'rxjs';
+import {map, takeWhile, tap} from 'rxjs/operators';
 import {PINS} from "../../libs/pins.enum";
 import {TM1637} from "../../libs/tm1637";
-import {Updateable} from "../intefaces/updateable";
-import { Subscription, interval } from 'rxjs';
-import { takeWhile, tap, map } from 'rxjs/operators';
+import {GameEventTypes} from "../events/events";
+import {EventResponder} from "../events/event-responder";
 
 /**
  * CountDown class that uses a Seven Segment display
  */
-export class CountDown implements Updateable {
+export class CountDown extends EventResponder {
 
      async text(value: string) {
-
          await this.sevenSegment.setText(value);
      }
 
@@ -22,20 +22,21 @@ export class CountDown implements Updateable {
 
     protected sevenSegment = new TM1637(gpio, PINS.pin11_clk, PINS.pin7_dio);
 
-    constructor() {
+    constructor(gameEvents$: Observable<GameEventTypes>) {
+        super(gameEvents$);
         this.sevenSegment.ready.then((value => this.sevenSegment.setText('    ')));
     }
 
-    update(channel: number, value: any) {
-        switch (channel) {
-            case PINS.pin12_green_switch1:
-                this.countDown(value);
-                break;
-        }
+    protected handleValueChange(channel: number, value: any) {
+        // switch (channel) {
+        //     case PINS.pin12_green_switch1:
+        //         this.countDown(value);
+        //         break;
+        // }
     }
 
     protected countDown(doCountDown: boolean): void {
-        console.log('CountDown: doCountDown');
+        console.log('CountDown: doCountDown', doCountDown);
 
         if (doCountDown && !this.doCountDown) {
             this.doCountDown = true;

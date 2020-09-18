@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,21 +50,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
-var pins_enum_1 = require("../../libs/pins.enum");
-var tm1637_1 = require("../../libs/tm1637");
 var rxjs_1 = require("rxjs");
 var operators_1 = require("rxjs/operators");
+var pins_enum_1 = require("../../libs/pins.enum");
+var tm1637_1 = require("../../libs/tm1637");
+var event_responder_1 = require("../events/event-responder");
 /**
  * CountDown class that uses a Seven Segment display
  */
-var CountDown = /** @class */ (function () {
-    function CountDown() {
-        var _this = this;
-        this.doCountDown = false;
-        this.delay = 1000;
-        this.seconds = 120;
-        this.sevenSegment = new tm1637_1.TM1637(gpio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin7_dio);
-        this.sevenSegment.ready.then((function (value) { return _this.sevenSegment.setText('    '); }));
+var CountDown = /** @class */ (function (_super) {
+    __extends(CountDown, _super);
+    function CountDown(gameEvents$) {
+        var _this = _super.call(this, gameEvents$) || this;
+        _this.doCountDown = false;
+        _this.delay = 1000;
+        _this.seconds = 120;
+        _this.sevenSegment = new tm1637_1.TM1637(gpio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin7_dio);
+        _this.sevenSegment.ready.then((function (value) { return _this.sevenSegment.setText('    '); }));
+        return _this;
     }
     CountDown.prototype.text = function (value) {
         return __awaiter(this, void 0, void 0, function () {
@@ -65,16 +81,16 @@ var CountDown = /** @class */ (function () {
             });
         });
     };
-    CountDown.prototype.update = function (channel, value) {
-        switch (channel) {
-            case pins_enum_1.PINS.pin12_green_switch1:
-                this.countDown(value);
-                break;
-        }
+    CountDown.prototype.handleValueChange = function (channel, value) {
+        // switch (channel) {
+        //     case PINS.pin12_green_switch1:
+        //         this.countDown(value);
+        //         break;
+        // }
     };
     CountDown.prototype.countDown = function (doCountDown) {
         var _this = this;
-        console.log('CountDown: doCountDown');
+        console.log('CountDown: doCountDown', doCountDown);
         if (doCountDown && !this.doCountDown) {
             this.doCountDown = true;
             if (!this.interval || this.interval.closed) {
@@ -107,6 +123,6 @@ var CountDown = /** @class */ (function () {
         });
     };
     return CountDown;
-}());
+}(event_responder_1.EventResponder));
 exports.CountDown = CountDown;
 //# sourceMappingURL=count-down.js.map

@@ -37,15 +37,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
+var rxjs_1 = require("rxjs");
 var buttons_1 = require("./components/buttons");
 var count_down_1 = require("./components/count-down");
 var display_1 = require("./components/display");
 var switches_1 = require("./components/switches");
+var events_1 = require("./events/events");
+var game_states_enum_1 = require("./game-states.enum");
 /**
  * Main Game
  */
 var Game = /** @class */ (function () {
     function Game() {
+        this._gameEvents = new rxjs_1.BehaviorSubject({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
         /**
          * Switches
          */
@@ -53,26 +57,30 @@ var Game = /** @class */ (function () {
         /**
          * Buttons
          */
-        this.buttons = new buttons_1.Buttons();
+        this.buttons = new buttons_1.Buttons(this.gameEvents$);
         /**
          * Count down that uses the 7 segment display
          */
-        this.countDown = new count_down_1.CountDown();
+        this.countDown = new count_down_1.CountDown(this.gameEvents$);
         /**
          * LCD display
          */
-        this.display = new display_1.Display();
-        this.updaters = [];
-        this.updaters.push(this.buttons);
-        this.updaters.push(this.countDown);
-        this.updaters.push(this.display);
+        this.display = new display_1.Display(this.gameEvents$);
     }
+    Object.defineProperty(Game.prototype, "gameEvents$", {
+        get: function () {
+            return this._gameEvents.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
     Game.prototype.start = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a, _b, _c, _d, _e, _f;
             return __generator(this, function (_g) {
                 switch (_g.label) {
                     case 0:
+                        console.log('Start');
                         _b = (_a = console).log;
                         _c = ['Red switch Val'];
                         return [4 /*yield*/, this.switches.red.getValue()];
@@ -99,17 +107,13 @@ var Game = /** @class */ (function () {
             if (lastValues.get(channel) !== value) {
                 lastValues.set(channel, value);
                 // console.log('Channel ' + channel + ' value is now ' + value);
-                /**
-                 * Pass update values to all update able components
-                 */
-                _this.updaters.forEach(function (u) { return u.update(channel, value); });
+                _this.setGameState({ eventType: events_1.GameEventType.ValueChange, channel: channel, value: value });
             }
         };
     };
-    /**
-     * Various States the game can be in.
-     */
-    Game.State = 'EnterSequence';
+    Game.prototype.setGameState = function (gameState) {
+        this._gameEvents.next(gameState);
+    };
     return Game;
 }());
 exports.Game = Game;

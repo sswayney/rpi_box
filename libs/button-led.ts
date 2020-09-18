@@ -2,7 +2,6 @@ import * as gpio from "rpi-gpio";
 import {LED} from "./led";
 import {Switch} from "./switch";
 
-
 /**
  * A button(switch) with an led
  */

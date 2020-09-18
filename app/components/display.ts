@@ -1,19 +1,22 @@
+import {Observable} from "rxjs";
 import {LCD} from "../../libs/lcdi2c";
 import {PINS} from "../../libs/pins.enum";
-import {Updateable} from "../intefaces/updateable";
+import {EventResponder} from "../events/event-responder";
+import {GameEventTypes} from "../events/events";
 
-export class Display implements Updateable {
+export class Display extends EventResponder {
     /**
      * LCD display
      * Uses pins 3 and 5
      */
     protected lcd = new LCD(1, 0x27, 16,2);
 
-    constructor() {
-        this.lcd.clear();
-        this.lcd.home();
-        this.lcd.println('ENTER SEQUENCE',1);
-        this.lcd.println('####',2);
+    constructor(private gameState$: Observable<GameEventTypes>) {
+        super(gameState$);
+        // this.lcd.clear();
+        // this.lcd.home();
+        // this.lcd.println('ENTER SEQUENCE',1);
+        // this.lcd.println('####',2);
     }
 
     public clear(): void {
@@ -24,7 +27,7 @@ export class Display implements Updateable {
         this.lcd.println(value, line);
     }
 
-    update(channel: number, value: any) {
+    handleValueChange(channel: number, value: any) {
         switch (channel) {
             case PINS.pin35_buttonWhite:
                 this.lcd.clear();
