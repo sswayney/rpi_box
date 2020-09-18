@@ -35,9 +35,13 @@ export class Buzzer extends EventResponder {
         switch (channel) {
             case PINS.pin37_buttonYellow:
                 this.buzzer.off();
+                this.buzzer.blink(false);
                 break;
             case PINS.pin40_buttonBlue:
                 this.buzzer.on();
+                break;
+            case PINS.pin35_buttonWhite:
+                this.buzzer.blink(true);
                 break;
         }
     }
