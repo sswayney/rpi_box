@@ -25,6 +25,7 @@ export class Buzzer extends EventResponder {
             case GameStates.MainMenu:
                 break;
             case GameStates.EnterSequence:
+                this.buzzer.blip(100);
                 break;
             case GameStates.FixSwitches:
                 break;
@@ -32,7 +33,7 @@ export class Buzzer extends EventResponder {
                 this.buzzer.blip(100);
                 break;
             case GameStates.Explode:
-                this.buzzer.on();
+                setTimeout(() => this.buzzer.on(), 100);
                 break;
         }
     }

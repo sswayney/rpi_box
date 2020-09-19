@@ -28,12 +28,14 @@ var Buzzer = /** @class */ (function (_super) {
         return _this;
     }
     Buzzer.prototype.handleStateChange = function () {
+        var _this = this;
         this.buzzer.off();
         this.buzzer.blink(false);
         switch (this.state) {
             case game_states_enum_1.GameStates.MainMenu:
                 break;
             case game_states_enum_1.GameStates.EnterSequence:
+                this.buzzer.blip(100);
                 break;
             case game_states_enum_1.GameStates.FixSwitches:
                 break;
@@ -41,7 +43,7 @@ var Buzzer = /** @class */ (function (_super) {
                 this.buzzer.blip(100);
                 break;
             case game_states_enum_1.GameStates.Explode:
-                this.buzzer.on();
+                setTimeout(function () { return _this.buzzer.on(); }, 100);
                 break;
         }
     };
