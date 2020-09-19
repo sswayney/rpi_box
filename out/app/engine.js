@@ -72,60 +72,29 @@ var Engine = /** @class */ (function (_super) {
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
                 }
                 break;
-            /**
-             * ENTER SEQUENCE
-             */
             case game_states_enum_1.GameStates.EnterSequence:
-                if (this.momentarySwitchChannels.includes(channel) && value) {
-                    console.log("BUTT CH: " + channel + ", VAL: " + value);
-                    this.sequence.unshift({ channel: channel, value: value });
-                    console.log("SEQUENCE LENGTH: " + this.sequence.length);
-                    console.log("SEQUENCE: ", this.sequence);
-                }
-                if (this.flipperSwitchChannels.includes(channel)) {
-                    console.log("FLIP CH: " + channel + ", VAL: " + value);
-                    this.sequence.unshift({ channel: channel, value: value });
-                    console.log("SEQUENCE LENGTH: " + this.sequence.length);
-                    console.log("SEQUENCE: ", this.sequence);
-                }
+                console.log("Engine Enter CH: " + channel + ", VAL: " + value);
+                this.sequence.unshift({ channel: channel, value: value });
+                console.log("SEQUENCE LENGTH: " + this.sequence.length);
+                console.log("SEQUENCE: ", this.sequence);
                 if (this.sequence.length >= this.sequenceMaxLength) {
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Defuse });
                 }
                 break;
-            /**
-             * DEFUSE
-             */
             case game_states_enum_1.GameStates.Defuse:
-                if (this.momentarySwitchChannels.includes(channel) && value) {
-                    console.log("BUTT CH: " + channel + ", VAL: " + value);
-                    var entry = this.tempSequence.pop();
-                    if (entry.channel === channel && entry.value === value) {
-                        console.log('MATCH');
-                        this.emitSequenceUpdate(true);
-                    }
-                    else {
-                        console.log('WRONG');
-                        this.tempSequence = __spreadArrays(this.sequence);
-                        this.emitSequenceUpdate(false);
-                    }
-                    console.log("TEMP SEQUENCE LENGTH: " + this.tempSequence.length);
-                    console.log("TEMP SEQUENCE: ", this.tempSequence);
+                console.log("Engine Defuse CH: " + channel + ", VAL: " + value);
+                var entry = this.tempSequence.pop();
+                if (entry.channel === channel && entry.value === value) {
+                    console.log('MATCH');
+                    this.emitSequenceUpdate(true);
                 }
-                if (this.flipperSwitchChannels.includes(channel)) {
-                    console.log("FLIP CH: " + channel + ", VAL: " + value);
-                    var entry = this.tempSequence.pop();
-                    if (entry.channel === channel && entry.value === value) {
-                        console.log('MATCH');
-                        this.emitSequenceUpdate(true);
-                    }
-                    else {
-                        console.log('WRONG');
-                        this.tempSequence = __spreadArrays(this.sequence);
-                        this.emitSequenceUpdate(false);
-                    }
-                    console.log("TEMP SEQUENCE LENGTH: " + this.tempSequence.length);
-                    console.log("TEMP SEQUENCE: ", this.tempSequence);
+                else {
+                    console.log('WRONG');
+                    this.tempSequence = __spreadArrays(this.sequence);
+                    this.emitSequenceUpdate(false);
                 }
+                console.log("TEMP SEQUENCE LENGTH: " + this.tempSequence.length);
+                console.log("TEMP SEQUENCE: ", this.tempSequence);
                 if (this.tempSequence.length < 1) {
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
                 }

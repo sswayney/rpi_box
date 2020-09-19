@@ -63,66 +63,32 @@ export class Engine extends EventEmitter {
                     this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
                 }
                 break;
-
-            /**
-             * ENTER SEQUENCE
-             */
             case GameStates.EnterSequence:
 
-            if (this.momentarySwitchChannels.includes(channel) && value){
-                console.log(`BUTT CH: ${channel}, VAL: ${value}`);
+                console.log(`Engine Enter CH: ${channel}, VAL: ${value}`);
                 this.sequence.unshift({ channel: channel, value: value});
                 console.log(`SEQUENCE LENGTH: ${this.sequence.length}`);
                 console.log(`SEQUENCE: `, this.sequence);
-            }
-
-            if (this.flipperSwitchChannels.includes(channel)){
-                console.log(`FLIP CH: ${channel}, VAL: ${value}`);
-                this.sequence.unshift({ channel: channel, value: value});
-                console.log(`SEQUENCE LENGTH: ${this.sequence.length}`);
-                console.log(`SEQUENCE: `, this.sequence);
-            }
 
 
-            if (this.sequence.length >= this.sequenceMaxLength){
-                this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Defuse});
-            }
-                break;
-
-            /**
-             * DEFUSE
-             */
+                if (this.sequence.length >= this.sequenceMaxLength){
+                    this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Defuse});
+                }
+                    break;
             case GameStates.Defuse:
 
-                if (this.momentarySwitchChannels.includes(channel) && value){
-                    console.log(`BUTT CH: ${channel}, VAL: ${value}`);
-                    const entry = this.tempSequence.pop();
-                    if (entry.channel === channel && entry.value === value){
-                        console.log('MATCH');
-                        this.emitSequenceUpdate(true);
-                    } else {
-                        console.log('WRONG');
-                        this.tempSequence = [...this.sequence];
-                        this.emitSequenceUpdate(false);
-                    }
-                    console.log(`TEMP SEQUENCE LENGTH: ${this.tempSequence.length}`);
-                    console.log(`TEMP SEQUENCE: `, this.tempSequence);
+                console.log(`Engine Defuse CH: ${channel}, VAL: ${value}`);
+                const entry = this.tempSequence.pop();
+                if (entry.channel === channel && entry.value === value){
+                    console.log('MATCH');
+                    this.emitSequenceUpdate(true);
+                } else {
+                    console.log('WRONG');
+                    this.tempSequence = [...this.sequence];
+                    this.emitSequenceUpdate(false);
                 }
-
-                if (this.flipperSwitchChannels.includes(channel)){
-                    console.log(`FLIP CH: ${channel}, VAL: ${value}`);
-                    const entry = this.tempSequence.pop();
-                    if (entry.channel === channel && entry.value === value){
-                        console.log('MATCH');
-                        this.emitSequenceUpdate(true);
-                    } else {
-                        console.log('WRONG');
-                        this.tempSequence = [...this.sequence];
-                        this.emitSequenceUpdate(false);
-                    }
-                    console.log(`TEMP SEQUENCE LENGTH: ${this.tempSequence.length}`);
-                    console.log(`TEMP SEQUENCE: `, this.tempSequence);
-                }
+                console.log(`TEMP SEQUENCE LENGTH: ${this.tempSequence.length}`);
+                console.log(`TEMP SEQUENCE: `, this.tempSequence);
 
 
                 if (this.tempSequence.length < 1){
