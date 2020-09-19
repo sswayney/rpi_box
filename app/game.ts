@@ -5,6 +5,7 @@ import {Buzzer} from "./components/buzzer";
 import {CountDown} from "./components/count-down";
 import {Display} from "./components/display";
 import {Switches} from "./components/switches";
+import {Vibration} from "./components/vibration";
 import {Engine} from "./engine";
 import {GameEventType, GameEventTypes} from "./events/events";
 import {GameStates} from "./game-states.enum";
@@ -48,7 +49,12 @@ export class Game {
     /**
      * Buzzer sound
      */
-    private buzzer = new Buzzer(this.gameEvents$)
+    private buzzer = new Buzzer(this.gameEvents$);
+
+    /**
+     * Vibration motor
+     */
+    private vibration = new Vibration(this.gameEvents$);
 
 
     constructor() {
