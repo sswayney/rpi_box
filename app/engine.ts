@@ -1,9 +1,9 @@
-import {Observable, interval} from "rxjs";
-import {filter, debounce} from "rxjs/operators";
-import {PINS} from "./pins.enum";
+import {interval, Observable} from "rxjs";
+import {debounce, filter} from "rxjs/operators";
 import {EventEmitter} from "./events/event-emitter";
 import {GameEventType, GameEventTypes, GameMessageType, SequenceUpdate} from "./events/events";
 import {GameStates} from "./game-states.enum";
+import {PINS} from "./pins.enum";
 
 interface ChannelValue {
     channel: number;
@@ -50,7 +50,9 @@ export class Engine extends EventEmitter {
     private emitSequenceUpdate(isRight: boolean = false) {
         this.emitGameEvent({
             eventType: GameEventType.Message, message: GameMessageType.SequenceUpdate, value: <SequenceUpdate>{
-                sequenceLength: this.tempSequence.length, sequenceMaxLength: this.sequenceMaxLength, right: isRight
+                sequenceLength: this.state === GameStates.Defuse? this.tempSequence.length : this.sequence.length,
+                sequenceMaxLength: this.sequenceMaxLength,
+                right: isRight
             }
         });
     }

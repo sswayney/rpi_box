@@ -22,10 +22,10 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var rxjs_1 = require("rxjs");
 var operators_1 = require("rxjs/operators");
-var pins_enum_1 = require("./pins.enum");
 var event_emitter_1 = require("./events/event-emitter");
 var events_1 = require("./events/events");
 var game_states_enum_1 = require("./game-states.enum");
+var pins_enum_1 = require("./pins.enum");
 var Engine = /** @class */ (function (_super) {
     __extends(Engine, _super);
     function Engine(gameEvents$, emitGameEvent) {
@@ -61,7 +61,9 @@ var Engine = /** @class */ (function (_super) {
         if (isRight === void 0) { isRight = false; }
         this.emitGameEvent({
             eventType: events_1.GameEventType.Message, message: events_1.GameMessageType.SequenceUpdate, value: {
-                sequenceLength: this.tempSequence.length, sequenceMaxLength: this.sequenceMaxLength, right: isRight
+                sequenceLength: this.state === game_states_enum_1.GameStates.Defuse ? this.tempSequence.length : this.sequence.length,
+                sequenceMaxLength: this.sequenceMaxLength,
+                right: isRight
             }
         });
     };
