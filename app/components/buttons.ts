@@ -31,18 +31,18 @@ export class Buttons extends EventEmitter {
         switch (this.state) {
             case GameStates.MainMenu:
                 this.blue.led.blink(true);
-                this.yellow.led.blink(true,5000);
-                this.white.led.blink(true, 10000);
+                this.yellow.led.blink(true,10000, 5000);
+                this.white.led.blink(true, 20000, 10000);
                 break;
             case GameStates.Explode:
-                this.blue.led.blink(true, 50);
-                this.yellow.led.blink(true, 55);
-                this.white.led.blink(true, 60);
+                this.blue.led.blink(true, 100, 50);
+                this.yellow.led.blink(true, 110, 55);
+                this.white.led.blink(true, 120, 60);
                 break;
             case GameStates.FixSwitches:
-                setTimeout(() => this.blue.led.blink(true, 200),1);
-                setTimeout(() => this.yellow.led.blink(true, 200),100);
-                setTimeout(() => this.white.led.blink(true, 200),250);
+                setTimeout(() => this.blue.led.blink(true, 400, 200),1);
+                setTimeout(() => this.yellow.led.blink(true, 400, 200),100);
+                setTimeout(() => this.white.led.blink(true, 400, 200),250);
                 break;
         }
     }

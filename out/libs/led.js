@@ -46,15 +46,16 @@ var LED = /** @class */ (function (_super) {
         this._gpio.write(this._pin, false);
         this._value = false;
     };
-    LED.prototype.blink = function (doBlink, delay) {
+    LED.prototype.blink = function (doBlink, delay, onTime) {
         // console.log('blink: doBlink :' + doBlink, delay)
         var _this = this;
-        if (delay === void 0) { delay = 500; }
+        if (delay === void 0) { delay = 1000; }
+        if (onTime === void 0) { onTime = 500; }
         if (doBlink && !this.doBlink) {
             this.delay = delay;
             this.doBlink = true;
             if (!this.interval || this.interval.closed) {
-                this.interval = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doBlink; }), operators_1.map(function (val) { return val % 2 === 0; }), operators_1.tap(function (val) { return val ? _this.on() : _this.off(); })).subscribe();
+                this.interval = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doBlink; }), operators_1.tap(function (val) { return _this.blip(onTime); })).subscribe();
             }
         }
         else {
@@ -62,6 +63,12 @@ var LED = /** @class */ (function (_super) {
             this.interval ? this.interval.unsubscribe() : null;
             this.off();
         }
+    };
+    LED.prototype.blip = function (time) {
+        var _this = this;
+        if (time === void 0) { time = 100; }
+        this.on();
+        setTimeout(function () { return _this.off(); }, time);
     };
     return LED;
 }(pin_1.Pin));

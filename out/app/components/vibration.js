@@ -31,17 +31,12 @@ var Vibration = /** @class */ (function (_super) {
         this.motor.off();
         switch (this.state) {
             case game_states_enum_1.GameStates.EnterSequence:
-                setTimeout(function () { return _this.bump(250); }, 100);
+                setTimeout(function () { return _this.motor.blip(250); }, 100);
                 break;
             case game_states_enum_1.GameStates.Explode:
                 this.motor.on();
                 break;
         }
-    };
-    Vibration.prototype.bump = function (time) {
-        var _this = this;
-        this.motor.on();
-        setTimeout(function () { return _this.motor.off(); }, time);
     };
     return Vibration;
 }(event_responder_1.EventResponder));

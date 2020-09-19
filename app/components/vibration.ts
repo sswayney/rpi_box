@@ -20,16 +20,11 @@ export class Vibration extends EventResponder {
         this.motor.off();
         switch (this.state) {
             case GameStates.EnterSequence:
-                setTimeout(() => this.bump(250),100);
+                setTimeout(() => this.motor.blip(250),100);
                 break;
             case GameStates.Explode:
                 this.motor.on();
                 break;
         }
-    }
-
-    private bump(time: number): void {
-        this.motor.on();
-        setTimeout(() => this.motor.off(), time);
     }
 }

@@ -38,7 +38,7 @@ var Buzzer = /** @class */ (function (_super) {
             case game_states_enum_1.GameStates.FixSwitches:
                 break;
             case game_states_enum_1.GameStates.Defuse:
-                this.beep(100);
+                this.buzzer.blip(100);
                 break;
             case game_states_enum_1.GameStates.Explode:
                 this.buzzer.on();
@@ -48,14 +48,9 @@ var Buzzer = /** @class */ (function (_super) {
     Buzzer.prototype.handleMessage = function (message) {
         switch (message) {
             case events_1.GameMessageType.TenSecondsLeft:
-                this.buzzer.blink(true);
+                this.buzzer.blink(true, 1000, 100);
                 break;
         }
-    };
-    Buzzer.prototype.beep = function (time) {
-        var _this = this;
-        this.buzzer.on();
-        setTimeout(function () { return _this.buzzer.off(); }, time);
     };
     return Buzzer;
 }(event_responder_1.EventResponder));

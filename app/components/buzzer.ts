@@ -27,7 +27,7 @@ export class Buzzer extends EventResponder {
             case GameStates.FixSwitches:
                 break;
             case GameStates.Defuse:
-                this.beep(100);
+                this.buzzer.blip(100);
                 break;
             case GameStates.Explode:
                 this.buzzer.on();
@@ -38,14 +38,9 @@ export class Buzzer extends EventResponder {
     protected handleMessage(message: GameMessageType): void {
         switch (message) {
             case GameMessageType.TenSecondsLeft:
-                this.buzzer.blink(true);
+                this.buzzer.blink(true, 1000, 100);
                 break;
 
         }
-    }
-
-    private beep(time: number): void {
-        this.buzzer.on();
-        setTimeout(() => this.buzzer.off(), time);
     }
 }

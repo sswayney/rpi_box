@@ -36,7 +36,7 @@ export class LED extends Pin {
         this._value = false;
     }
 
-    public blink(doBlink: boolean, delay: number = 500): void {
+    public blink(doBlink: boolean, delay: number = 1000, onTime: number = 500): void {
         // console.log('blink: doBlink :' + doBlink, delay)
 
         if (doBlink && !this.doBlink) {
@@ -45,13 +45,17 @@ export class LED extends Pin {
 
             if (!this.interval || this.interval.closed) {
                 this.interval = interval(this.delay).pipe(takeWhile(() => this.doBlink),
-                    map(val => val % 2 === 0),
-                    tap(val => val ? this.on() : this.off())).subscribe();
+                    tap(val => this.blip(onTime))).subscribe();
             }
         } else {
             this.doBlink = false;
             this.interval ? this.interval.unsubscribe() : null;
             this.off();
         }
+    }
+
+    public blip(time: number = 100): void {
+        this.on();
+        setTimeout(() => this.off(), time);
     }
 }

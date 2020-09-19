@@ -42,18 +42,18 @@ var Buttons = /** @class */ (function (_super) {
         switch (this.state) {
             case game_states_enum_1.GameStates.MainMenu:
                 this.blue.led.blink(true);
-                this.yellow.led.blink(true, 5000);
-                this.white.led.blink(true, 10000);
+                this.yellow.led.blink(true, 10000, 5000);
+                this.white.led.blink(true, 20000, 10000);
                 break;
             case game_states_enum_1.GameStates.Explode:
-                this.blue.led.blink(true, 50);
-                this.yellow.led.blink(true, 55);
-                this.white.led.blink(true, 60);
+                this.blue.led.blink(true, 100, 50);
+                this.yellow.led.blink(true, 110, 55);
+                this.white.led.blink(true, 120, 60);
                 break;
             case game_states_enum_1.GameStates.FixSwitches:
-                setTimeout(function () { return _this.blue.led.blink(true, 200); }, 1);
-                setTimeout(function () { return _this.yellow.led.blink(true, 200); }, 100);
-                setTimeout(function () { return _this.white.led.blink(true, 200); }, 250);
+                setTimeout(function () { return _this.blue.led.blink(true, 400, 200); }, 1);
+                setTimeout(function () { return _this.yellow.led.blink(true, 400, 200); }, 100);
+                setTimeout(function () { return _this.white.led.blink(true, 400, 200); }, 250);
                 break;
         }
     };
