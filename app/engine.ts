@@ -45,8 +45,10 @@ export class Engine extends EventEmitter {
 
     private emitSequenceUpdate(isRight: boolean = false) {
         this.emitGameEvent({
-            eventType: GameEventType.Message, message: GameMessageType.SequenceUpdate, value: <SequenceUpdate>{
-                sequenceLength: this.state === GameStates.Defuse? this.tempSequence.length : this.sequence.length,
+            eventType: GameEventType.Message,
+            message: GameMessageType.SequenceUpdate,
+            value: <SequenceUpdate>{
+                sequenceLength: this.state === GameStates.Defuse ? this.tempSequence.length : this.sequence.length,
                 sequenceMaxLength: this.sequenceMaxLength,
                 right: isRight
             }

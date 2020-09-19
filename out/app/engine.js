@@ -61,7 +61,9 @@ var Engine = /** @class */ (function (_super) {
     Engine.prototype.emitSequenceUpdate = function (isRight) {
         if (isRight === void 0) { isRight = false; }
         this.emitGameEvent({
-            eventType: events_1.GameEventType.Message, message: events_1.GameMessageType.SequenceUpdate, value: {
+            eventType: events_1.GameEventType.Message,
+            message: events_1.GameMessageType.SequenceUpdate,
+            value: {
                 sequenceLength: this.state === game_states_enum_1.GameStates.Defuse ? this.tempSequence.length : this.sequence.length,
                 sequenceMaxLength: this.sequenceMaxLength,
                 right: isRight

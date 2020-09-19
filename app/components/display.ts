@@ -56,6 +56,7 @@ export class Display extends EventResponder {
     protected handleMessage(message: MessageEventType): void {
         switch (message.message) {
             case GameMessageType.SequenceUpdate:
+                this.lcd.clear();
                 const sequenceUpdate = message.value as SequenceUpdate;
                 let displayText = '';
                 for ( let i = 0; i < sequenceUpdate.sequenceMaxLength; i++ ) {

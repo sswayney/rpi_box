@@ -66,6 +66,7 @@ var Display = /** @class */ (function (_super) {
     Display.prototype.handleMessage = function (message) {
         switch (message.message) {
             case events_1.GameMessageType.SequenceUpdate:
+                this.lcd.clear();
                 var sequenceUpdate = message.value;
                 var displayText = '';
                 for (var i = 0; i < sequenceUpdate.sequenceMaxLength; i++) {
