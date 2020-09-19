@@ -62,7 +62,7 @@ export class Display extends EventResponder {
                         displayText += i > sequenceUpdate.sequenceLength ? '#' : ' ';
                     }
                     if (this.state === GameStates.EnterSequence) {
-                        displayText += i > sequenceUpdate.sequenceLength ? ' ' : '#';
+                        displayText += i > sequenceUpdate.sequenceLength ? '#' : ' ';
                     }
                 }
                 this.lcd.println('                ', 2);

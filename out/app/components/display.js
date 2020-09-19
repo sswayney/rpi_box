@@ -73,7 +73,7 @@ var Display = /** @class */ (function (_super) {
                         displayText += i > sequenceUpdate.sequenceLength ? '#' : ' ';
                     }
                     if (this.state === game_states_enum_1.GameStates.EnterSequence) {
-                        displayText += i > sequenceUpdate.sequenceLength ? ' ' : '#';
+                        displayText += i > sequenceUpdate.sequenceLength ? '#' : ' ';
                     }
                 }
                 this.lcd.println('                ', 2);
