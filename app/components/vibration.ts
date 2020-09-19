@@ -19,7 +19,7 @@ export class Vibration extends EventResponder {
     protected handleStateChange(): void {
         switch (this.state) {
             case GameStates.EnterSequence:
-                this.bump(100);
+                this.bump(250);
                 break;
             case GameStates.Explode:
                 this.motor.on();
