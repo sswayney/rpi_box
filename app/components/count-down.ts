@@ -1,7 +1,7 @@
 import * as gpio from 'rpi-gpio';
 import {interval, Observable, Subscription} from 'rxjs';
 import {map, takeWhile, tap} from 'rxjs/operators';
-import {PINS} from "../../libs/pins.enum";
+import {PINS} from "../pins.enum";
 import {TM1637} from "../../libs/tm1637";
 import {EventEmitter} from "../events/event-emitter";
 import {GameEventType, GameEventTypes, GameMessageType} from "../events/events";

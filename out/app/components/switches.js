@@ -50,7 +50,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
-var pins_enum_1 = require("../../libs/pins.enum");
+var pins_enum_1 = require("../pins.enum");
 var switch_1 = require("../../libs/switch");
 var event_emitter_1 = require("../events/event-emitter");
 var events_1 = require("../events/events");

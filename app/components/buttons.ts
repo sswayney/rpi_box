@@ -1,7 +1,7 @@
 import * as gpio from 'rpi-gpio';
 import {Observable} from 'rxjs';
 import {ButtonLED} from "../../libs/button-led";
-import {PINS} from "../../libs/pins.enum";
+import {PINS} from "../pins.enum";
 import {EventEmitter} from "../events/event-emitter";
 import {GameEventType, GameEventTypes} from "../events/events";
 import {GameStates} from "../game-states.enum";

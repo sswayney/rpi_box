@@ -52,7 +52,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var rxjs_1 = require("rxjs");
 var operators_1 = require("rxjs/operators");
-var pins_enum_1 = require("../../libs/pins.enum");
+var pins_enum_1 = require("../pins.enum");
 var tm1637_1 = require("../../libs/tm1637");
 var event_emitter_1 = require("../events/event-emitter");
 var events_1 = require("../events/events");

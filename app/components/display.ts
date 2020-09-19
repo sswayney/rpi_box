@@ -1,6 +1,6 @@
 import {Observable} from "rxjs";
 import {LCD} from "../../libs/lcdi2c";
-import {PINS} from "../../libs/pins.enum";
+import {PINS} from "../pins.enum";
 import {EventResponder} from "../events/event-responder";
 import {GameEventTypes, GameMessageType, MessageEventType, SequenceUpdate} from "../events/events";
 import {GameStates} from "../game-states.enum";

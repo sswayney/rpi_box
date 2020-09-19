@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var rxjs_1 = require("rxjs");
-var pins_enum_1 = require("../libs/pins.enum");
+var pins_enum_1 = require("./pins.enum");
 var buttons_1 = require("./components/buttons");
 var count_down_1 = require("./components/count-down");
 var display_1 = require("./components/display");
@@ -116,7 +116,9 @@ var Game = /** @class */ (function () {
     Game.prototype.channelValueListener = function () {
         var _this = this;
         var lastValues = new Map();
-        var nonValueChangeEmitPins = [pins_enum_1.PINS.pin15_vibration_motor, pins_enum_1.PINS.pin3_lcd, pins_enum_1.PINS.pin5_lcd, pins_enum_1.PINS.pin7_dio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin18_buzzer, pins_enum_1.PINS.pin33_buttonWhiteLED, pins_enum_1.PINS.pin36_buttonYellowLED, pins_enum_1.PINS.pin38_buttonBlueLED];
+        var nonValueChangeEmitPins = [pins_enum_1.PINS.pin15_vibration_motor, pins_enum_1.PINS.pin3_lcd, pins_enum_1.PINS.pin5_lcd, pins_enum_1.PINS.pin7_dio,
+            pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin18_buzzer, pins_enum_1.PINS.pin33_buttonWhiteLED,
+            pins_enum_1.PINS.pin36_buttonYellowLED, pins_enum_1.PINS.pin38_buttonBlueLED];
         return function (channel, value) {
             if (lastValues.get(channel) !== value) {
                 lastValues.set(channel, value);

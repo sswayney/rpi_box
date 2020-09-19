@@ -20,14 +20,16 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var pins_enum_1 = require("../libs/pins.enum");
+var rxjs_1 = require("rxjs");
+var operators_1 = require("rxjs/operators");
+var pins_enum_1 = require("./pins.enum");
 var event_emitter_1 = require("./events/event-emitter");
 var events_1 = require("./events/events");
 var game_states_enum_1 = require("./game-states.enum");
 var Engine = /** @class */ (function (_super) {
     __extends(Engine, _super);
     function Engine(gameEvents$, emitGameEvent) {
-        var _this = _super.call(this, gameEvents$, emitGameEvent) || this;
+        var _this = _super.call(this, gameEvents$.pipe(operators_1.filter(Engine.filterOutFalseButtons), operators_1.debounce(function () { return rxjs_1.interval(50); })), emitGameEvent) || this;
         _this.gameEvents$ = gameEvents$;
         _this.emitGameEvent = emitGameEvent;
         _this.sequence = [];
@@ -124,6 +126,14 @@ var Engine = /** @class */ (function (_super) {
                 }
                 break;
         }
+    };
+    Engine.filterOutFalseButtons = function (gameEvent) {
+        if (gameEvent.eventType === events_1.GameEventType.ValueChange) {
+            if ([pins_enum_1.PINS.pin37_buttonYellow, pins_enum_1.PINS.pin35_buttonWhite, pins_enum_1.PINS.pin40_buttonBlue].includes(gameEvent.channel) && !gameEvent.value) {
+                return false;
+            }
+        }
+        return true;
     };
     return Engine;
 }(event_emitter_1.EventEmitter));

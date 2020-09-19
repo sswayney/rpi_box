@@ -1,5 +1,6 @@
-import {Observable} from "rxjs";
-import {PINS} from "../libs/pins.enum";
+import {Observable, interval} from "rxjs";
+import {filter, debounce} from "rxjs/operators";
+import {PINS} from "./pins.enum";
 import {EventEmitter} from "./events/event-emitter";
 import {GameEventType, GameEventTypes, GameMessageType, SequenceUpdate} from "./events/events";
 import {GameStates} from "./game-states.enum";
@@ -20,7 +21,7 @@ export class Engine extends EventEmitter {
     private readonly flipperSwitchChannels = [PINS.pin12_green_switch1, PINS.pin16_red_switch2];
 
     constructor(protected gameEvents$: Observable<GameEventTypes>, protected emitGameEvent: (gameState: GameEventTypes) => void){
-        super(gameEvents$, emitGameEvent);
+        super(gameEvents$.pipe(filter(Engine.filterOutFalseButtons), debounce(() => interval(50))), emitGameEvent);
     }
 
     protected handleStateChange(): void {
@@ -128,4 +129,13 @@ export class Engine extends EventEmitter {
     }
 
 
+    private static filterOutFalseButtons(gameEvent: GameEventTypes): boolean {
+        if (gameEvent.eventType === GameEventType.ValueChange){
+            if ([PINS.pin37_buttonYellow, PINS.pin35_buttonWhite, PINS.pin40_buttonBlue].includes(gameEvent.channel) && !gameEvent.value){
+                return false;
+            }
+        }
+        return true;
+
+    }
 }

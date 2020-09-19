@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var button_led_1 = require("../../libs/button-led");
-var pins_enum_1 = require("../../libs/pins.enum");
+var pins_enum_1 = require("../pins.enum");
 var event_emitter_1 = require("../events/event-emitter");
 var events_1 = require("../events/events");
 var game_states_enum_1 = require("../game-states.enum");
