@@ -67,7 +67,21 @@ var Buttons = /** @class */ (function (_super) {
     Buttons.prototype.handleValueChange = function (channel, value) {
         var _this = this;
         if (this.state === game_states_enum_1.GameStates.Defuse) {
-            value = !value;
+            /**
+             * Default behavior is to light up when touched
+             */
+            switch (channel) {
+                case this.blue.button.pin:
+                    value ? this.blue.led.off() : setTimeout(function () { return _this.blue.led.on(); }, 250);
+                    break;
+                case this.yellow.button.pin:
+                    value ? this.yellow.led.off() : setTimeout(function () { return _this.yellow.led.on(); }, 250);
+                    break;
+                case this.white.button.pin:
+                    value ? this.white.led.off() : setTimeout(function () { return _this.white.led.on(); }, 250);
+                    break;
+            }
+            return;
         }
         /**
          * Default behavior is to light up when touched

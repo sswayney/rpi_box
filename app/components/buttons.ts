@@ -60,7 +60,21 @@ export class Buttons extends EventEmitter {
     protected handleValueChange(channel: number, value: any) {
 
         if (this.state === GameStates.Defuse) {
-            value = !value;
+            /**
+             * Default behavior is to light up when touched
+             */
+            switch (channel) {
+                case this.blue.button.pin:
+                    value ? this.blue.led.off() : setTimeout(() =>this.blue.led.on(), 250);
+                    break;
+                case this.yellow.button.pin:
+                    value ? this.yellow.led.off() : setTimeout(() =>this.yellow.led.on(), 250);
+                    break;
+                case this.white.button.pin:
+                    value ? this.white.led.off() : setTimeout(() =>this.white.led.on(), 250);
+                    break;
+            }
+            return;
         }
 
         /**
