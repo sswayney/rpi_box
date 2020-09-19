@@ -23,7 +23,7 @@ var Vibration = /** @class */ (function (_super) {
     function Vibration(gameState$) {
         var _this = _super.call(this, gameState$) || this;
         _this.gameState$ = gameState$;
-        _this.motor = new led_1.LED(gpio, pins_enum_1.PINS.pin18_buzzer);
+        _this.motor = new led_1.LED(gpio, pins_enum_1.PINS.pin15_vibration_motor);
         return _this;
     }
     Vibration.prototype.handleStateChange = function () {

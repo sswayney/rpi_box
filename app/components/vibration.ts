@@ -13,7 +13,7 @@ export class Vibration extends EventResponder {
 
     constructor(private gameState$: Observable<GameEventTypes>) {
         super(gameState$);
-        this.motor = new LED(gpio, PINS.pin18_buzzer);
+        this.motor = new LED(gpio, PINS.pin15_vibration_motor);
     }
 
     protected handleStateChange(): void {
