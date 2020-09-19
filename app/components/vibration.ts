@@ -17,15 +17,14 @@ export class Vibration extends EventResponder {
     }
 
     protected handleStateChange(): void {
+        this.motor.off();
         switch (this.state) {
             case GameStates.EnterSequence:
-                this.bump(250);
+                setTimeout(() => this.bump(250),100);
                 break;
             case GameStates.Explode:
                 this.motor.on();
                 break;
-            default:
-                this.motor.off();
         }
     }
 
