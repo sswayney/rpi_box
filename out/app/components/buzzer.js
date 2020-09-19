@@ -46,17 +46,17 @@ var Buzzer = /** @class */ (function (_super) {
         }
     };
     Buzzer.prototype.handleValueChange = function (channel, value) {
-        switch (channel) {
-            case pins_enum_1.PINS.pin35_buttonWhite:
-                this.buzzer.blip(100);
-                break;
-            case pins_enum_1.PINS.pin37_buttonYellow:
-                this.buzzer.blink(false);
-                break;
-            case pins_enum_1.PINS.pin40_buttonBlue:
-                this.buzzer.blink(true, 1000, 200);
-                break;
-        }
+        // switch (channel) {
+        //     case PINS.pin35_buttonWhite:
+        //         this.buzzer.blip(100);
+        //         break;
+        //     case PINS.pin37_buttonYellow:
+        //         this.buzzer.blink(false);
+        //         break;
+        //     case PINS.pin40_buttonBlue:
+        //         this.buzzer.blink(true, 1000, 200);
+        //         break;
+        // }
     };
     Buzzer.prototype.handleMessage = function (message) {
         switch (message) {

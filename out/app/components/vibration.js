@@ -27,11 +27,10 @@ var Vibration = /** @class */ (function (_super) {
         return _this;
     }
     Vibration.prototype.handleStateChange = function () {
-        var _this = this;
         this.motor.off();
         switch (this.state) {
             case game_states_enum_1.GameStates.EnterSequence:
-                setTimeout(function () { return _this.motor.blip(250); }, 100);
+                // setTimeout(() => this.motor.blip(250),100);
                 break;
             case game_states_enum_1.GameStates.Explode:
                 this.motor.on();

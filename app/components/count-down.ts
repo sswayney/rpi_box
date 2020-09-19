@@ -65,7 +65,7 @@ export class CountDown extends EventEmitter {
             if (!this.subscription || this.subscription.closed) {
                 this.subscription = interval(this.delay).pipe(takeWhile(() => this.doCountDown),
                     map(sec => this.seconds - sec),
-                    tap( sec => sec === 11 ? this.emitGameEvent({ eventType: GameEventType.Message, message: GameMessageType.TenSecondsLeft}) : undefined),
+                    tap( sec => sec === 6 ? this.emitGameEvent({ eventType: GameEventType.Message, message: GameMessageType.TenSecondsLeft}) : undefined),
                     tap( sec => sec < 1 ? this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Explode}) : undefined),
                     map( sec => `${~~(sec / 60)}${('' + (sec % 60)).padStart(2,0 + '')}`),
                   //  tap( val => console.log('value ' + val)),

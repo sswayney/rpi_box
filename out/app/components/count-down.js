@@ -115,7 +115,7 @@ var CountDown = /** @class */ (function (_super) {
             this.sevenSegment.split = true;
             this.doCountDown = true;
             if (!this.subscription || this.subscription.closed) {
-                this.subscription = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.map(function (sec) { return _this.seconds - sec; }), operators_1.tap(function (sec) { return sec === 11 ? _this.emitGameEvent({ eventType: events_1.GameEventType.Message, message: events_1.GameMessageType.TenSecondsLeft }) : undefined; }), operators_1.tap(function (sec) { return sec < 1 ? _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Explode }) : undefined; }), operators_1.map(function (sec) { return "" + ~~(sec / 60) + ('' + (sec % 60)).padStart(2, 0 + ''); }), 
+                this.subscription = rxjs_1.interval(this.delay).pipe(operators_1.takeWhile(function () { return _this.doCountDown; }), operators_1.map(function (sec) { return _this.seconds - sec; }), operators_1.tap(function (sec) { return sec === 6 ? _this.emitGameEvent({ eventType: events_1.GameEventType.Message, message: events_1.GameMessageType.TenSecondsLeft }) : undefined; }), operators_1.tap(function (sec) { return sec < 1 ? _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Explode }) : undefined; }), operators_1.map(function (sec) { return "" + ~~(sec / 60) + ('' + (sec % 60)).padStart(2, 0 + ''); }), 
                 //  tap( val => console.log('value ' + val)),
                 operators_1.tap(function (text) { return _this.text(text); })).subscribe();
             }
