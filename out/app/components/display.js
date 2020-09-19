@@ -71,7 +71,7 @@ var Display = /** @class */ (function (_super) {
         switch (message.message) {
             case events_1.GameMessageType.SequenceUpdate:
                 var sequenceUpdate = message.value;
-                this.lcd.println(sequenceUpdate.sequenceMaxLength - sequenceUpdate.sequenceLength, 2);
+                this.lcd.println((sequenceUpdate.sequenceMaxLength - sequenceUpdate.sequenceLength) + '', 2);
                 break;
         }
     };

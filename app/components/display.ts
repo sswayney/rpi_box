@@ -61,7 +61,7 @@ export class Display extends EventResponder {
         switch (message.message) {
             case GameMessageType.SequenceUpdate:
                 const sequenceUpdate = message.value as SequenceUpdate;
-                this.lcd.println(sequenceUpdate.sequenceMaxLength - sequenceUpdate.sequenceLength, 2);
+                this.lcd.println((sequenceUpdate.sequenceMaxLength - sequenceUpdate.sequenceLength) + '', 2);
                 break;
 
         }
