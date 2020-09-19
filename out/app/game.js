@@ -40,6 +40,7 @@ var gpio = require("rpi-gpio");
 var rxjs_1 = require("rxjs");
 var pins_enum_1 = require("./pins.enum");
 var buttons_1 = require("./components/buttons");
+var buzzer_1 = require("./components/buzzer");
 var count_down_1 = require("./components/count-down");
 var display_1 = require("./components/display");
 var switches_1 = require("./components/switches");
@@ -75,7 +76,7 @@ var Game = /** @class */ (function () {
         /**
          * Buzzer sound
          */
-        // private buzzer = new Buzzer(this.gameEvents$);
+        this.buzzer = new buzzer_1.Buzzer(this.gameEvents$);
         /**
          * Vibration motor
          */
