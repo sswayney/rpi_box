@@ -70,7 +70,7 @@ var Display = /** @class */ (function (_super) {
                 var displayText = '';
                 for (var i = 0; i < sequenceUpdate.sequenceMaxLength; i++) {
                     if (this.state === game_states_enum_1.GameStates.Defuse) {
-                        displayText += i < sequenceUpdate.sequenceLength ? ' ' : '#';
+                        displayText += i > sequenceUpdate.sequenceLength ? '#' : ' ';
                     }
                     if (this.state === game_states_enum_1.GameStates.EnterSequence) {
                         displayText += i > sequenceUpdate.sequenceLength ? ' ' : '#';
