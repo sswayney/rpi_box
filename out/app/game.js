@@ -43,7 +43,6 @@ var buttons_1 = require("./components/buttons");
 var count_down_1 = require("./components/count-down");
 var display_1 = require("./components/display");
 var switches_1 = require("./components/switches");
-var vibration_1 = require("./components/vibration");
 var engine_1 = require("./engine");
 var events_1 = require("./events/events");
 var game_states_enum_1 = require("./game-states.enum");
@@ -51,6 +50,14 @@ var game_states_enum_1 = require("./game-states.enum");
  * Main Game
  */
 var Game = /** @class */ (function () {
+    /**
+     * Buzzer sound
+     */
+    // private buzzer = new Buzzer(this.gameEvents$);
+    /**
+     * Vibration motor
+     */
+    // private vibration = new Vibration(this.gameEvents$);
     function Game() {
         /**
          * Engine
@@ -72,14 +79,6 @@ var Game = /** @class */ (function () {
          * LCD display
          */
         this.display = new display_1.Display(this.gameEvents$);
-        /**
-         * Buzzer sound
-         */
-        // private buzzer = new Buzzer(this.gameEvents$);
-        /**
-         * Vibration motor
-         */
-        this.vibration = new vibration_1.Vibration(this.gameEvents$);
     }
     Object.defineProperty(Game.prototype, "gameEvents$", {
         get: function () {
