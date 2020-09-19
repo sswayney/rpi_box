@@ -4,7 +4,7 @@ import {map, takeWhile, tap} from 'rxjs/operators';
 import {PINS} from "../../libs/pins.enum";
 import {TM1637} from "../../libs/tm1637";
 import {EventEmitter} from "../events/event-emitter";
-import {GameEventType, GameEventTypes} from "../events/events";
+import {GameEventType, GameEventTypes, GameMessageType} from "../events/events";
 import {GameStates} from "../game-states.enum";
 
 /**
@@ -20,7 +20,7 @@ export class CountDown extends EventEmitter {
     protected doCountDown = false;
     protected delay = 1000;
     protected subscription: Subscription;
-    protected seconds: number = 30;
+    protected seconds: number = 20;
 
     protected sevenSegment = new TM1637(gpio, PINS.pin11_clk, PINS.pin7_dio);
 
@@ -64,12 +64,12 @@ export class CountDown extends EventEmitter {
 
             if (!this.subscription || this.subscription.closed) {
                 this.subscription = interval(this.delay).pipe(takeWhile(() => this.doCountDown),
-                    map(val => this.seconds - val),
-                   // tap( val => console.log('seconds ' + val)),
-                    tap( val => val < 1 ? this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Explode}) : undefined),
-                    map( val => `${~~(val / 60)}${('' + (val % 60)).padStart(2,0 + '')}`),
+                    map(sec => this.seconds - sec),
+                    tap( sec => sec < 11 ? this.emitGameEvent({ eventType: GameEventType.Message, message: GameMessageType.TenSecondsLeft}) : undefined),
+                    tap( sec => sec < 1 ? this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Explode}) : undefined),
+                    map( sec => `${~~(sec / 60)}${('' + (sec % 60)).padStart(2,0 + '')}`),
                   //  tap( val => console.log('value ' + val)),
-                    tap(val => this.text(val))).subscribe();
+                    tap(text => this.text(text))).subscribe();
             }
         } else {
             this.doCountDown = false;

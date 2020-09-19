@@ -2,7 +2,12 @@ import {GameStates} from "../game-states.enum";
 
 export enum GameEventType {
     ValueChange = 'VALUE_CHANGE',
-    StateChange = 'STATE_CHANGE'
+    StateChange = 'STATE_CHANGE',
+    Message = 'MESSAGE'
+}
+
+export enum GameMessageType {
+    TenSecondsLeft = '10_SEC_LEFT'
 }
 
 export interface GameEvent {
@@ -20,4 +25,10 @@ export interface StateChangeEventType extends GameEvent {
     state: GameStates;
 }
 
-export type GameEventTypes = ValueChangeEventType | StateChangeEventType;
+export interface MessageEventType extends GameEvent {
+    eventType: GameEventType.Message;
+    message: GameMessageType;
+}
+
+
+export type GameEventTypes = ValueChangeEventType | StateChangeEventType | MessageEventType;

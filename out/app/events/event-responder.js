@@ -16,6 +16,9 @@ var EventResponder = /** @class */ (function () {
                     _this.state = gameEvent.state;
                     _this.handleStateChange();
                     break;
+                case events_1.GameEventType.Message:
+                    _this.handleMessage(gameEvent.message);
+                    break;
                 default:
                     break;
             }
@@ -24,6 +27,8 @@ var EventResponder = /** @class */ (function () {
     EventResponder.prototype.handleValueChange = function (channel, value) {
     };
     EventResponder.prototype.handleStateChange = function () {
+    };
+    EventResponder.prototype.handleMessage = function (message) {
     };
     return EventResponder;
 }());

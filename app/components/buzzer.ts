@@ -1,9 +1,9 @@
 import * as gpio from 'rpi-gpio';
+import {Observable} from 'rxjs';
 import {LED} from "../../libs/led";
 import {PINS} from "../../libs/pins.enum";
 import {EventResponder} from "../events/event-responder";
-import {GameEventTypes} from "../events/events";
-import { Observable } from 'rxjs';
+import {GameEventTypes, GameMessageType} from "../events/events";
 import {GameStates} from "../game-states.enum";
 
 
@@ -17,6 +17,8 @@ export class Buzzer extends EventResponder {
     }
 
     protected handleStateChange(): void {
+        this.buzzer.off();
+        this.buzzer.blink(false);
         switch (this.state) {
             case GameStates.MainMenu:
                 break;
@@ -30,24 +32,16 @@ export class Buzzer extends EventResponder {
             case GameStates.Explode:
                 this.buzzer.on();
                 break;
-            default:
-                this.buzzer.off();
         }
     }
 
-    protected handleValueChange(channel: number, value: any) {
-        // switch (channel) {
-        //     case PINS.pin37_buttonYellow:
-        //         this.buzzer.off();
-        //         this.buzzer.blink(false);
-        //         break;
-        //     case PINS.pin40_buttonBlue:
-        //         this.buzzer.on();
-        //         break;
-        //     case PINS.pin35_buttonWhite:
-        //         this.buzzer.blink(true);
-        //         break;
-        // }
+    protected handleMessage(message: GameMessageType): void {
+        switch (message) {
+            case GameMessageType.TenSecondsLeft:
+                this.buzzer.blink(true);
+                break;
+
+        }
     }
 
     private beep(time: number): void {

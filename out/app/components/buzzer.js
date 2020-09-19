@@ -17,6 +17,7 @@ var gpio = require("rpi-gpio");
 var led_1 = require("../../libs/led");
 var pins_enum_1 = require("../../libs/pins.enum");
 var event_responder_1 = require("../events/event-responder");
+var events_1 = require("../events/events");
 var game_states_enum_1 = require("../game-states.enum");
 var Buzzer = /** @class */ (function (_super) {
     __extends(Buzzer, _super);
@@ -27,6 +28,8 @@ var Buzzer = /** @class */ (function (_super) {
         return _this;
     }
     Buzzer.prototype.handleStateChange = function () {
+        this.buzzer.off();
+        this.buzzer.blink(false);
         switch (this.state) {
             case game_states_enum_1.GameStates.MainMenu:
                 break;
@@ -40,23 +43,14 @@ var Buzzer = /** @class */ (function (_super) {
             case game_states_enum_1.GameStates.Explode:
                 this.buzzer.on();
                 break;
-            default:
-                this.buzzer.off();
         }
     };
-    Buzzer.prototype.handleValueChange = function (channel, value) {
-        // switch (channel) {
-        //     case PINS.pin37_buttonYellow:
-        //         this.buzzer.off();
-        //         this.buzzer.blink(false);
-        //         break;
-        //     case PINS.pin40_buttonBlue:
-        //         this.buzzer.on();
-        //         break;
-        //     case PINS.pin35_buttonWhite:
-        //         this.buzzer.blink(true);
-        //         break;
-        // }
+    Buzzer.prototype.handleMessage = function (message) {
+        switch (message) {
+            case events_1.GameMessageType.TenSecondsLeft:
+                this.buzzer.blink(true);
+                break;
+        }
     };
     Buzzer.prototype.beep = function (time) {
         var _this = this;
