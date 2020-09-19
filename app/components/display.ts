@@ -1,6 +1,5 @@
 import {Observable} from "rxjs";
 import {LCD} from "../../libs/lcdi2c";
-import {PINS} from "../pins.enum";
 import {EventResponder} from "../events/event-responder";
 import {GameEventTypes, GameMessageType, MessageEventType, SequenceUpdate} from "../events/events";
 import {GameStates} from "../game-states.enum";
@@ -56,12 +55,17 @@ export class Display extends EventResponder {
     protected handleMessage(message: MessageEventType): void {
         switch (message.message) {
             case GameMessageType.SequenceUpdate:
-                this.lcd.clear();
                 const sequenceUpdate = message.value as SequenceUpdate;
                 let displayText = '';
                 for ( let i = 0; i < sequenceUpdate.sequenceMaxLength; i++ ) {
-                    displayText += i < sequenceUpdate.sequenceLength ? '' : '#';
+                    if (this.state === GameStates.Defuse) {
+                        displayText += i < sequenceUpdate.sequenceLength ? '' : '#';
+                    }
+                    if (this.state === GameStates.EnterSequence) {
+                        displayText += i > sequenceUpdate.sequenceLength ? '' : '#';
+                    }
                 }
+                this.lcd.println('                ', 2);
                 this.lcd.println(displayText, 2);
                 break;
 
