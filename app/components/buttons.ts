@@ -1,10 +1,10 @@
 import * as gpio from 'rpi-gpio';
 import {Observable} from 'rxjs';
 import {ButtonLED} from "../../libs/button-led";
-import {PINS} from "../pins.enum";
 import {EventEmitter} from "../events/event-emitter";
-import {GameEventType, GameEventTypes} from "../events/events";
+import {GameEventTypes} from "../events/events";
 import {GameStates} from "../game-states.enum";
+import {PINS} from "../pins.enum";
 
 export class Buttons extends EventEmitter {
 
@@ -44,6 +44,11 @@ export class Buttons extends EventEmitter {
                 setTimeout(() => this.yellow.led.blink(true, 400, 200),100);
                 setTimeout(() => this.white.led.blink(true, 400, 200),250);
                 break;
+            case GameStates.Defuse:
+                this.blue.led.on();
+                this.yellow.led.on();
+                this.white.led.on();
+                break;
         }
     }
 
@@ -54,18 +59,22 @@ export class Buttons extends EventEmitter {
 
     protected handleValueChange(channel: number, value: any) {
 
+        if (this.state === GameStates.Defuse) {
+            value = !value;
+        }
+
         /**
          * Default behavior is to light up when touched
          */
         switch (channel) {
             case this.blue.button.pin:
-                value ? this.blue.led.on() : this.blue.led.off();
+                value ? this.blue.led.on() : setTimeout(() =>this.blue.led.off(), 250);
                 break;
             case this.yellow.button.pin:
-                value ? this.yellow.led.on() : this.yellow.led.off();
+                value ? this.yellow.led.on() : setTimeout(() =>this.yellow.led.off(), 250);
                 break;
             case this.white.button.pin:
-                value ? this.white.led.on() : this.white.led.off();
+                value ? this.white.led.on() : setTimeout(() =>this.white.led.off(), 250);
                 break;
         }
     }

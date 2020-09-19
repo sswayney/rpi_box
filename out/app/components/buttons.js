@@ -15,9 +15,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var button_led_1 = require("../../libs/button-led");
-var pins_enum_1 = require("../pins.enum");
 var event_emitter_1 = require("../events/event-emitter");
 var game_states_enum_1 = require("../game-states.enum");
+var pins_enum_1 = require("../pins.enum");
 var Buttons = /** @class */ (function (_super) {
     __extends(Buttons, _super);
     function Buttons(gameState$, emitGameEvent) {
@@ -54,24 +54,33 @@ var Buttons = /** @class */ (function (_super) {
                 setTimeout(function () { return _this.yellow.led.blink(true, 400, 200); }, 100);
                 setTimeout(function () { return _this.white.led.blink(true, 400, 200); }, 250);
                 break;
+            case game_states_enum_1.GameStates.Defuse:
+                this.blue.led.on();
+                this.yellow.led.on();
+                this.white.led.on();
+                break;
         }
     };
     Buttons.prototype.blink = function (doBlink) {
         console.log('Buttons: doBlink', doBlink);
     };
     Buttons.prototype.handleValueChange = function (channel, value) {
+        var _this = this;
+        if (this.state === game_states_enum_1.GameStates.Defuse) {
+            value = !value;
+        }
         /**
          * Default behavior is to light up when touched
          */
         switch (channel) {
             case this.blue.button.pin:
-                value ? this.blue.led.on() : this.blue.led.off();
+                value ? this.blue.led.on() : setTimeout(function () { return _this.blue.led.off(); }, 250);
                 break;
             case this.yellow.button.pin:
-                value ? this.yellow.led.on() : this.yellow.led.off();
+                value ? this.yellow.led.on() : setTimeout(function () { return _this.yellow.led.off(); }, 250);
                 break;
             case this.white.button.pin:
-                value ? this.white.led.on() : this.white.led.off();
+                value ? this.white.led.on() : setTimeout(function () { return _this.white.led.off(); }, 250);
                 break;
         }
     };
