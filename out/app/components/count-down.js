@@ -68,7 +68,7 @@ var CountDown = /** @class */ (function (_super) {
         _this.doShowClock = false;
         _this.doCountDown = false;
         _this.delay = 1000;
-        _this.seconds = 120;
+        _this.seconds = 30;
         _this.sevenSegment = new tm1637_1.TM1637(gpio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin7_dio);
         _this.sevenSegment.ready.then((function (value) { return _this.sevenSegment.setText('    '); }));
         return _this;

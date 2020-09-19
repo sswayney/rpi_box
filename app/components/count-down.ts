@@ -20,7 +20,7 @@ export class CountDown extends EventEmitter {
     protected doCountDown = false;
     protected delay = 1000;
     protected subscription: Subscription;
-    protected seconds: number = 120;
+    protected seconds: number = 30;
 
     protected sevenSegment = new TM1637(gpio, PINS.pin11_clk, PINS.pin7_dio);
 
