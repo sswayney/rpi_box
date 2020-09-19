@@ -48,7 +48,7 @@ var Buzzer = /** @class */ (function (_super) {
     Buzzer.prototype.handleMessage = function (message) {
         switch (message) {
             case events_1.GameMessageType.TenSecondsLeft:
-                this.buzzer.blink(true, 1000, 100);
+                this.buzzer.blink(true, 1000, 200);
                 break;
         }
     };

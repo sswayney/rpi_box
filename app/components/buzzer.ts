@@ -38,7 +38,7 @@ export class Buzzer extends EventResponder {
     protected handleMessage(message: GameMessageType): void {
         switch (message) {
             case GameMessageType.TenSecondsLeft:
-                this.buzzer.blink(true, 1000, 100);
+                this.buzzer.blink(true, 1000, 200);
                 break;
 
         }
