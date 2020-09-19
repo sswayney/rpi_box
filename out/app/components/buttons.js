@@ -28,9 +28,9 @@ var Buttons = /** @class */ (function (_super) {
         /**
          * Buttons with LEDS
          */
-        _this.blue = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin40_buttonBlue, pins_enum_1.PINS.pin38_buttonBlue);
-        _this.yellow = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin37_buttonYellow, pins_enum_1.PINS.pin36_buttonYellow);
-        _this.white = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin35_buttonWhite, pins_enum_1.PINS.pin33_buttonWhite);
+        _this.blue = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin40_buttonBlue, pins_enum_1.PINS.pin38_buttonBlueLED);
+        _this.yellow = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin37_buttonYellow, pins_enum_1.PINS.pin36_buttonYellowLED);
+        _this.white = new button_led_1.ButtonLED(gpio, pins_enum_1.PINS.pin35_buttonWhite, pins_enum_1.PINS.pin33_buttonWhiteLED);
         _this.ready = Promise.all([_this.blue.button.ready, _this.yellow.button.ready, _this.white.button.ready]);
         return _this;
     }

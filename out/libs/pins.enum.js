@@ -13,11 +13,11 @@ var PINS;
     PINS[PINS["pin15_vibration_motor"] = 15] = "pin15_vibration_motor";
     PINS[PINS["pin16_red_switch2"] = 16] = "pin16_red_switch2";
     PINS[PINS["pin18_buzzer"] = 18] = "pin18_buzzer";
-    PINS[PINS["pin33_buttonWhite"] = 33] = "pin33_buttonWhite";
+    PINS[PINS["pin33_buttonWhiteLED"] = 33] = "pin33_buttonWhiteLED";
     PINS[PINS["pin35_buttonWhite"] = 35] = "pin35_buttonWhite";
-    PINS[PINS["pin36_buttonYellow"] = 36] = "pin36_buttonYellow";
+    PINS[PINS["pin36_buttonYellowLED"] = 36] = "pin36_buttonYellowLED";
     PINS[PINS["pin37_buttonYellow"] = 37] = "pin37_buttonYellow";
-    PINS[PINS["pin38_buttonBlue"] = 38] = "pin38_buttonBlue";
+    PINS[PINS["pin38_buttonBlueLED"] = 38] = "pin38_buttonBlueLED";
     PINS[PINS["pin40_buttonBlue"] = 40] = "pin40_buttonBlue";
 })(PINS = exports.PINS || (exports.PINS = {}));
 //# sourceMappingURL=pins.enum.js.map

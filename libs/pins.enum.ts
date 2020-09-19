@@ -10,10 +10,10 @@ export enum PINS {
     pin15_vibration_motor = 15,
     pin16_red_switch2 = 16,
     pin18_buzzer = 18,
-    pin33_buttonWhite = 33,
+    pin33_buttonWhiteLED = 33,
     pin35_buttonWhite = 35,
-    pin36_buttonYellow = 36,
+    pin36_buttonYellowLED = 36,
     pin37_buttonYellow = 37,
-    pin38_buttonBlue = 38,
+    pin38_buttonBlueLED = 38,
     pin40_buttonBlue = 40
 }

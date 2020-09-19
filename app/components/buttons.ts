@@ -11,9 +11,9 @@ export class Buttons extends EventEmitter {
     /**
      * Buttons with LEDS
      */
-    public blue = new ButtonLED(gpio, PINS.pin40_buttonBlue, PINS.pin38_buttonBlue);
-    public yellow = new ButtonLED(gpio, PINS.pin37_buttonYellow, PINS.pin36_buttonYellow);
-    public white = new ButtonLED(gpio, PINS.pin35_buttonWhite, PINS.pin33_buttonWhite);
+    public blue = new ButtonLED(gpio, PINS.pin40_buttonBlue, PINS.pin38_buttonBlueLED);
+    public yellow = new ButtonLED(gpio, PINS.pin37_buttonYellow, PINS.pin36_buttonYellowLED);
+    public white = new ButtonLED(gpio, PINS.pin35_buttonWhite, PINS.pin33_buttonWhiteLED);
 
     public readonly ready: Promise<[boolean, boolean, boolean]>;
 
