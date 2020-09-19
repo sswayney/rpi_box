@@ -70,11 +70,13 @@ export class Engine extends EventEmitter {
                 console.log(`SEQUENCE LENGTH: ${this.sequence.length}`);
                 console.log(`SEQUENCE: `, this.sequence);
 
+                this.emitSequenceUpdate(false);
+
 
                 if (this.sequence.length >= this.sequenceMaxLength){
                     this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Defuse});
                 }
-                    break;
+                break;
             case GameStates.Defuse:
 
                 console.log(`Engine Defuse CH: ${channel}, VAL: ${value}`);

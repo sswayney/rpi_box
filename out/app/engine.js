@@ -77,6 +77,7 @@ var Engine = /** @class */ (function (_super) {
                 this.sequence.unshift({ channel: channel, value: value });
                 console.log("SEQUENCE LENGTH: " + this.sequence.length);
                 console.log("SEQUENCE: ", this.sequence);
+                this.emitSequenceUpdate(false);
                 if (this.sequence.length >= this.sequenceMaxLength) {
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Defuse });
                 }
