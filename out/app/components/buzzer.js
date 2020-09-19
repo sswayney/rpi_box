@@ -61,6 +61,7 @@ var Buzzer = /** @class */ (function (_super) {
     Buzzer.prototype.handleMessage = function (message) {
         switch (message) {
             case events_1.GameMessageType.TenSecondsLeft:
+                console.log('TEN SECONDS LEFT MESSAGE');
                 this.buzzer.blink(true, 1000, 200);
                 break;
         }
