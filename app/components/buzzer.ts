@@ -52,7 +52,6 @@ export class Buzzer extends EventResponder {
     protected handleMessage(message: GameMessageType): void {
         switch (message) {
             case GameMessageType.TenSecondsLeft:
-                console.log('TEN SECONDS LEFT MESSAGE');
                 this.buzzer.blink(true, 1000, 200);
                 break;
 
