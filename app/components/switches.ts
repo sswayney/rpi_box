@@ -1,10 +1,10 @@
 import * as gpio from 'rpi-gpio';
 import {Observable} from 'rxjs';
-import {PINS} from "../pins.enum";
 import {Switch} from "../../libs/switch";
 import {EventEmitter} from "../events/event-emitter";
 import {GameEventType, GameEventTypes} from "../events/events";
 import {GameStates} from "../game-states.enum";
+import {PINS} from "../pins.enum";
 
 export class Switches extends EventEmitter{
 
@@ -12,15 +12,18 @@ export class Switches extends EventEmitter{
     public readonly green = new Switch(gpio, PINS.pin12_green_switch1);
     public readonly red = new Switch(gpio, PINS.pin16_red_switch2);
 
+    protected stateBeforeFixSwitches: GameStates;
+
     constructor(protected gameEvents$: Observable<GameEventTypes>, protected emitGameEvent: (gameState: GameEventTypes) => void){
         super(gameEvents$, emitGameEvent);
         this.ready = Promise.all([this.green.ready, this.red.ready]);
     }
 
     protected handleStateChange(): void {
-        if (this.state === GameStates.EnterSequence){
+        if ([GameStates.EnterSequence, GameStates.Defuse].includes(this.state)){
             this.readyForSequenceStart().then((ready: boolean) => {
                 if (!ready){
+                    this.stateBeforeFixSwitches = this.state;
                     this.emitGameEvent({eventType: GameEventType.StateChange, state: GameStates.FixSwitches});
                 }
             });
@@ -32,7 +35,7 @@ export class Switches extends EventEmitter{
             if (this.state === GameStates.FixSwitches) {
                 this.readyForSequenceStart().then((ready: boolean) => {
                     if (ready) {
-                        this.emitGameEvent({eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
+                        this.emitGameEvent({eventType: GameEventType.StateChange, state: this.stateBeforeFixSwitches});
                     }
                 });
             }

@@ -50,11 +50,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
-var pins_enum_1 = require("../pins.enum");
 var switch_1 = require("../../libs/switch");
 var event_emitter_1 = require("../events/event-emitter");
 var events_1 = require("../events/events");
 var game_states_enum_1 = require("../game-states.enum");
+var pins_enum_1 = require("../pins.enum");
 var Switches = /** @class */ (function (_super) {
     __extends(Switches, _super);
     function Switches(gameEvents$, emitGameEvent) {
@@ -68,9 +68,10 @@ var Switches = /** @class */ (function (_super) {
     }
     Switches.prototype.handleStateChange = function () {
         var _this = this;
-        if (this.state === game_states_enum_1.GameStates.EnterSequence) {
+        if ([game_states_enum_1.GameStates.EnterSequence, game_states_enum_1.GameStates.Defuse].includes(this.state)) {
             this.readyForSequenceStart().then(function (ready) {
                 if (!ready) {
+                    _this.stateBeforeFixSwitches = _this.state;
                     _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.FixSwitches });
                 }
             });
@@ -82,7 +83,7 @@ var Switches = /** @class */ (function (_super) {
             if (this.state === game_states_enum_1.GameStates.FixSwitches) {
                 this.readyForSequenceStart().then(function (ready) {
                     if (ready) {
-                        _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
+                        _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: _this.stateBeforeFixSwitches });
                     }
                 });
             }
