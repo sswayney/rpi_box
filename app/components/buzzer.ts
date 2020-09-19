@@ -35,6 +35,20 @@ export class Buzzer extends EventResponder {
         }
     }
 
+     protected handleValueChange(channel: number, value: any): void {
+         switch (channel) {
+             case PINS.pin35_buttonWhite:
+                 this.buzzer.blip(100);
+                 break;
+             case PINS.pin37_buttonYellow:
+                 this.buzzer.blink(false);
+                 break;
+             case PINS.pin40_buttonBlue:
+                 this.buzzer.blink(true, 1000, 200);
+                 break;
+         }
+    }
+
     protected handleMessage(message: GameMessageType): void {
         switch (message) {
             case GameMessageType.TenSecondsLeft:
