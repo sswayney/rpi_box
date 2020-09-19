@@ -8,6 +8,7 @@ var GameEventType;
 })(GameEventType = exports.GameEventType || (exports.GameEventType = {}));
 var GameMessageType;
 (function (GameMessageType) {
-    GameMessageType["TenSecondsLeft"] = "10_SEC_LEFT";
+    GameMessageType["FiveSecondsLeft"] = "5_SEC_LEFT";
+    GameMessageType["SequenceUpdate"] = "SEQUENCE_UPDATE";
 })(GameMessageType = exports.GameMessageType || (exports.GameMessageType = {}));
 //# sourceMappingURL=events.js.map

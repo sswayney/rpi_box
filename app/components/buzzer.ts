@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {LED} from "../../libs/led";
 import {PINS} from "../../libs/pins.enum";
 import {EventResponder} from "../events/event-responder";
-import {GameEventTypes, GameMessageType} from "../events/events";
+import {GameEventTypes, GameMessageType, MessageEventType} from "../events/events";
 import {GameStates} from "../game-states.enum";
 
 
@@ -52,9 +52,9 @@ export class Buzzer extends EventResponder {
          // }
     }
 
-    protected handleMessage(message: GameMessageType): void {
-        switch (message) {
-            case GameMessageType.TenSecondsLeft:
+    protected handleMessage(message: MessageEventType): void {
+        switch (message.message) {
+            case GameMessageType.FiveSecondsLeft:
                 this.buzzer.blink(true, 1000, 200);
                 break;
 

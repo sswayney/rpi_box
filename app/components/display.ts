@@ -2,7 +2,7 @@ import {Observable} from "rxjs";
 import {LCD} from "../../libs/lcdi2c";
 import {PINS} from "../../libs/pins.enum";
 import {EventResponder} from "../events/event-responder";
-import {GameEventTypes} from "../events/events";
+import {GameEventTypes, GameMessageType, MessageEventType, SequenceUpdate} from "../events/events";
 import {GameStates} from "../game-states.enum";
 
 export class Display extends EventResponder {
@@ -57,7 +57,18 @@ export class Display extends EventResponder {
         }
     }
 
-    handleValueChange(channel: number, value: any) {
+    protected handleMessage(message: MessageEventType): void {
+        switch (message.message) {
+            case GameMessageType.SequenceUpdate:
+                const sequenceUpdate = message.value as SequenceUpdate;
+                this.lcd.println(sequenceUpdate.sequenceMaxLength - sequenceUpdate.sequenceLength, 2);
+                break;
+
+        }
+    }
+
+
+    protected handleValueChange(channel: number, value: any) {
         // switch (channel) {
         //     case PINS.pin35_buttonWhite:
         //         this.lcd.clear();

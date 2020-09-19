@@ -32,7 +32,7 @@ var Engine = /** @class */ (function (_super) {
         _this.emitGameEvent = emitGameEvent;
         _this.sequence = [];
         _this.tempSequence = [];
-        _this.sequenceMaxLength = 5;
+        _this.sequenceMaxLength = 4;
         _this.momentarySwitchChannels = [pins_enum_1.PINS.pin40_buttonBlue, pins_enum_1.PINS.pin37_buttonYellow, pins_enum_1.PINS.pin35_buttonWhite];
         _this.flipperSwitchChannels = [pins_enum_1.PINS.pin12_green_switch1, pins_enum_1.PINS.pin16_red_switch2];
         return _this;
@@ -48,6 +48,9 @@ var Engine = /** @class */ (function (_super) {
                 break;
             case game_states_enum_1.GameStates.Defuse:
                 this.tempSequence = __spreadArrays(this.sequence);
+                this.emitGameEvent({ eventType: events_1.GameEventType.Message, message: events_1.GameMessageType.SequenceUpdate, value: {
+                        sequenceLength: this.tempSequence.length, sequenceMaxLength: this.sequenceMaxLength, right: false
+                    } });
                 break;
             case game_states_enum_1.GameStates.Explode:
                 setTimeout(function () { return _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.MainMenu }); }, 5000);

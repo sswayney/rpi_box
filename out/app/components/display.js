@@ -15,6 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var lcdi2c_1 = require("../../libs/lcdi2c");
 var event_responder_1 = require("../events/event-responder");
+var events_1 = require("../events/events");
 var game_states_enum_1 = require("../game-states.enum");
 var Display = /** @class */ (function (_super) {
     __extends(Display, _super);
@@ -63,6 +64,14 @@ var Display = /** @class */ (function (_super) {
                 this.lcd.clear();
                 this.lcd.println('^&@#$++_)(*&^%@#', 1);
                 this.lcd.println('&%@$&^&*%$#!@#%&', 2);
+                break;
+        }
+    };
+    Display.prototype.handleMessage = function (message) {
+        switch (message.message) {
+            case events_1.GameMessageType.SequenceUpdate:
+                var sequenceUpdate = message.value;
+                this.lcd.println(sequenceUpdate.sequenceMaxLength - sequenceUpdate.sequenceLength, 2);
                 break;
         }
     };

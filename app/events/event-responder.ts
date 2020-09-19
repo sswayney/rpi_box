@@ -1,6 +1,6 @@
 import {Observable, Subscription} from "rxjs";
 import {GameStates} from "../game-states.enum";
-import {GameEventType, GameEventTypes, GameMessageType} from "./events";
+import {GameEventType, GameEventTypes, GameMessageType, MessageEventType} from "./events";
 
 export abstract class EventResponder {
 
@@ -19,7 +19,7 @@ export abstract class EventResponder {
                     this.handleStateChange();
                     break;
                 case GameEventType.Message:
-                    this.handleMessage(gameEvent.message);
+                    this.handleMessage(gameEvent);
                     break;
                 default:
                     break;
@@ -33,6 +33,6 @@ export abstract class EventResponder {
     protected handleStateChange(): void {
     }
 
-    protected handleMessage(message: GameMessageType): void {
+    protected handleMessage(message: MessageEventType): void {
     }
 }

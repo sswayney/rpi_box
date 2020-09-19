@@ -1,7 +1,7 @@
 import {Observable} from "rxjs";
 import {PINS} from "../libs/pins.enum";
 import {EventEmitter} from "./events/event-emitter";
-import {GameEventType, GameEventTypes} from "./events/events";
+import {GameEventType, GameEventTypes, GameMessageType, SequenceUpdate} from "./events/events";
 import {GameStates} from "./game-states.enum";
 
 interface ChannelValue {
@@ -14,7 +14,7 @@ export class Engine extends EventEmitter {
     private sequence: ChannelValue[] = [];
     private tempSequence: ChannelValue[] = [];
 
-    private sequenceMaxLength = 5;
+    private sequenceMaxLength = 4;
 
     private readonly momentarySwitchChannels = [PINS.pin40_buttonBlue, PINS.pin37_buttonYellow, PINS.pin35_buttonWhite];
     private readonly flipperSwitchChannels = [PINS.pin12_green_switch1, PINS.pin16_red_switch2];
@@ -35,6 +35,8 @@ export class Engine extends EventEmitter {
                 break;
             case GameStates.Defuse:
                 this.tempSequence = [...this.sequence];
+                this.emitGameEvent({eventType: GameEventType.Message, message: GameMessageType.SequenceUpdate, value: <SequenceUpdate>{
+                    sequenceLength: this.tempSequence.length, sequenceMaxLength: this.sequenceMaxLength, right: false}});
 
                 break;
             case GameStates.Explode:

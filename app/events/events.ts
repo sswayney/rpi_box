@@ -7,7 +7,14 @@ export enum GameEventType {
 }
 
 export enum GameMessageType {
-    TenSecondsLeft = '10_SEC_LEFT'
+    FiveSecondsLeft = '5_SEC_LEFT',
+    SequenceUpdate = 'SEQUENCE_UPDATE'
+}
+
+export interface SequenceUpdate {
+    sequenceLength: number;
+    sequenceMaxLength: number;
+    right: boolean;
 }
 
 export interface GameEvent {
@@ -28,6 +35,7 @@ export interface StateChangeEventType extends GameEvent {
 export interface MessageEventType extends GameEvent {
     eventType: GameEventType.Message;
     message: GameMessageType;
+    value: any | SequenceUpdate;
 }
 
 

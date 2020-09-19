@@ -17,7 +17,7 @@ var EventResponder = /** @class */ (function () {
                     _this.handleStateChange();
                     break;
                 case events_1.GameEventType.Message:
-                    _this.handleMessage(gameEvent.message);
+                    _this.handleMessage(gameEvent);
                     break;
                 default:
                     break;
