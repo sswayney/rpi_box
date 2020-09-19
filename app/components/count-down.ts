@@ -53,10 +53,8 @@ export class CountDown extends EventEmitter {
         }
     }
 
-
-
     protected countDown(doCountDown: boolean): void {
-        console.log('CountDown: doCountDown', doCountDown);
+        // console.log('CountDown: doCountDown', doCountDown);
 
         if (doCountDown && !this.doCountDown) {
             this.sevenSegment.split = true;

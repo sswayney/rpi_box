@@ -15,9 +15,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var led_1 = require("../../libs/led");
-var pins_enum_1 = require("../pins.enum");
 var event_responder_1 = require("../events/event-responder");
+var events_1 = require("../events/events");
 var game_states_enum_1 = require("../game-states.enum");
+var pins_enum_1 = require("../pins.enum");
 var Vibration = /** @class */ (function (_super) {
     __extends(Vibration, _super);
     function Vibration(gameState$) {
@@ -26,6 +27,17 @@ var Vibration = /** @class */ (function (_super) {
         _this.motor = new led_1.LED(gpio, pins_enum_1.PINS.pin15_vibration_motor);
         return _this;
     }
+    Vibration.prototype.handleMessage = function (message) {
+        switch (message.message) {
+            case events_1.GameMessageType.SequenceUpdate:
+                if (this.state === game_states_enum_1.GameStates.Defuse) {
+                    if (!message.value.right) {
+                        this.motor.blip(250);
+                    }
+                }
+                break;
+        }
+    };
     Vibration.prototype.handleStateChange = function () {
         this.motor.off();
         switch (this.state) {

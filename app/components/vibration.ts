@@ -1,10 +1,10 @@
 import * as gpio from 'rpi-gpio';
 import {Observable} from 'rxjs';
 import {LED} from "../../libs/led";
-import {PINS} from "../pins.enum";
 import {EventResponder} from "../events/event-responder";
-import {GameEventTypes} from "../events/events";
+import {GameEventTypes, GameMessageType, MessageEventType} from "../events/events";
 import {GameStates} from "../game-states.enum";
+import {PINS} from "../pins.enum";
 
 
 export class Vibration extends EventResponder {
@@ -14,6 +14,18 @@ export class Vibration extends EventResponder {
     constructor(private gameState$: Observable<GameEventTypes>) {
         super(gameState$);
         this.motor = new LED(gpio, PINS.pin15_vibration_motor);
+    }
+
+    protected handleMessage(message: MessageEventType): void {
+        switch(message.message) {
+            case GameMessageType.SequenceUpdate:
+                if (this.state === GameStates.Defuse) {
+                    if (!message.value.right){
+                        this.motor.blip(250);
+                    }
+                }
+                break;
+        }
     }
 
     protected handleStateChange(): void {

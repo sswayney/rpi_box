@@ -55,7 +55,7 @@ export class Game {
     /**
      * Vibration motor
      */
-    // private vibration = new Vibration(this.gameEvents$);
+    private vibration = new Vibration(this.gameEvents$);
 
 
     constructor() {

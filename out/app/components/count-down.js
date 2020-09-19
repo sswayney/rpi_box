@@ -109,8 +109,8 @@ var CountDown = /** @class */ (function (_super) {
         }
     };
     CountDown.prototype.countDown = function (doCountDown) {
+        // console.log('CountDown: doCountDown', doCountDown);
         var _this = this;
-        console.log('CountDown: doCountDown', doCountDown);
         if (doCountDown && !this.doCountDown) {
             this.sevenSegment.split = true;
             this.doCountDown = true;
