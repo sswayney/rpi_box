@@ -58,12 +58,7 @@ export class Display extends EventResponder {
                 const sequenceUpdate = message.value as SequenceUpdate;
                 let displayText = '';
                 for ( let i = 0; i < sequenceUpdate.sequenceMaxLength; i++ ) {
-                    if (this.state === GameStates.Defuse) {
-                        displayText += i > sequenceUpdate.sequenceLength ? '#' : ' ';
-                    }
-                    if (this.state === GameStates.EnterSequence) {
-                        displayText += i > sequenceUpdate.sequenceLength ? '#' : ' ';
-                    }
+                        displayText += i < sequenceUpdate.sequenceLength ? ' ' : '#';
                 }
                 this.lcd.println('                ', 2);
                 this.lcd.println(displayText, 2);
