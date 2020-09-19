@@ -29,15 +29,13 @@ export class Engine extends EventEmitter {
             case GameStates.EnterSequence:
                 this.sequence = [];
                 this.tempSequence = [];
-
+                this.emitSequenceUpdate(false);
                 break;
             case GameStates.FixSwitches:
-
                 break;
             case GameStates.Defuse:
                 this.tempSequence = [...this.sequence];
                 this.emitSequenceUpdate();
-
                 break;
             case GameStates.Explode:
 

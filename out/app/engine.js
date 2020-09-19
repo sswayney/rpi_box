@@ -45,6 +45,7 @@ var Engine = /** @class */ (function (_super) {
             case game_states_enum_1.GameStates.EnterSequence:
                 this.sequence = [];
                 this.tempSequence = [];
+                this.emitSequenceUpdate(false);
                 break;
             case game_states_enum_1.GameStates.FixSwitches:
                 break;
