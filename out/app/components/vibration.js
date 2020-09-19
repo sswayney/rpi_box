@@ -28,31 +28,20 @@ var Vibration = /** @class */ (function (_super) {
     }
     Vibration.prototype.handleStateChange = function () {
         switch (this.state) {
-            case game_states_enum_1.GameStates.MainMenu:
-                break;
             case game_states_enum_1.GameStates.EnterSequence:
-                break;
-            case game_states_enum_1.GameStates.FixSwitches:
-                break;
-            case game_states_enum_1.GameStates.Defuse:
+                this.bump(100);
                 break;
             case game_states_enum_1.GameStates.Explode:
-                break;
-        }
-    };
-    Vibration.prototype.handleValueChange = function (channel, value) {
-        switch (channel) {
-            case pins_enum_1.PINS.pin37_buttonYellow:
-                this.motor.off();
-                this.motor.blink(false);
-                break;
-            case pins_enum_1.PINS.pin40_buttonBlue:
                 this.motor.on();
                 break;
-            case pins_enum_1.PINS.pin35_buttonWhite:
-                this.motor.blink(true);
-                break;
+            default:
+                this.motor.off();
         }
+    };
+    Vibration.prototype.bump = function (time) {
+        var _this = this;
+        this.motor.on();
+        setTimeout(function () { return _this.motor.off(); }, time);
     };
     return Vibration;
 }(event_responder_1.EventResponder));

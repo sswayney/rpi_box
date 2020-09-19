@@ -35,24 +35,33 @@ var Buzzer = /** @class */ (function (_super) {
             case game_states_enum_1.GameStates.FixSwitches:
                 break;
             case game_states_enum_1.GameStates.Defuse:
+                this.beep(100);
                 break;
             case game_states_enum_1.GameStates.Explode:
+                this.buzzer.on();
                 break;
+            default:
+                this.buzzer.off();
         }
     };
     Buzzer.prototype.handleValueChange = function (channel, value) {
-        switch (channel) {
-            case pins_enum_1.PINS.pin37_buttonYellow:
-                this.buzzer.off();
-                this.buzzer.blink(false);
-                break;
-            case pins_enum_1.PINS.pin40_buttonBlue:
-                this.buzzer.on();
-                break;
-            case pins_enum_1.PINS.pin35_buttonWhite:
-                this.buzzer.blink(true);
-                break;
-        }
+        // switch (channel) {
+        //     case PINS.pin37_buttonYellow:
+        //         this.buzzer.off();
+        //         this.buzzer.blink(false);
+        //         break;
+        //     case PINS.pin40_buttonBlue:
+        //         this.buzzer.on();
+        //         break;
+        //     case PINS.pin35_buttonWhite:
+        //         this.buzzer.blink(true);
+        //         break;
+        // }
+    };
+    Buzzer.prototype.beep = function (time) {
+        var _this = this;
+        this.buzzer.on();
+        setTimeout(function () { return _this.buzzer.off(); }, time);
     };
     return Buzzer;
 }(event_responder_1.EventResponder));
