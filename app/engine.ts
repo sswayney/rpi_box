@@ -58,6 +58,11 @@ export class Engine extends EventEmitter {
     handleValueChange(channel: number, value: any) {
 
         switch (this.state){
+            case GameStates.MainMenu:
+                if (channel === PINS.pin40_buttonBlue && value){
+                    this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
+                }
+                break;
 
             /**
              * ENTER SEQUENCE

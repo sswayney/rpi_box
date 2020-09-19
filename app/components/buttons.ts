@@ -54,14 +54,6 @@ export class Buttons extends EventEmitter {
 
     protected handleValueChange(channel: number, value: any) {
 
-        switch (this.state) {
-            case GameStates.MainMenu:
-                if (channel === this.blue.button.pin && !value){ // on button up
-                    this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.EnterSequence});
-                }
-                break;
-        }
-
         /**
          * Default behavior is to light up when touched
          */

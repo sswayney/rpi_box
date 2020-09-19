@@ -67,6 +67,11 @@ var Engine = /** @class */ (function (_super) {
     };
     Engine.prototype.handleValueChange = function (channel, value) {
         switch (this.state) {
+            case game_states_enum_1.GameStates.MainMenu:
+                if (channel === pins_enum_1.PINS.pin40_buttonBlue && value) {
+                    this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
+                }
+                break;
             /**
              * ENTER SEQUENCE
              */

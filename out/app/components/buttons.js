@@ -17,7 +17,6 @@ var gpio = require("rpi-gpio");
 var button_led_1 = require("../../libs/button-led");
 var pins_enum_1 = require("../pins.enum");
 var event_emitter_1 = require("../events/event-emitter");
-var events_1 = require("../events/events");
 var game_states_enum_1 = require("../game-states.enum");
 var Buttons = /** @class */ (function (_super) {
     __extends(Buttons, _super);
@@ -61,13 +60,6 @@ var Buttons = /** @class */ (function (_super) {
         console.log('Buttons: doBlink', doBlink);
     };
     Buttons.prototype.handleValueChange = function (channel, value) {
-        switch (this.state) {
-            case game_states_enum_1.GameStates.MainMenu:
-                if (channel === this.blue.button.pin && !value) { // on button up
-                    this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.EnterSequence });
-                }
-                break;
-        }
         /**
          * Default behavior is to light up when touched
          */
