@@ -14,10 +14,6 @@ export class Display extends EventResponder {
 
     constructor(private gameState$: Observable<GameEventTypes>) {
         super(gameState$);
-        // this.lcd.clear();
-        // this.lcd.home();
-        // this.lcd.println('ENTER SEQUENCE',1);
-        // this.lcd.println('####',2);
     }
 
     public clear(): void {
@@ -61,7 +57,11 @@ export class Display extends EventResponder {
         switch (message.message) {
             case GameMessageType.SequenceUpdate:
                 const sequenceUpdate = message.value as SequenceUpdate;
-                this.lcd.println((sequenceUpdate.sequenceMaxLength - sequenceUpdate.sequenceLength) + '', 2);
+                let displayText = '';
+                for ( let i = 0; i < sequenceUpdate.sequenceMaxLength; i++ ) {
+                    displayText += i < sequenceUpdate.sequenceLength ? '' : '#';
+                }
+                this.lcd.println(displayText, 2);
                 break;
 
         }

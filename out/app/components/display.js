@@ -28,10 +28,6 @@ var Display = /** @class */ (function (_super) {
          */
         _this.lcd = new lcdi2c_1.LCD(1, 0x27, 16, 2);
         return _this;
-        // this.lcd.clear();
-        // this.lcd.home();
-        // this.lcd.println('ENTER SEQUENCE',1);
-        // this.lcd.println('####',2);
     }
     Display.prototype.clear = function () {
         this.lcd.clear();
@@ -71,7 +67,11 @@ var Display = /** @class */ (function (_super) {
         switch (message.message) {
             case events_1.GameMessageType.SequenceUpdate:
                 var sequenceUpdate = message.value;
-                this.lcd.println((sequenceUpdate.sequenceMaxLength - sequenceUpdate.sequenceLength) + '', 2);
+                var displayText = '';
+                for (var i = 0; i < sequenceUpdate.sequenceMaxLength; i++) {
+                    displayText += i < sequenceUpdate.sequenceLength ? '' : '#';
+                }
+                this.lcd.println(displayText, 2);
                 break;
         }
     };
