@@ -69,7 +69,12 @@ var Display = /** @class */ (function (_super) {
                 var sequenceUpdate = message.value;
                 var displayText = '';
                 for (var i = 0; i < sequenceUpdate.sequenceMaxLength; i++) {
-                    displayText += i < sequenceUpdate.sequenceLength ? ' ' : '#';
+                    if (this.state == game_states_enum_1.GameStates.EnterSequence) {
+                        displayText += i < sequenceUpdate.sequenceLength ? ' ' : '#';
+                    }
+                    if (this.state == game_states_enum_1.GameStates.Defuse) {
+                        displayText += i < (sequenceUpdate.sequenceMaxLength - sequenceUpdate.sequenceLength) ? ' ' : '#';
+                    }
                 }
                 this.lcd.println('                ', 2);
                 this.lcd.println(displayText, 2);
