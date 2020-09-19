@@ -49,7 +49,7 @@ export class Game {
     /**
      * Buzzer sound
      */
-    private buzzer = new Buzzer(this.gameEvents$);
+    // private buzzer = new Buzzer(this.gameEvents$);
 
     /**
      * Vibration motor

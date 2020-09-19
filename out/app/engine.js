@@ -48,17 +48,26 @@ var Engine = /** @class */ (function (_super) {
                 break;
             case game_states_enum_1.GameStates.Defuse:
                 this.tempSequence = __spreadArrays(this.sequence);
-                this.emitGameEvent({ eventType: events_1.GameEventType.Message, message: events_1.GameMessageType.SequenceUpdate, value: {
-                        sequenceLength: this.tempSequence.length, sequenceMaxLength: this.sequenceMaxLength, right: false
-                    } });
+                this.emitSequenceUpdate();
                 break;
             case game_states_enum_1.GameStates.Explode:
                 setTimeout(function () { return _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.MainMenu }); }, 5000);
                 break;
         }
     };
+    Engine.prototype.emitSequenceUpdate = function (isRight) {
+        if (isRight === void 0) { isRight = false; }
+        this.emitGameEvent({
+            eventType: events_1.GameEventType.Message, message: events_1.GameMessageType.SequenceUpdate, value: {
+                sequenceLength: this.tempSequence.length, sequenceMaxLength: this.sequenceMaxLength, right: isRight
+            }
+        });
+    };
     Engine.prototype.handleValueChange = function (channel, value) {
         switch (this.state) {
+            /**
+             * ENTER SEQUENCE
+             */
             case game_states_enum_1.GameStates.EnterSequence:
                 if (this.momentarySwitchChannels.includes(channel) && value) {
                     console.log("BUTT CH: " + channel + ", VAL: " + value);
@@ -76,16 +85,21 @@ var Engine = /** @class */ (function (_super) {
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Defuse });
                 }
                 break;
+            /**
+             * DEFUSE
+             */
             case game_states_enum_1.GameStates.Defuse:
                 if (this.momentarySwitchChannels.includes(channel) && value) {
                     console.log("BUTT CH: " + channel + ", VAL: " + value);
                     var entry = this.tempSequence.pop();
                     if (entry.channel === channel && entry.value === value) {
                         console.log('MATCH');
+                        this.emitSequenceUpdate(true);
                     }
                     else {
                         console.log('WRONG');
                         this.tempSequence = __spreadArrays(this.sequence);
+                        this.emitSequenceUpdate(false);
                     }
                     console.log("TEMP SEQUENCE LENGTH: " + this.tempSequence.length);
                     console.log("TEMP SEQUENCE: ", this.tempSequence);
@@ -95,10 +109,12 @@ var Engine = /** @class */ (function (_super) {
                     var entry = this.tempSequence.pop();
                     if (entry.channel === channel && entry.value === value) {
                         console.log('MATCH');
+                        this.emitSequenceUpdate(true);
                     }
                     else {
                         console.log('WRONG');
                         this.tempSequence = __spreadArrays(this.sequence);
+                        this.emitSequenceUpdate(false);
                     }
                     console.log("TEMP SEQUENCE LENGTH: " + this.tempSequence.length);
                     console.log("TEMP SEQUENCE: ", this.tempSequence);

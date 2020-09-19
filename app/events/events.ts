@@ -35,7 +35,7 @@ export interface StateChangeEventType extends GameEvent {
 export interface MessageEventType extends GameEvent {
     eventType: GameEventType.Message;
     message: GameMessageType;
-    value: any | SequenceUpdate;
+    value?: any | SequenceUpdate;
 }
 
 

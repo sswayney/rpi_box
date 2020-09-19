@@ -35,8 +35,7 @@ export class Engine extends EventEmitter {
                 break;
             case GameStates.Defuse:
                 this.tempSequence = [...this.sequence];
-                this.emitGameEvent({eventType: GameEventType.Message, message: GameMessageType.SequenceUpdate, value: <SequenceUpdate>{
-                    sequenceLength: this.tempSequence.length, sequenceMaxLength: this.sequenceMaxLength, right: false}});
+                this.emitSequenceUpdate();
 
                 break;
             case GameStates.Explode:
@@ -47,10 +46,21 @@ export class Engine extends EventEmitter {
         }
     }
 
+    private emitSequenceUpdate(isRight: boolean = false) {
+        this.emitGameEvent({
+            eventType: GameEventType.Message, message: GameMessageType.SequenceUpdate, value: <SequenceUpdate>{
+                sequenceLength: this.tempSequence.length, sequenceMaxLength: this.sequenceMaxLength, right: isRight
+            }
+        });
+    }
+
     handleValueChange(channel: number, value: any) {
 
         switch (this.state){
 
+            /**
+             * ENTER SEQUENCE
+             */
             case GameStates.EnterSequence:
 
             if (this.momentarySwitchChannels.includes(channel) && value){
@@ -72,6 +82,10 @@ export class Engine extends EventEmitter {
                 this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Defuse});
             }
                 break;
+
+            /**
+             * DEFUSE
+             */
             case GameStates.Defuse:
 
                 if (this.momentarySwitchChannels.includes(channel) && value){
@@ -79,9 +93,11 @@ export class Engine extends EventEmitter {
                     const entry = this.tempSequence.pop();
                     if (entry.channel === channel && entry.value === value){
                         console.log('MATCH');
+                        this.emitSequenceUpdate(true);
                     } else {
                         console.log('WRONG');
                         this.tempSequence = [...this.sequence];
+                        this.emitSequenceUpdate(false);
                     }
                     console.log(`TEMP SEQUENCE LENGTH: ${this.tempSequence.length}`);
                     console.log(`TEMP SEQUENCE: `, this.tempSequence);
@@ -92,9 +108,11 @@ export class Engine extends EventEmitter {
                     const entry = this.tempSequence.pop();
                     if (entry.channel === channel && entry.value === value){
                         console.log('MATCH');
+                        this.emitSequenceUpdate(true);
                     } else {
                         console.log('WRONG');
                         this.tempSequence = [...this.sequence];
+                        this.emitSequenceUpdate(false);
                     }
                     console.log(`TEMP SEQUENCE LENGTH: ${this.tempSequence.length}`);
                     console.log(`TEMP SEQUENCE: `, this.tempSequence);
