@@ -12,9 +12,12 @@ interface ChannelValue {
 
 export class Engine extends EventEmitter {
 
+    // The sequence of buttons and switches to enter to win a round
     private sequence: ChannelValue[] = [];
+    // Copy of sequence the player is chipping away at. Resets to sequence on wrong input.
     private tempSequence: ChannelValue[] = [];
 
+    // Max number of buttons/flips in one round/sequence.
     private sequenceMaxLength = 4;
 
     private readonly momentarySwitchChannels = [PINS.pin40_buttonBlue, PINS.pin37_buttonYellow, PINS.pin35_buttonWhite];
@@ -43,6 +46,11 @@ export class Engine extends EventEmitter {
         }
     }
 
+    /**
+     * Emit SequenceUpdate message.
+     * @param {boolean} isRight
+     * @private
+     */
     private emitSequenceUpdate(isRight: boolean = false) {
         this.emitGameEvent({
             eventType: GameEventType.Message,
@@ -64,14 +72,13 @@ export class Engine extends EventEmitter {
                 }
                 break;
             case GameStates.EnterSequence:
-
+                // Add button/switch value to sequence
                 console.log(`Engine Enter CH: ${channel}, VAL: ${value}`);
                 this.sequence.unshift({ channel: channel, value: value});
                 console.log(`SEQUENCE LENGTH: ${this.sequence.length}`);
                 console.log(`SEQUENCE: `, this.sequence);
-
+                // I don't remember why I put this here. My guess is other components need it.
                 this.emitSequenceUpdate(false);
-
 
                 if (this.sequence.length >= this.sequenceMaxLength){
                     this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Defuse});

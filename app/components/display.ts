@@ -55,6 +55,10 @@ export class Display extends EventResponder {
     protected handleMessage(message: MessageEventType): void {
         switch (message.message) {
             case GameMessageType.SequenceUpdate:
+                /**
+                 * When a sequence update happens we want to show the player how many
+                 * buttons/flips they have left to enter.
+                 */
                 const sequenceUpdate = message.value as SequenceUpdate;
                 let displayText = '';
                 for ( let i = 0; i < sequenceUpdate.sequenceMaxLength; i++ ) {

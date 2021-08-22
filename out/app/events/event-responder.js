@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var rxjs_1 = require("rxjs");
 var events_1 = require("./events");
+/**
+ * Extend this class if you are going to respond to events.
+ */
 var EventResponder = /** @class */ (function () {
     function EventResponder(gameEvents$) {
         var _this = this;

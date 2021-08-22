@@ -2,6 +2,9 @@ import {Observable, Subscription} from "rxjs";
 import {GameStates} from "../game-states.enum";
 import {GameEventType, GameEventTypes, GameMessageType, MessageEventType} from "./events";
 
+/**
+ * Extend this class if you are going to respond to events.
+ */
 export abstract class EventResponder {
 
     protected subscriptions = new Subscription();

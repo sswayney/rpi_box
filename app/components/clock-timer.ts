@@ -8,19 +8,23 @@ import {GameEventType, GameEventTypes, GameMessageType} from "../events/events";
 import {GameStates} from "../game-states.enum";
 
 /**
- * CountDown class that uses a Seven Segment display
+ * ClockTimer class that uses a Seven Segment display
  */
-export class CountDown extends EventEmitter {
+export class ClockTimer extends EventEmitter {
 
      async text(value: string) {
          await this.sevenSegment.setText(value);
      }
 
+     // Should we show the clock?
     protected doShowClock = false;
+     // Should we do the count down?
     protected doCountDown = false;
-    protected delay = 1000;
-    protected subscription: Subscription;
+    // How often to update the 7segment display.
+    protected refreshRate = 1000;
+    // How many seconds the player has to enter the correct sequence
     protected seconds: number = 20;
+    protected subscription: Subscription;
 
     protected sevenSegment = new TM1637(gpio, PINS.pin11_clk, PINS.pin7_dio);
 
@@ -41,7 +45,9 @@ export class CountDown extends EventEmitter {
                 this.sevenSegment.setText('0000');
                 break;
             case GameStates.FixSwitches:
-                this.sevenSegment.setText('----');
+                this.countDown(false);
+                this.showClock(false);
+                this.sevenSegment.setText('----'); // Todo: Not displaying after
                 break;
             case GameStates.Defuse:
                 this.countDown(true);
@@ -61,7 +67,7 @@ export class CountDown extends EventEmitter {
             this.doCountDown = true;
 
             if (!this.subscription || this.subscription.closed) {
-                this.subscription = interval(this.delay).pipe(takeWhile(() => this.doCountDown),
+                this.subscription = interval(this.refreshRate).pipe(takeWhile(() => this.doCountDown),
                     map(sec => this.seconds - sec),
                     tap( sec => sec === 6 ? this.emitGameEvent({ eventType: GameEventType.Message, message: GameMessageType.FiveSecondsLeft}) : undefined),
                     tap( sec => sec < 1 ? this.emitGameEvent({ eventType: GameEventType.StateChange, state: GameStates.Explode}) : undefined),
@@ -83,7 +89,7 @@ export class CountDown extends EventEmitter {
             this.doShowClock = true;
 
             if (!this.subscription || this.subscription.closed) {
-                this.subscription = interval(this.delay).pipe(
+                this.subscription = interval(this.refreshRate).pipe(
                     takeWhile(() => this.doShowClock),
                     tap(() => this.showTime())).subscribe();
             }

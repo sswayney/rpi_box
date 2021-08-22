@@ -55,13 +55,21 @@ var event_emitter_1 = require("../events/event-emitter");
 var events_1 = require("../events/events");
 var game_states_enum_1 = require("../game-states.enum");
 var pins_enum_1 = require("../pins.enum");
+/**
+ * Switches
+ * Handles game play concerning the switches state changes and events
+ *
+ * Emits: FixSwitches and what ever the previous state was before the FixSwitches state was emitted.
+ */
 var Switches = /** @class */ (function (_super) {
     __extends(Switches, _super);
     function Switches(gameEvents$, emitGameEvent) {
         var _this = _super.call(this, gameEvents$, emitGameEvent) || this;
         _this.gameEvents$ = gameEvents$;
         _this.emitGameEvent = emitGameEvent;
+        // The green switch object
         _this.green = new switch_1.Switch(gpio, pins_enum_1.PINS.pin12_green_switch1);
+        // The red switch object
         _this.red = new switch_1.Switch(gpio, pins_enum_1.PINS.pin16_red_switch2);
         _this.ready = Promise.all([_this.green.ready, _this.red.ready]);
         return _this;
@@ -69,6 +77,12 @@ var Switches = /** @class */ (function (_super) {
     Switches.prototype.handleStateChange = function () {
         var _this = this;
         if ([game_states_enum_1.GameStates.EnterSequence, game_states_enum_1.GameStates.Defuse].includes(this.state)) {
+            /**
+             * Why emit fix switches? If player is entering a sequence or defusing(and have to start
+             * over again, then all switches have to go back to the starting state of down.
+             *
+             * Remember, we are responding to the state changing. So this is the beginning of the state.
+             */
             this.readyForSequenceStart().then(function (ready) {
                 if (!ready) {
                     _this.stateBeforeFixSwitches = _this.state;
@@ -81,6 +95,10 @@ var Switches = /** @class */ (function (_super) {
         var _this = this;
         if ([pins_enum_1.PINS.pin12_green_switch1, pins_enum_1.PINS.pin16_red_switch2].includes(channel)) {
             if (this.state === game_states_enum_1.GameStates.FixSwitches) {
+                /**
+                 *  We are in the fix switch state. Check if they are fixed and put
+                 *  back the original state before we told player to fix them.
+                 */
                 this.readyForSequenceStart().then(function (ready) {
                     if (ready) {
                         _this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: _this.stateBeforeFixSwitches });
@@ -89,6 +107,10 @@ var Switches = /** @class */ (function (_super) {
             }
         }
     };
+    /**
+     * Check all switches are down/false
+     * @returns {Promise<boolean>}
+     */
     Switches.prototype.readyForSequenceStart = function () {
         return __awaiter(this, void 0, void 0, function () {
             var greenVal, redVal;

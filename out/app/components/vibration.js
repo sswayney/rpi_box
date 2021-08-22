@@ -31,6 +31,9 @@ var Vibration = /** @class */ (function (_super) {
         switch (message.message) {
             case events_1.GameMessageType.SequenceUpdate:
                 if (this.state === game_states_enum_1.GameStates.Defuse) {
+                    /**
+                     * Vibrate if user is defusing and gets a wrong sequence
+                     */
                     if (!message.value.right) {
                         this.motor.blip(250);
                     }

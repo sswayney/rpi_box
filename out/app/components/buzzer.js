@@ -63,6 +63,9 @@ var Buzzer = /** @class */ (function (_super) {
     Buzzer.prototype.handleMessage = function (message) {
         switch (message.message) {
             case events_1.GameMessageType.FiveSecondsLeft:
+                /**
+                 * Start beeping as we count down 5 seconds left!
+                 */
                 this.buzzer.blink(true, 1000, 200);
                 break;
         }

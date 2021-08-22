@@ -31,9 +31,11 @@ process id was 449
 
 sudo kill -9 449
 
-
-
 ### together
 cd ./git/rpi_box && git pull && node ./out/index.js
+
+##Current working notes
+Trying to stop use git as a way to deploy. Looks like I was setting up some scripts.
+
 
 

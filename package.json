@@ -6,8 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
-    "deploy": "scp -r out pi@192.168.0.167:git/rpi_box",
-    "start": "ssh pi@192.168.0.167 && node .get/rpi_box/out/index.js && exit 0"
+    "clean": "scripts/clean.sh",
+    "deploy": "scripts/deploy.sh",
+    "kill": "scripts/kill.sh",
+    "start": "scripts/start.sh"
   },
   "repository": {
     "type": "git",

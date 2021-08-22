@@ -68,7 +68,7 @@ var Buttons = /** @class */ (function (_super) {
         var _this = this;
         if (this.state === game_states_enum_1.GameStates.Defuse) {
             /**
-             * Default behavior is to light up when touched
+             * During the defusing state, we will turn them off when pressed.
              */
             switch (channel) {
                 case this.blue.button.pin:

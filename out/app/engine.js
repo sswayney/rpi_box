@@ -32,8 +32,11 @@ var Engine = /** @class */ (function (_super) {
         var _this = _super.call(this, gameEvents$.pipe(operators_1.filter(Engine.filterOutFalseButtons), operators_1.debounce(function () { return rxjs_1.interval(50); })), emitGameEvent) || this;
         _this.gameEvents$ = gameEvents$;
         _this.emitGameEvent = emitGameEvent;
+        // The sequence of buttons and switches to enter to win a round
         _this.sequence = [];
+        // Copy of sequence the player is chipping away at. Resets to sequence on wrong input.
         _this.tempSequence = [];
+        // Max number of buttons/flips in one round/sequence.
         _this.sequenceMaxLength = 4;
         _this.momentarySwitchChannels = [pins_enum_1.PINS.pin40_buttonBlue, pins_enum_1.PINS.pin37_buttonYellow, pins_enum_1.PINS.pin35_buttonWhite];
         _this.flipperSwitchChannels = [pins_enum_1.PINS.pin12_green_switch1, pins_enum_1.PINS.pin16_red_switch2];
@@ -58,6 +61,11 @@ var Engine = /** @class */ (function (_super) {
                 break;
         }
     };
+    /**
+     * Emit SequenceUpdate message.
+     * @param {boolean} isRight
+     * @private
+     */
     Engine.prototype.emitSequenceUpdate = function (isRight) {
         if (isRight === void 0) { isRight = false; }
         this.emitGameEvent({
@@ -78,10 +86,12 @@ var Engine = /** @class */ (function (_super) {
                 }
                 break;
             case game_states_enum_1.GameStates.EnterSequence:
+                // Add button/switch value to sequence
                 console.log("Engine Enter CH: " + channel + ", VAL: " + value);
                 this.sequence.unshift({ channel: channel, value: value });
                 console.log("SEQUENCE LENGTH: " + this.sequence.length);
                 console.log("SEQUENCE: ", this.sequence);
+                // I don't remember why I put this here. My guess is other components need it.
                 this.emitSequenceUpdate(false);
                 if (this.sequence.length >= this.sequenceMaxLength) {
                     this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.Defuse });

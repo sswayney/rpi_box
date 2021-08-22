@@ -41,7 +41,7 @@ var rxjs_1 = require("rxjs");
 var pins_enum_1 = require("./pins.enum");
 var buttons_1 = require("./components/buttons");
 var buzzer_1 = require("./components/buzzer");
-var count_down_1 = require("./components/count-down");
+var clock_timer_1 = require("./components/clock-timer");
 var display_1 = require("./components/display");
 var switches_1 = require("./components/switches");
 var vibration_1 = require("./components/vibration");
@@ -68,7 +68,7 @@ var Game = /** @class */ (function () {
         /**
          * Count down that uses the 7 segment display
          */
-        this.countDown = new count_down_1.CountDown(this.gameEvents$, this.emitGameEvent);
+        this.countDown = new clock_timer_1.ClockTimer(this.gameEvents$, this.emitGameEvent);
         /**
          * LCD display
          */
@@ -89,6 +89,10 @@ var Game = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    /**
+     * Starts the game.
+     * @returns {Promise<void>}
+     */
     Game.prototype.start = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -115,16 +119,23 @@ var Game = /** @class */ (function () {
             });
         });
     };
+    /**
+     * Creates the main handler of value changes from the channels
+     * @returns {(...args: any[]) => void}
+     * @private
+     */
     Game.prototype.channelValueListener = function () {
         var _this = this;
         var lastValues = new Map();
+        // Pins that should not emit events/values/changes
         var nonValueChangeEmitPins = [pins_enum_1.PINS.pin15_vibration_motor, pins_enum_1.PINS.pin3_lcd, pins_enum_1.PINS.pin5_lcd, pins_enum_1.PINS.pin7_dio,
             pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin18_buzzer, pins_enum_1.PINS.pin33_buttonWhiteLED,
             pins_enum_1.PINS.pin36_buttonYellowLED, pins_enum_1.PINS.pin38_buttonBlueLED];
         return function (channel, value) {
+            // If there was no change, don't emit a value change event
             if (lastValues.get(channel) !== value) {
                 lastValues.set(channel, value);
-                // don't emit
+                // Filter out channels that shouldn't be emitting value change events to the game.
                 if (nonValueChangeEmitPins.includes(channel))
                     return;
                 console.log('Channel ' + channel + ' value is now ' + value, new Date().toISOString());
@@ -132,7 +143,12 @@ var Game = /** @class */ (function () {
             }
         };
     };
+    /**
+     * Emits a new game state to all listeners
+     * @param {GameEventTypes} gameState
+     */
     Game.prototype.emitGameEvent = function (gameState) {
+        console.log("Game:emitGameEvent gameState:" + JSON.stringify(gameState));
         Game._gameEvents.next(gameState);
     };
     Game._gameEvents = new rxjs_1.Subject();

@@ -66,6 +66,10 @@ var Display = /** @class */ (function (_super) {
     Display.prototype.handleMessage = function (message) {
         switch (message.message) {
             case events_1.GameMessageType.SequenceUpdate:
+                /**
+                 * When a sequence update happens we want to show the player how many
+                 * buttons/flips they have left to enter.
+                 */
                 var sequenceUpdate = message.value;
                 var displayText = '';
                 for (var i = 0; i < sequenceUpdate.sequenceMaxLength; i++) {

@@ -55,6 +55,9 @@ export class Buzzer extends EventResponder {
     protected handleMessage(message: MessageEventType): void {
         switch (message.message) {
             case GameMessageType.FiveSecondsLeft:
+                /**
+                 * Start beeping as we count down 5 seconds left!
+                 */
                 this.buzzer.blink(true, 1000, 200);
                 break;
 
