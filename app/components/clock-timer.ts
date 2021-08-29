@@ -30,7 +30,7 @@ export class ClockTimer extends EventEmitter {
 
     constructor(gameEvents$: Observable<GameEventTypes>, protected emitGameEvent: (gameState: GameEventTypes) => void) {
         super(gameEvents$, emitGameEvent);
-        this.sevenSegment.ready.then((value => this.sevenSegment.setText('    ')));
+        this.sevenSegment.ready.then((valuen6 => this.sevenSegment.setText('    ')));
     }
 
     protected handleStateChange(): void {

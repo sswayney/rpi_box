@@ -14,7 +14,7 @@ send   "Voltron2020\r"
 
 # Go to folder
 expect "$ "
-send "sudo ps -ef | grep \"node\" | awk '{print \$2}' | xargs kill -9 \r"
+send "sudo ps -ef | grep \"node\" -m 1 | awk '{print \$2}' | xargs kill -9 \r"
 
 expect "$ "
 send "exit\r"

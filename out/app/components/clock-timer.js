@@ -74,7 +74,7 @@ var ClockTimer = /** @class */ (function (_super) {
         // How many seconds the player has to enter the correct sequence
         _this.seconds = 20;
         _this.sevenSegment = new tm1637_1.TM1637(gpio, pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin7_dio);
-        _this.sevenSegment.ready.then((function (value) { return _this.sevenSegment.setText('    '); }));
+        _this.sevenSegment.ready.then((function (valuen6) { return _this.sevenSegment.setText('    '); }));
         return _this;
     }
     ClockTimer.prototype.text = function (value) {
