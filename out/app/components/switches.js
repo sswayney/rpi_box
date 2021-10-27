@@ -68,7 +68,7 @@ var Switches = /** @class */ (function (_super) {
         _this.gameEvents$ = gameEvents$;
         _this.emitGameEvent = emitGameEvent;
         // The green switch object
-        _this.green = new switch_1.Switch(gpio, pins_enum_1.PINS.pin12_green_switch1);
+        _this.green = new switch_1.Switch(gpio, pins_enum_1.PINS.pin12_servo);
         // The red switch object
         _this.red = new switch_1.Switch(gpio, pins_enum_1.PINS.pin16_red_switch2);
         _this.ready = Promise.all([_this.green.ready, _this.red.ready]);
@@ -93,7 +93,7 @@ var Switches = /** @class */ (function (_super) {
     };
     Switches.prototype.handleValueChange = function (channel, value) {
         var _this = this;
-        if ([pins_enum_1.PINS.pin12_green_switch1, pins_enum_1.PINS.pin16_red_switch2].includes(channel)) {
+        if ([pins_enum_1.PINS.pin12_servo, pins_enum_1.PINS.pin16_red_switch2].includes(channel)) {
             if (this.state === game_states_enum_1.GameStates.FixSwitches) {
                 /**
                  *  We are in the fix switch state. Check if they are fixed and put

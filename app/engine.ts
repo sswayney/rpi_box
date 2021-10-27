@@ -21,7 +21,7 @@ export class Engine extends EventEmitter {
     private sequenceMaxLength = 4;
 
     private readonly momentarySwitchChannels = [PINS.pin40_buttonBlue, PINS.pin37_buttonYellow, PINS.pin35_buttonWhite];
-    private readonly flipperSwitchChannels = [PINS.pin12_green_switch1, PINS.pin16_red_switch2];
+    private readonly flipperSwitchChannels = [PINS.pin12_servo, PINS.pin16_red_switch2];
 
     constructor(protected gameEvents$: Observable<GameEventTypes>, protected emitGameEvent: (gameState: GameEventTypes) => void){
         super(gameEvents$.pipe(filter(Engine.filterOutFalseButtons), debounce(() => interval(50))), emitGameEvent);

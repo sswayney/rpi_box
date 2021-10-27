@@ -39,48 +39,56 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var rxjs_1 = require("rxjs");
 var pins_enum_1 = require("./pins.enum");
-var buttons_1 = require("./components/buttons");
-var buzzer_1 = require("./components/buzzer");
-var clock_timer_1 = require("./components/clock-timer");
-var display_1 = require("./components/display");
-var switches_1 = require("./components/switches");
-var vibration_1 = require("./components/vibration");
-var engine_1 = require("./engine");
 var events_1 = require("./events/events");
 var game_states_enum_1 = require("./game-states.enum");
+var servo_1 = require("../libs/servo");
+var switch_1 = require("../libs/switch");
+var hc_sr04_1 = require("../libs/hc-sr04");
 /**
  * Main Game
  */
 var Game = /** @class */ (function () {
     function Game() {
+        // /**
+        //  * Engine
+        //  */
+        // private engine = new Engine(this.gameEvents$, this.emitGameEvent);
+        //
+        // /**
+        //  * Switches
+        //  */
+        // private switches = new Switches(this.gameEvents$, this.emitGameEvent);
+        //
+        // /**
+        //  * Buttons
+        //  */
+        // private buttons = new Buttons(this.gameEvents$, this.emitGameEvent);
+        //
+        // /**
+        //  * Count down that uses the 7 segment display
+        //  */
+        // private countDown = new ClockTimer(this.gameEvents$, this.emitGameEvent);
+        //
+        // /**
+        //  * LCD display
+        //  */
+        // private display = new  Display(this.gameEvents$);
+        //
+        // /**
+        //  * Buzzer sound
+        //  */
+        // private buzzer = new Buzzer(this.gameEvents$);
+        //
+        // /**
+        //  * Vibration motor
+        //  */
+        // private vibration = new Vibration(this.gameEvents$);
         /**
-         * Engine
+         * Servo, using GPIO number
          */
-        this.engine = new engine_1.Engine(this.gameEvents$, this.emitGameEvent);
-        /**
-         * Switches
-         */
-        this.switches = new switches_1.Switches(this.gameEvents$, this.emitGameEvent);
-        /**
-         * Buttons
-         */
-        this.buttons = new buttons_1.Buttons(this.gameEvents$, this.emitGameEvent);
-        /**
-         * Count down that uses the 7 segment display
-         */
-        this.countDown = new clock_timer_1.ClockTimer(this.gameEvents$, this.emitGameEvent);
-        /**
-         * LCD display
-         */
-        this.display = new display_1.Display(this.gameEvents$);
-        /**
-         * Buzzer sound
-         */
-        this.buzzer = new buzzer_1.Buzzer(this.gameEvents$);
-        /**
-         * Vibration motor
-         */
-        this.vibration = new vibration_1.Vibration(this.gameEvents$);
+        this.servo = new servo_1.Servo(18);
+        this.ultraSonicSensor = new hc_sr04_1.HCSR04(22, 5);
+        this.switch = new switch_1.Switch(gpio, pins_enum_1.PINS.pin16_red_switch2);
     }
     Object.defineProperty(Game.prototype, "gameEvents$", {
         get: function () {
@@ -95,25 +103,29 @@ var Game = /** @class */ (function () {
      */
     Game.prototype.start = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         console.log('Start');
                         // console.log('Red switch Val', await this.switches.red.getValue());
                         // console.log('Green switch Val', await this.switches.green.getValue());
-                        return [4 /*yield*/, this.switches.ready];
+                        // await this.switches.ready;
+                        // await this.buttons.ready;
+                        return [4 /*yield*/, this.switch.ready];
                     case 1:
                         // console.log('Red switch Val', await this.switches.red.getValue());
                         // console.log('Green switch Val', await this.switches.green.getValue());
-                        _a.sent();
-                        return [4 /*yield*/, this.buttons.ready];
-                    case 2:
+                        // await this.switches.ready;
+                        // await this.buttons.ready;
                         _a.sent();
                         this.emitGameEvent({ eventType: events_1.GameEventType.StateChange, state: game_states_enum_1.GameStates.MainMenu });
                         /**
                          * Value change listener
                          */
                         gpio.on('change', this.channelValueListener());
+                        this.ultraSonicSensor.init();
+                        this.ultraSonicSensor.distance$.subscribe(function (distance) { return _this.servo.setPulseWidth(distance + 1650); });
                         return [2 /*return*/];
                 }
             });
@@ -128,9 +140,10 @@ var Game = /** @class */ (function () {
         var _this = this;
         var lastValues = new Map();
         // Pins that should not emit events/values/changes
-        var nonValueChangeEmitPins = [pins_enum_1.PINS.pin15_vibration_motor, pins_enum_1.PINS.pin3_lcd, pins_enum_1.PINS.pin5_lcd, pins_enum_1.PINS.pin7_dio,
-            pins_enum_1.PINS.pin11_clk, pins_enum_1.PINS.pin18_buzzer, pins_enum_1.PINS.pin33_buttonWhiteLED,
-            pins_enum_1.PINS.pin36_buttonYellowLED, pins_enum_1.PINS.pin38_buttonBlueLED];
+        // const nonValueChangeEmitPins = [PINS.pin15_vibration_motor,PINS.pin3_lcd, PINS.pin5_lcd, PINS.pin7_dio,
+        //     PINS.pin11_clk, PINS.pin18_buzzer, PINS.pin33_buttonWhiteLED,
+        //     PINS.pin36_buttonYellowLED, PINS.pin38_buttonBlueLED];
+        var nonValueChangeEmitPins = [];
         return function (channel, value) {
             // If there was no change, don't emit a value change event
             if (lastValues.get(channel) !== value) {
@@ -138,6 +151,19 @@ var Game = /** @class */ (function () {
                 // Filter out channels that shouldn't be emitting value change events to the game.
                 if (nonValueChangeEmitPins.includes(channel))
                     return;
+                if (channel == _this.switch.pin) {
+                    if (value) {
+                        // this.servo.blink(false);
+                        // this.servo.blink(true, 20, 1);
+                        // this.servo.init();
+                        _this.servo.setAngle(180);
+                    }
+                    else {
+                        // this.servo.blink(false);
+                        // this.servo.blink(true, 20, 2);
+                        _this.servo.setAngle(0);
+                    }
+                }
                 console.log('Channel ' + channel + ' value is now ' + value, new Date().toISOString());
                 _this.emitGameEvent({ eventType: events_1.GameEventType.ValueChange, channel: channel, value: value });
             }

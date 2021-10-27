@@ -6,7 +6,7 @@ export enum PINS {
     pin5_lcd = 5,
     pin7_dio = 7,
     pin11_clk = 11,
-    pin12_green_switch1 = 12,
+    pin12_servo = 12,
     pin16_red_switch2 = 16,
     pin18_buzzer = 18,
     pin15_vibration_motor = 22,

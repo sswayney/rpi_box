@@ -9,7 +9,7 @@ var PINS;
     PINS[PINS["pin5_lcd"] = 5] = "pin5_lcd";
     PINS[PINS["pin7_dio"] = 7] = "pin7_dio";
     PINS[PINS["pin11_clk"] = 11] = "pin11_clk";
-    PINS[PINS["pin12_green_switch1"] = 12] = "pin12_green_switch1";
+    PINS[PINS["pin12_servo"] = 12] = "pin12_servo";
     PINS[PINS["pin16_red_switch2"] = 16] = "pin16_red_switch2";
     PINS[PINS["pin18_buzzer"] = 18] = "pin18_buzzer";
     PINS[PINS["pin15_vibration_motor"] = 22] = "pin15_vibration_motor";

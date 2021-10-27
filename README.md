@@ -1,7 +1,22 @@
 # rpi_box
-A hardware based game thats a mix of hot potato and simon says.
+Haunted Mansion Door Knob
 
 ## My notes
+### So, rpi-gpio has no real support for PWM
+We need input and output of pulse width for things like servos and distance measurement.
+
+This looks good: https://github.com/fivdi/pigpio
+
+A prerequisite is that we must have this lib installed on the pi: http://abyz.me.uk/rpi/pigpio/download.html
+
+And if we use pigio, then should we just move over to it completely? Don't use rpi-gpio
+
+## Install Node Globally
+https://www.makersupplies.sg/blogs/tutorials/how-to-install-node-js-and-npm-on-the-raspberry-pi
+
+## Install Epoll - needed by rpi-gpio
+https://github.com/fivdi/epoll
+
 
 ## SSH
 

@@ -39,7 +39,7 @@ var Engine = /** @class */ (function (_super) {
         // Max number of buttons/flips in one round/sequence.
         _this.sequenceMaxLength = 4;
         _this.momentarySwitchChannels = [pins_enum_1.PINS.pin40_buttonBlue, pins_enum_1.PINS.pin37_buttonYellow, pins_enum_1.PINS.pin35_buttonWhite];
-        _this.flipperSwitchChannels = [pins_enum_1.PINS.pin12_green_switch1, pins_enum_1.PINS.pin16_red_switch2];
+        _this.flipperSwitchChannels = [pins_enum_1.PINS.pin12_servo, pins_enum_1.PINS.pin16_red_switch2];
         return _this;
     }
     Engine.prototype.handleStateChange = function () {

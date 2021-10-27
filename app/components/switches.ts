@@ -17,7 +17,7 @@ export class Switches extends EventEmitter{
     // Let game know we are ready to play.
     public readonly ready: Promise<[boolean, boolean]>;
     // The green switch object
-    public readonly green = new Switch(gpio, PINS.pin12_green_switch1);
+    public readonly green = new Switch(gpio, PINS.pin12_servo);
     // The red switch object
     public readonly red = new Switch(gpio, PINS.pin16_red_switch2);
 
@@ -52,7 +52,7 @@ export class Switches extends EventEmitter{
     }
 
     protected handleValueChange(channel: number, value: any) {
-        if ([PINS.pin12_green_switch1,PINS.pin16_red_switch2].includes(channel)) {
+        if ([PINS.pin12_servo,PINS.pin16_red_switch2].includes(channel)) {
             if (this.state === GameStates.FixSwitches) {
                 /**
                  *  We are in the fix switch state. Check if they are fixed and put

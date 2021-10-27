@@ -25,7 +25,8 @@
     "@types/rpi-gpio": "^2.1.1",
     "lcdi2c": "^1.0.6",
     "rpi-gpio": "^2.1.7",
-    "rxjs": "^6.6.3"
+    "rxjs": "^6.6.3",
+    "pigpio": "^3.3.1"
   },
   "devDependencies": {
     "typescript": "~3.8.3"
