@@ -37,12 +37,12 @@ var LED = /** @class */ (function (_super) {
         configurable: true
     });
     LED.prototype.on = function () {
-        // console.log(`LED ${this._pin} on`);
+        console.log("LED " + this._pin + " on");
         this._gpio.write(this._pin, true);
         this._value = true;
     };
     LED.prototype.off = function () {
-        // console.log(`LED ${this._pin} off`);
+        console.log("LED " + this._pin + " off");
         this._gpio.write(this._pin, false);
         this._value = false;
     };

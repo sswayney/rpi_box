@@ -1,12 +1,12 @@
 #!/usr/bin/expect -f
 
-spawn ssh pi@192.168.0.22
+spawn ssh pi@192.168.0.180
 expect "password: "
 send   "Voltron2020\r"
 
 # Go to folder
 expect "$ "
-send "cd ./git/rpi_box/out\r"
+send "cd ./windows\r"
 
 # Clean
 expect "$ "

@@ -1,18 +1,20 @@
 import * as gpio from 'rpi-gpio';
 import {Subject} from 'rxjs';
 import {PINS} from "./pins.enum";
-import {Buttons} from "./components/buttons";
-import {Buzzer} from "./components/buzzer";
-import {ClockTimer} from "./components/clock-timer";
-import {Display} from "./components/display";
-import {Switches} from "./components/switches";
-import {Vibration} from "./components/vibration";
-import {Engine} from "./engine";
+// import {Buttons} from "./components/buttons";
+// import {Buzzer} from "./components/buzzer";
+// import {ClockTimer} from "./components/clock-timer";
+// import {Display} from "./components/display";
+// import {Switches} from "./components/switches";
+// import {Vibration} from "./components/vibration";
+// import {Engine} from "./engine";
 import {GameEventType, GameEventTypes} from "./events/events";
 import {GameStates} from "./game-states.enum";
-import { Servo } from "../libs/servo";
-import { Switch } from "../libs/switch";
-import { HCSR04 } from "../libs/hc-sr04";
+// import { Servo } from "../libs/servo";
+// import { Switch } from "../libs/switch";
+// import { HCSR04 } from "../libs/hc-sr04";
+// import { ButtonLED } from "../libs/button-led";
+import { LED } from "../libs/led";
 
 /**
  * Main Game
@@ -61,11 +63,9 @@ export class Game {
     // private vibration = new Vibration(this.gameEvents$);
 
     /**
-     * Servo, using GPIO number
+     * Relay using led class, using GPIO number
      */
-    private servo = new Servo(18);
-    private ultraSonicSensor = new HCSR04(22,5);
-    private switch = new Switch(gpio, PINS.pin16_red_switch2);
+    private lightning = new LED(gpio, PINS.pin5_lcd);
 
 
     constructor() {
@@ -83,7 +83,7 @@ export class Game {
 
         // await this.switches.ready;
         // await this.buttons.ready;
-        await this.switch.ready;
+        await this.lightning.ready;
 
 
        this.emitGameEvent({eventType: GameEventType.StateChange, state: GameStates.MainMenu});
@@ -93,8 +93,19 @@ export class Game {
          */
         gpio.on('change', this.channelValueListener());
 
-        this.ultraSonicSensor.init();
-        this.ultraSonicSensor.distance$.subscribe(distance => this.servo.setPulseWidth(distance + 1650));
+        await this.lightning.ready;
+        setInterval(() => {
+            if(this.lightning.value) {
+                console.log('Turning Off!');
+                this.lightning.off();
+            } else {
+                console.log('Turning On!');
+                this.lightning.on();
+            }
+
+
+            // this.lightning.blip(500);
+            },2000);
     }
 
     /**
@@ -118,18 +129,18 @@ export class Game {
                 // Filter out channels that shouldn't be emitting value change events to the game.
                 if (nonValueChangeEmitPins.includes(channel)) return;
 
-                if( channel == this.switch.pin) {
-                    if (value) {
-                        // this.servo.blink(false);
-                        // this.servo.blink(true, 20, 1);
-                        // this.servo.init();
-                        this.servo.setAngle(180);
-                    } else {
-                        // this.servo.blink(false);
-                        // this.servo.blink(true, 20, 2);
-                        this.servo.setAngle(0)
-                    }
-                }
+                // if( channel == this.switch.pin) {
+                //     if (value) {
+                //         // this.servo.blink(false);
+                //         // this.servo.blink(true, 20, 1);
+                //         // this.servo.init();
+                //         this.servo.setAngle(180);
+                //     } else {
+                //         // this.servo.blink(false);
+                //         // this.servo.blink(true, 20, 2);
+                //         this.servo.setAngle(0)
+                //     }
+                // }
 
                 console.log('Channel ' + channel + ' value is now ' + value, new Date().toISOString());
                 this.emitGameEvent({eventType: GameEventType.ValueChange, channel: channel, value: value});

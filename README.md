@@ -13,6 +13,10 @@ And if we use pigio, then should we just move over to it completely? Don't use r
 
 ## Install Node Globally
 https://www.makersupplies.sg/blogs/tutorials/how-to-install-node-js-and-npm-on-the-raspberry-pi
+FOR RASP ZERO: https://hassancorrigan.com/blog/install-nodejs-on-a-raspberry-pi-zero/
+
+## rpi.gpo
+https://www.raspberrypi-spy.co.uk/2012/05/install-rpi-gpio-python-library/
 
 ## Install Epoll - needed by rpi-gpio
 https://github.com/fivdi/epoll

@@ -1,6 +1,6 @@
 #!/usr/bin/expect -f
 
-spawn ssh pi@192.168.0.22
+spawn ssh pi@192.168.0.180
 expect "password: "
 send   "Voltron2020\r"
 

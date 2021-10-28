@@ -39,11 +39,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var gpio = require("rpi-gpio");
 var rxjs_1 = require("rxjs");
 var pins_enum_1 = require("./pins.enum");
+// import {Buttons} from "./components/buttons";
+// import {Buzzer} from "./components/buzzer";
+// import {ClockTimer} from "./components/clock-timer";
+// import {Display} from "./components/display";
+// import {Switches} from "./components/switches";
+// import {Vibration} from "./components/vibration";
+// import {Engine} from "./engine";
 var events_1 = require("./events/events");
 var game_states_enum_1 = require("./game-states.enum");
-var servo_1 = require("../libs/servo");
-var switch_1 = require("../libs/switch");
-var hc_sr04_1 = require("../libs/hc-sr04");
+// import { Servo } from "../libs/servo";
+// import { Switch } from "../libs/switch";
+// import { HCSR04 } from "../libs/hc-sr04";
+// import { ButtonLED } from "../libs/button-led";
+var led_1 = require("../libs/led");
 /**
  * Main Game
  */
@@ -84,11 +93,9 @@ var Game = /** @class */ (function () {
         //  */
         // private vibration = new Vibration(this.gameEvents$);
         /**
-         * Servo, using GPIO number
+         * Relay using led class, using GPIO number
          */
-        this.servo = new servo_1.Servo(18);
-        this.ultraSonicSensor = new hc_sr04_1.HCSR04(22, 5);
-        this.switch = new switch_1.Switch(gpio, pins_enum_1.PINS.pin16_red_switch2);
+        this.lightning = new led_1.LED(gpio, pins_enum_1.PINS.pin5_lcd);
     }
     Object.defineProperty(Game.prototype, "gameEvents$", {
         get: function () {
@@ -112,7 +119,7 @@ var Game = /** @class */ (function () {
                         // console.log('Green switch Val', await this.switches.green.getValue());
                         // await this.switches.ready;
                         // await this.buttons.ready;
-                        return [4 /*yield*/, this.switch.ready];
+                        return [4 /*yield*/, this.lightning.ready];
                     case 1:
                         // console.log('Red switch Val', await this.switches.red.getValue());
                         // console.log('Green switch Val', await this.switches.green.getValue());
@@ -124,8 +131,20 @@ var Game = /** @class */ (function () {
                          * Value change listener
                          */
                         gpio.on('change', this.channelValueListener());
-                        this.ultraSonicSensor.init();
-                        this.ultraSonicSensor.distance$.subscribe(function (distance) { return _this.servo.setPulseWidth(distance + 1650); });
+                        return [4 /*yield*/, this.lightning.ready];
+                    case 2:
+                        _a.sent();
+                        setInterval(function () {
+                            if (_this.lightning.value) {
+                                console.log('Turning Off!');
+                                _this.lightning.off();
+                            }
+                            else {
+                                console.log('Turning On!');
+                                _this.lightning.on();
+                            }
+                            // this.lightning.blip(500);
+                        }, 2000);
                         return [2 /*return*/];
                 }
             });
@@ -151,19 +170,18 @@ var Game = /** @class */ (function () {
                 // Filter out channels that shouldn't be emitting value change events to the game.
                 if (nonValueChangeEmitPins.includes(channel))
                     return;
-                if (channel == _this.switch.pin) {
-                    if (value) {
-                        // this.servo.blink(false);
-                        // this.servo.blink(true, 20, 1);
-                        // this.servo.init();
-                        _this.servo.setAngle(180);
-                    }
-                    else {
-                        // this.servo.blink(false);
-                        // this.servo.blink(true, 20, 2);
-                        _this.servo.setAngle(0);
-                    }
-                }
+                // if( channel == this.switch.pin) {
+                //     if (value) {
+                //         // this.servo.blink(false);
+                //         // this.servo.blink(true, 20, 1);
+                //         // this.servo.init();
+                //         this.servo.setAngle(180);
+                //     } else {
+                //         // this.servo.blink(false);
+                //         // this.servo.blink(true, 20, 2);
+                //         this.servo.setAngle(0)
+                //     }
+                // }
                 console.log('Channel ' + channel + ' value is now ' + value, new Date().toISOString());
                 _this.emitGameEvent({ eventType: events_1.GameEventType.ValueChange, channel: channel, value: value });
             }
