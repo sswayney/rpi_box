@@ -67,8 +67,14 @@ export class Game {
      */
     private lightning = new LED(gpio, PINS.pin5_lcd);
 
+    private readonly chanceOfLightningHit = 1;
+
 
     constructor() {
+    }
+
+    private  getRandInteger = (min, max): number =>  {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     /**
@@ -93,19 +99,35 @@ export class Game {
          */
         gpio.on('change', this.channelValueListener());
 
+
+
         await this.lightning.ready;
+
         setInterval(() => {
-            if(this.lightning.value) {
-                console.log('Turning Off!');
-                this.lightning.off();
-            } else {
-                console.log('Turning On!');
-                this.lightning.on();
+            if(!this.lightning.value) {
+
+                // 1 in 10 chance per second for lightning strike
+                const chanceOfLightning = this.getRandInteger(1, 5);
+                if(chanceOfLightning === this.chanceOfLightningHit) {
+                    // STRIKE
+                    this.lightning.blip(100);
+
+                    // 1 in 3 chance for a fallow up strike
+                    const chanceOfLightning = this.getRandInteger(1, 3);
+                    if (chanceOfLightning === this.chanceOfLightningHit){
+                        // FOLLOW UP STRIKE
+                        setTimeout(() => this.lightning.blip(250),300);
+
+                        // 1 in 2 chance for another follow up strike
+                        const chanceOfLightning = this.getRandInteger(1, 2);
+                        if (chanceOfLightning === this.chanceOfLightningHit){
+                            // FOLLOW UP STRIKE
+                            setTimeout(() => this.lightning.blip(250),600);
+                        }
+                    }
+                }
             }
-
-
-            // this.lightning.blip(500);
-            },2000);
+            },1000);
     }
 
     /**

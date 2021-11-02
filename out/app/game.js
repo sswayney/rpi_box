@@ -96,6 +96,10 @@ var Game = /** @class */ (function () {
          * Relay using led class, using GPIO number
          */
         this.lightning = new led_1.LED(gpio, pins_enum_1.PINS.pin5_lcd);
+        this.chanceOfLightningHit = 1;
+        this.getRandInteger = function (min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
     }
     Object.defineProperty(Game.prototype, "gameEvents$", {
         get: function () {
@@ -135,16 +139,27 @@ var Game = /** @class */ (function () {
                     case 2:
                         _a.sent();
                         setInterval(function () {
-                            if (_this.lightning.value) {
-                                console.log('Turning Off!');
-                                _this.lightning.off();
+                            if (!_this.lightning.value) {
+                                // 1 in 10 chance per second for lightning strike
+                                var chanceOfLightning = _this.getRandInteger(1, 5);
+                                if (chanceOfLightning === _this.chanceOfLightningHit) {
+                                    // STRIKE
+                                    _this.lightning.blip(100);
+                                    // 1 in 3 chance for a fallow up strike
+                                    var chanceOfLightning_1 = _this.getRandInteger(1, 3);
+                                    if (chanceOfLightning_1 === _this.chanceOfLightningHit) {
+                                        // FOLLOW UP STRIKE
+                                        setTimeout(function () { return _this.lightning.blip(250); }, 300);
+                                        // 1 in 2 chance for another follow up strike
+                                        var chanceOfLightning_2 = _this.getRandInteger(1, 2);
+                                        if (chanceOfLightning_2 === _this.chanceOfLightningHit) {
+                                            // FOLLOW UP STRIKE
+                                            setTimeout(function () { return _this.lightning.blip(250); }, 600);
+                                        }
+                                    }
+                                }
                             }
-                            else {
-                                console.log('Turning On!');
-                                _this.lightning.on();
-                            }
-                            // this.lightning.blip(500);
-                        }, 2000);
+                        }, 1000);
                         return [2 /*return*/];
                 }
             });
