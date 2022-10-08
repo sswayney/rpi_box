@@ -24,7 +24,7 @@ https://github.com/fivdi/epoll
 
 ## SSH
 
-ss pi@192.168.0.167
+ss pi@192.168.0.180
 
 cd ./git/rpi_box/
 
@@ -36,7 +36,7 @@ node./out/index.js
 
 ## Deploy
 
-scp -r out pi@192.168.0.167:git/rpi_box
+scp -r out pi@192.168.0.180:git/rpi_box
 
 ## misc
 
